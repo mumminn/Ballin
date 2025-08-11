@@ -10,6 +10,6 @@ body {
 
 @font-face {
     font-family: NoonnuBasicGothicRegular;
-    src: url('./fonts/NoonnuBasicGothicRegular.ttf');
+    src: url('../public/fonts/NoonnuBasicGothicRegular.ttf');
 }
 
