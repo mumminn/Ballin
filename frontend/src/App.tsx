@@ -15,7 +15,6 @@ export default function App() {
           {/* <Route path="*" element={<div className="p-6">404</div>} /> */}
         </Routes>
         <section className="p-6">
-          <h1 className="text-xl font-semibold"></h1>
           <PrimaryButton children="2025"/>
           {/* 여기에 실제 화면 내용 */}
         </section>
