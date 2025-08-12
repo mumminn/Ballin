@@ -1,5 +1,4 @@
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>{
-    primaryButtonClassName?: string;
     children: React.ReactNode;
     sizeVariant?: 'full' | 'half';
     align?: 'left' | 'center' | 'right';
@@ -7,7 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>{
 
 export function PrimaryButton({
     children, 
-    primaryButtonClassName, 
+    className,
     sizeVariant = 'full',
     align = 'center',
     ...props
@@ -20,15 +19,10 @@ export function PrimaryButton({
 
     return(
         <button
-            className={`block ${widthClass} ${alignClass} rounded-2xl px-4 py-3 bg-[#FFEDAD] text-black disabled:opacity-50 disabled:cursor-not-allowed ${primaryButtonClassName ?? ''}`}
+            className={`block ${widthClass} ${alignClass} rounded-2xl px-4 py-3 bg-[#FFEDAD] text-black disabled:opacity-50 disabled:cursor-not-allowed ${className ?? ''}`}
                 {...props}
             > 
                 {children}
         </button>
     );
 }
-
-// 사용 예
-{/* <PrimaryButton type="submit" onClick={() => alert('가입')}>
-  회원가입
-</PrimaryButton> */}
