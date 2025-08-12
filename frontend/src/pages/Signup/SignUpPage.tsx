@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { SignUpForm } from './SingUpForm';
 import { useNavigate } from 'react-router-dom';
-import { Layout } from 'components/layout/Layout';
 // import { signUp } from '@/api/users';
 
 export default function SignUpPage() {
@@ -31,11 +30,11 @@ export default function SignUpPage() {
         if (!email) return;
         try {
         setSending(true);
-            // await api.sendCode(email);
+        // await api.sendCode(email);
         setSecondsLeft(180);
-        // TODO: 실제 API (ex. POST /api/auth/email-code)
+
         setShowTimer(true);
-        await new Promise(r => setTimeout(r, 600));
+
         alert('인증번호 전송 완료');
         } finally {
         setSending(false);
@@ -60,7 +59,6 @@ export default function SignUpPage() {
         try {
         setVerifying(true);
         // await api.verify({ email, code });
-        await new Promise(r => setTimeout(r, 500));
         setVerified(true);
         setShowTimer(false);   // 타이머/재전송 숨김
         setSecondsLeft(0);
@@ -83,7 +81,6 @@ export default function SignUpPage() {
   };
 
   return (
-      <Layout>
         <SignUpForm  
             email={email}
             code={code}
@@ -104,7 +101,5 @@ export default function SignUpPage() {
             secondsLeft={secondsLeft}
             formatTime={mmss}
         />
-      </Layout>
-        
   );
 }

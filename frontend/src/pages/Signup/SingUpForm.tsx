@@ -2,7 +2,7 @@ import { InputField } from "components/common/InputField";
 import { PrimaryButton } from "components/common/PrimaryButton";
 
 
-type SignUpFormProps = {
+interface SignUpFormProps {
     email: string;
     code: string;
     password: string;
@@ -50,7 +50,7 @@ export function SignUpForm({
                   label="ID(EMAIL)"
                   type="email"
                   value={email}
-                  onChange={(e) => onChangeEmail(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeEmail(e.target.value)}
                 />
         
                 {/* 인증번호 전송 / 타이머 / 인증 완료 메세지 */}
@@ -59,7 +59,7 @@ export function SignUpForm({
                     type="button"
                     onClick={onSendCode}
                     disabled={!email || sending || verified}
-                    primaryButtonClassName="mt-5"
+                    className="mt-5"
                     >
                     인증번호 전송
                     </PrimaryButton>
@@ -84,7 +84,7 @@ export function SignUpForm({
                     sizeVariant="half"
                     type="text"
                     value={code}
-                    onChange={(e) => onChangeCode(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeCode(e.target.value)}
                   />
                   <PrimaryButton
                     type="button"
@@ -106,7 +106,7 @@ export function SignUpForm({
                   containerClassName="mt-8"
                   label="PASSWORD"
                   value={password}
-                  onChange={(e) => onChangePassword(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangePassword(e.target.value)}
                 />
         
                 {/* 이름 */}
@@ -114,7 +114,7 @@ export function SignUpForm({
                   containerClassName="mt-8"
                   label="이름"
                   value={name}
-                  onChange={(e) => onChangeName(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeName(e.target.value)}
                 />
               </div>
         
@@ -123,7 +123,7 @@ export function SignUpForm({
                 type="button"
                 onClick={onSubmit}
                 disabled={!(verified && email.trim() && password.trim() && name.trim())}
-                primaryButtonClassName="mt-auto mb-8"
+                className="mt-auto mb-8"
               >
                 회원가입
               </PrimaryButton>
