@@ -1,5 +1,6 @@
 import { InputField } from "components/common/InputField";
 import { PrimaryButton } from "components/common/PrimaryButton";
+import { useState } from 'react';
 
 interface LoginFormProps {
     email: string;
@@ -7,11 +8,15 @@ interface LoginFormProps {
 
     onChangeEmail: (email: string) => void;
     onChangePassword: (password: string) => void;
+
+    onKakaoLogin: () => void;
+    onSignUp: () => void;
 }
 
 export function LoginForm({
-    email, password, onChangeEmail, onChangePassword
+    email, password, onChangeEmail, onChangePassword, onKakaoLogin, onSignUp
 }: LoginFormProps) {
+    const [showPassword, setShowPassword] = useState(false);
     return(
         <div className="w-full max-w-md px-6">
             {/* 로고 */}
@@ -29,12 +34,22 @@ export function LoginForm({
             />
 
             {/* 비밀번호 */}
-            <InputField
-                label="PASSWORD"
-                type="password"
-                value={password}                
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangePassword(e.target.value)}
-            />
+            <div className="relative">
+                <InputField
+                    label="PASSWORD"
+                    type={showPassword? "text" : "password"}
+                    value={password}                
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangePassword(e.target.value)}
+                    className="pr-10"
+                />
+                <img 
+                    src={ showPassword ? "/images/icons/visibility_off.png" : "/images/icons/visibility.png" }
+                    alt={ showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+                    className="absolute right-7 top-[63px] -translate-y-1/2 cursor-pointer w-6 h-6"
+                    onClick={() => setShowPassword(prev => !prev)}
+                >
+                </img>
+            </div>
 
             {/* 로그인 */}
             <PrimaryButton
@@ -47,10 +62,16 @@ export function LoginForm({
 
             {/* 카카오 로그인 */}
             <div className="w-80 h-12 mx-auto mt-6">
-                <img src='/images/kakao_login.png'></img>
+                <img src='/images/kakao_login.png' 
+                onClick={onKakaoLogin}
+                >
+                </img>
             </div>
 
-            <p className="mt-10 text-center text-base font-semibold text-gray-800 cursor-pointer hover:underline">
+            <p 
+                className="mt-10 text-center text-base font-semibold text-gray-800 cursor-pointer hover:underline"
+                onClick={onSignUp}
+            >
                 회원가입
             </p>
 

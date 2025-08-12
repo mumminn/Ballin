@@ -10,17 +10,30 @@ export default function LoginPage() {
 
     const navigator = useNavigate();
 
-    const handleSubmit = async () => {
-        console.log('로그인 성공');
-        // navigator('/calendar');
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log('로그인 성공', {email, password});
+        navigator('/calendar');
+    }
+    
+    const onKakaoLogin = () => {
+        navigator('/kakao');
+    }
+
+    const onSignUp = () => {
+        navigator('/signup');
     }
 
     return (
-        <LoginForm 
-            email={email}
-            password={password}
-            onChangeEmail={setEmail}
-            onChangePassword={setPassword}
-        />
+        <form onSubmit={handleSubmit}>
+            <LoginForm 
+                email={email}
+                password={password}
+                onChangeEmail={setEmail}
+                onChangePassword={setPassword}
+                onKakaoLogin={onKakaoLogin}
+                onSignUp={onSignUp}
+            />
+        </form>
     )
 }
