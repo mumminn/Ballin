@@ -1,6 +1,5 @@
-'use client';
 import { LoginForm } from "./LoginForm";
-import { useEffect, useState} from 'react';
+import { useState} from 'react';
 import { useNavigate } from "react-router-dom";
 
 

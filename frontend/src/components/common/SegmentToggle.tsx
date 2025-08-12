@@ -41,10 +41,10 @@ export function SegmentToggle<T extends string = string>({
     };
 
     return(
-        <div className={`flex items-center gap-3 ${className ?? ''}`}>
+        <div className={`flex items-center justify-center gap-3 ${className ?? ''}`}>
             <div
                 role='radiogroup'
-                className='rounded-xl bg-[#FFEDAD] p-1 flex w-80'
+                className='rounded-xl bg-[#FFEDAD] p-0.5 flex w-80'
             >
                 {options.map((opt) => {
                     const selected = opt.value === value;
