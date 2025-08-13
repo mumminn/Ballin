@@ -1,4 +1,3 @@
-'use client';
 import { useEffect, useState } from 'react';
 import { SignUpForm } from './SingUpForm';
 import { useNavigate } from 'react-router-dom';
