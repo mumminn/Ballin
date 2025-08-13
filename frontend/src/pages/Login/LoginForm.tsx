@@ -20,7 +20,7 @@ export function LoginForm({
     return(
         <div className="w-full max-w-md px-6">
             {/* 로고 */}
-            <div className="flex justify-center mt-20 mb-20">
+            <div className="flex justify-center mt-16 mb-20">
                 <img src="/images/logo.png" alt="ballin" className="w-60 h-60" /> 
             </div>
 

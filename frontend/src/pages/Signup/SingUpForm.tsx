@@ -40,7 +40,7 @@ export function SignUpForm({
             >
               <div className="grow">
                 {/* 로고 */}
-                <div className="flex flex-col items-center mt-6 mb-6">
+                <div className="flex flex-col items-center mt-2 mb-6">
                   <img src="/images/logo.png" alt="ballin" className="w-32 h-32" />
                 </div>
         
