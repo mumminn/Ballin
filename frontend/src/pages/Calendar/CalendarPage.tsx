@@ -13,7 +13,7 @@ export default function CalendarPage() {
       const navigator = useNavigate();
 
       const onRecord = () => {
-            navigator('/record');        
+            navigator('/record/create');        
       }
 
     return (
