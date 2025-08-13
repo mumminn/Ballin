@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { CalendarForm } from "./CalendarForm";
-import { Tab } from "types/calendar"
+import { Tab, Stamp } from "types/calendar"
 
 
 export default function CalendarPage() {
     const [tab, setTab] = useState<Tab>('all');
+    const stamps: Stamp[] = [
+        { date: new Date(2025, 7, 1), sport: 'basketball', result: 'lose',  team: 'kia' },
+        { date: new Date(2025, 7, 5), sport: 'baseball',    result: 'win', team: 'kia' },
+      ];
 
     return (
         <CalendarForm 
@@ -13,6 +17,7 @@ export default function CalendarPage() {
                 console.log(v); 
                 setTab(v);
             }}
+            stamp={stamps}
         />
     );
 }

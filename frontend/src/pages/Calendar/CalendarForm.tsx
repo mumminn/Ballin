@@ -1,13 +1,15 @@
 import { SegmentToggle } from "components/common/SegmentToggle"
-import { Tab } from "types/calendar"
+import { Tab, Stamp } from "types/calendar"
 import { NavigationBar } from "components/NavigationBar/NavigationBar";
+import Calendar from "components/calendar/Calendar";
 
 interface CalendarProps {
     tab: Tab;
     setTab: (v: Tab) => void;
+    stamp?: Stamp[];
 }
 export function CalendarForm ({
-    tab, setTab
+    tab, setTab, stamp
 }: CalendarProps) {
     return(
         <div>
@@ -20,8 +22,14 @@ export function CalendarForm ({
                 value={tab}
                 onChange={setTab}
                 size="sm"
-                className="mt-10"
+                className="mt-14"
                 />
+            
+
+            <Calendar
+                stamps={stamp}
+                filter={tab}
+            />
 
             <NavigationBar 
             />

@@ -14,7 +14,7 @@ export function NavOption({
     text,
     iconName,
     iconSize,
-    textClassName
+    textClassName 
 }: NavOptionProps) {
     const location = useLocation();
     const isActive = location.pathname === to;
