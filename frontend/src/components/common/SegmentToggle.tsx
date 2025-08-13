@@ -60,7 +60,7 @@ export function SegmentToggle<T extends string = string>({
                                 ${optionCountClass}
                                 rounded-xl transition-colors
                                 ${sizeStyles[size].padding} ${sizeStyles[size].font} ${sizeStyles[size].height}
-                                ${selected ? 'bg-[#3F736B] text-[#FCF5E2]' : 'text-[#4D7E73]/40'}
+                                ${selected ? 'bg-[#4D7E73] text-[#FCF5E2]' : 'text-[#4D7E73]/40'}
                                 disabled:opacity-50 disabled:cursor-not-allowed
                                 focus:outline-none focus-visible:ring-2 focus-visible:ring-black/40
                             `}

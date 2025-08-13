@@ -6,13 +6,15 @@ interface NavOptionProps{
     iconName: string;
     text: string;
     iconSize?: string;
+    textClassName?: string;
 }
 
 export function NavOption({
     to, 
     text,
     iconName,
-    iconSize = 'w-7 h-7'
+    iconSize,
+    textClassName
 }: NavOptionProps) {
     const location = useLocation();
     const isActive = location.pathname === to;
@@ -38,8 +40,9 @@ export function NavOption({
                     <span
                         className={[
                         "text-sm font-semibold tracking-tight transition-colors mt-1",
-                        isActive ? "text-[#4D7E73]" : "text-white",
-                        ].join(" ")}
+                        isActive ? "text-[#4D7E73]" : "text-white", textClassName,
+                        ].filter(Boolean)
+                        .join(" ")}
                     >
                         {text}
                     </span>
