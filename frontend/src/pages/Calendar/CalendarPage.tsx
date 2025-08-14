@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CalendarForm } from "./CalendarForm";
+import { CalendarForm } from "../../components/calendar/CalendarForm";
 import { Tab, Stamp } from "types/calendar"
 
 export default function CalendarPage() {
