@@ -39,7 +39,7 @@ export function SubLayout({
 
       {/* MAIN (본문) */}
       <main
-        className={`row-start-2 px-4 pt-[clamp(16px,10vh,96px)] ${className}`}
+        className={`row-start-2 px-4 pt-[clamp(8px,4vh,40px)] ${className}`}
       >
         <div className="mx-auto w-full" style={{ maxWidth: "var(--max-w)" }}>
           {children}
