@@ -1,6 +1,6 @@
 import { SegmentToggle } from "components/common/SegmentToggle"
 import { Tab, Stamp } from "types/calendar"
-import { NavigationBar } from "components/NavigationBar/NavigationBar";
+import { NavigationBar } from "components/navigationBar/NavigationBar";
 import Calendar from "components/calendar/Calendar";
 import { PrimaryButton } from "components/common/PrimaryButton";
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CalendarForm } from "./CalendarForm";
+import { CalendarForm } from "../../components/calendar/CalendarForm";
 import { Tab, Stamp } from "types/calendar"
 
 export default function CalendarPage() {
@@ -13,7 +13,7 @@ export default function CalendarPage() {
       const navigator = useNavigate();
 
       const onRecord = () => {
-            navigator('/record');        
+            navigator('/record/create');        
       }
 
     return (
