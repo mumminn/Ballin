@@ -5,6 +5,7 @@ import LoginPage from 'pages/Login/LoginPage';
 import CalendarPage from 'pages/Calendar/CalendarPage';
 import RecordCreatePage from 'pages/Record/RecordCreate/RecordCreatePage';
 import RecordCreateDetailPage from 'pages/Record/RecordCreate/RecordCreateDetailPage';
+import RecordPage from 'pages/Record/RecordPage';
 
 
 export const PATH = {
@@ -15,6 +16,7 @@ export const PATH = {
   calendar: '/calendar',
   recordCreate: '/record/create',
   recordCreateSport: '/record/create/:sport?',
+  record: 'record',
 };
 
 export default function AppRoutes() {
@@ -27,6 +29,7 @@ export default function AppRoutes() {
       <Route path={PATH.calendar} element={<CalendarPage />} />
       <Route path={PATH.recordCreate} element={<RecordCreatePage />} />
       <Route path={PATH.recordCreateSport} element={<RecordCreateDetailPage />} />
+      <Route path={PATH.record} element={<RecordPage />} />
 
       {/* 404 */}
       <Route path="*" element={<div className="p-6">404 페이지를 찾을 수 없습니다</div>} />

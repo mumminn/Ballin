@@ -3,7 +3,7 @@ import { BackButton } from "components/common/BackButton";
 import { NavigationBar } from "components/navigationBar/NavigationBar";
 import { InputField } from "components/common/InputField";
 import { RecordScore } from "./RecordScore";
-import { RecordPhoto } from "./RecordPhoto";
+import { RecordPhoto } from "../RecordPhoto";
 import { PrimaryButton } from "components/common/PrimaryButton";
 import { RecordReview } from "./RecordReview";
 
