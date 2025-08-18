@@ -1,5 +1,6 @@
 import { Layout } from '../src/components/layout/Layout';
 import { BrowserRouter } from 'react-router-dom';
+import 'material-symbols';
 
 
 import AppRoutes from './routes';
