@@ -1,13 +1,10 @@
-// components/record/ScoreHeader.tsx
-import React from 'react';
-
-type Team = {
+export type Team = {
   name: string;
   logo?: string;
   logoAlt?: string;
 };
 
-type ScoreHeaderProps = {
+export type ScoreHeaderProps = {
   myTeam: Team;
   opponentTeam: Team;
   myScore: number | string;
