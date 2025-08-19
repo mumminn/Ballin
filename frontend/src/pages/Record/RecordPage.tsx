@@ -1,4 +1,4 @@
-import { RecordForm, RecordItem } from "components/record/RecordForm";
+import { RecordForm, RecordItem } from "pages/Record/RecordForm";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

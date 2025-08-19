@@ -1,4 +1,4 @@
-import { RecordCreateForm } from "../../../components/record/recordCreate/RecordCreateForm";
+import { RecordCreateForm } from "./RecordCreateForm";
 import { useState } from 'react';
 import { Sport } from "types/calendar";
 import { useNavigate } from "react-router-dom";

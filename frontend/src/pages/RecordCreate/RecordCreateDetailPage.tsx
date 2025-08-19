@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import * as React from "react";
 
 import { useNavigate } from 'react-router-dom';
-import { RecordCreateDetailForm } from 'components/record/recordCreate/RecordCreateDetailForm';
+import { RecordCreateDetailForm } from 'pages/RecordCreate/RecordCreateDetailForm';
 import { useDebouncedValue } from 'hooks/useDebouncedValue';
 
 

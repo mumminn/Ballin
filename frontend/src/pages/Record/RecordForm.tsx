@@ -1,8 +1,8 @@
 import * as React from "react";
 import { SubLayout } from "components/layout/SubLayout";
 import { NavigationBar } from "components/navigationBar/NavigationBar";
-import { RecordSearch } from "./RecordSearch";
-import { RecordCard } from "./RecordCard";
+import { RecordSearch } from "components/record/RecordSearch";
+import { RecordCard } from "components/record/RecordCard";
 import { Stamp } from "types/calendar";
 
 export type RecordItem = {

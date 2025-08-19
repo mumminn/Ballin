@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SignUpForm } from '../../components/signup/SingUpForm';
+import { SignUpForm } from './SingUpForm';
 import { useNavigate } from 'react-router-dom';
 // import { signUp } from '@/api/users';
 
