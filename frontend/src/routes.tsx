@@ -4,7 +4,7 @@ import SignUpPage from 'pages/Signup/SignUpPage';
 import LoginPage from 'pages/Login/LoginPage';
 import CalendarPage from 'pages/Calendar/CalendarPage';
 import RecordCreatePage from 'pages/Record/RecordCreate/RecordCreatePage';
-import RecordCreateDetailPage from 'pages/Record/RecordCreate/RecordCreateDetailPage';
+import RecordCreateDetailPage from 'pages/RecordCreate/RecordCreateDetailPage';
 import RecordPage from 'pages/Record/RecordPage';
 
 

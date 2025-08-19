@@ -2,10 +2,10 @@ import { SubLayout } from "components/layout/SubLayout";
 import { BackButton } from "components/common/BackButton";
 import { NavigationBar } from "components/navigationBar/NavigationBar";
 import { InputField } from "components/common/InputField";
-import { RecordScore } from "./RecordScore";
-import { RecordPhoto } from "../RecordPhoto";
+import { RecordScore } from "components/recordCreate/RecordScore";
+import { RecordPhoto } from "components/recordCreate/RecordPhoto";
 import { PrimaryButton } from "components/common/PrimaryButton";
-import { RecordReview } from "./RecordReview";
+import { RecordReview } from "components/recordCreate/RecordReview";
 
 interface RecordCreateDetailProps {
     myScore: string | number;
