@@ -1,23 +1,21 @@
 package com.example.backend.domain.user.entity;
 
+import com.example.backend.global.entity.BaseEntity;
 import lombok.*;
-import java.time.LocalDateTime;
+
 import java.util.UUID;
 
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class UserEntity {
+@Setter
+@EqualsAndHashCode(callSuper = true)
+public class UserEntity extends BaseEntity {
     private UUID id;
     private String email;
     private String password;
     private String name;
     private SocialType socialType;
-    private LocalDateTime createdDt;
-    private LocalDateTime updatedDt;
-    private UUID createdId;
-    private UUID updatedId;
 
 }
