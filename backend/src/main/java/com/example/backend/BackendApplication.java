@@ -16,6 +16,8 @@ public class BackendApplication {
 		System.setProperty("DB_NAME", dotenv.get("DB_NAME"));
 		System.setProperty("DB_HOST", dotenv.get("DB_HOST"));
 		System.setProperty("DB_PORT", dotenv.get("DB_PORT"));
+		System.setProperty("KAKAO_REST_API_KEY", dotenv.get("KAKAO_REST_API_KEY"));
+		System.setProperty("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
 
 		SpringApplication.run(BackendApplication.class, args);
 	}
