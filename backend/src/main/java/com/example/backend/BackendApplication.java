@@ -16,6 +16,11 @@ public class BackendApplication {
 		System.setProperty("DB_NAME", dotenv.get("DB_NAME"));
 		System.setProperty("DB_HOST", dotenv.get("DB_HOST"));
 		System.setProperty("DB_PORT", dotenv.get("DB_PORT"));
+		System.setProperty("KAKAO_REST_API_KEY", dotenv.get("KAKAO_REST_API_KEY"));
+		System.setProperty("KAKAO_REDIRECT_URL", dotenv.get("KAKAO_REDIRECT_URL"));
+		System.setProperty("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
+		System.setProperty("REDIS_HOST", dotenv.get("REDIS_HOST"));
+		System.setProperty("REDIS_PORT", dotenv.get("REDIS_PORT"));
 
 		SpringApplication.run(BackendApplication.class, args);
 	}
