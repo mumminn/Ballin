@@ -1,12 +1,12 @@
 package com.example.backend.global.mybatis;
 
-import org.apache.ibatis.type.BaseTypeHandler;
-import org.apache.ibatis.type.JdbcType;
-
+import org.apache.ibatis.type.*;
 import java.nio.ByteBuffer;
 import java.sql.*;
 import java.util.UUID;
 
+@MappedJdbcTypes(JdbcType.BINARY)
+@MappedTypes(UUID.class)
 public class UUIDTypeHandler extends BaseTypeHandler<UUID> {
 
     @Override
@@ -25,13 +25,7 @@ public class UUIDTypeHandler extends BaseTypeHandler<UUID> {
         return new UUID(msb, lsb);
     }
 
-    @Override public UUID getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        return bytesToUuid(rs.getBytes(columnName));
-    }
-    @Override public UUID getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return bytesToUuid(rs.getBytes(columnIndex));
-    }
-    @Override public UUID getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return bytesToUuid(cs.getBytes(columnIndex));
-    }
+    @Override public UUID getNullableResult(ResultSet rs, String columnName)  throws SQLException { return bytesToUuid(rs.getBytes(columnName)); }
+    @Override public UUID getNullableResult(ResultSet rs, int columnIndex)   throws SQLException { return bytesToUuid(rs.getBytes(columnIndex)); }
+    @Override public UUID getNullableResult(CallableStatement cs, int columnIndex) throws SQLException { return bytesToUuid(cs.getBytes(columnIndex)); }
 }
