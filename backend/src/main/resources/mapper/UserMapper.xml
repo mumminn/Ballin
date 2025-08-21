@@ -1,0 +1,49 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.domain.user.mapper.UserMapper">
+
+    <resultMap id="UserMap" type="com.example.backend.domain.user.entity.UserEntity">
+        <id     column="id"          property="id"          jdbcType="BINARY" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <result column="email"       property="email"/>
+        <result column="password"    property="password"/>
+        <result column="name"        property="name"/>
+        <result column="social_type" property="socialType"   javaType="com.example.backend.domain.user.entity.SocialType"/>
+        <result column="created_dt"  property="createdDt"    jdbcType="TIMESTAMP"/>
+        <result column="updated_dt"  property="updatedDt"    jdbcType="TIMESTAMP"/>
+        <result column="created_id"  property="createdId"    jdbcType="BINARY" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <result column="updated_id"  property="updatedId"    jdbcType="BINARY" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+    </resultMap>
+
+    <select id="findById" resultMap="UserMap">
+        SELECT id, email, password,`name`, social_type, created_dt, updated_dt, created_id, updated_id
+        FROM `user`
+        WHERE id = #{id, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+            LIMIT 1
+    </select>
+
+    <select id="findByEmail" resultMap="UserMap">
+        SELECT id, email, password, `name`, social_type, created_dt, updated_dt, created_id, updated_id
+        FROM `user`
+        WHERE email = #{email}
+            LIMIT 1
+    </select>
+
+    <insert id="insertUser" parameterType="com.example.backend.domain.user.entity.UserEntity">
+        INSERT INTO `user` (id, email, password, `name`, social_type, created_id, updated_id)
+        VALUES (
+                   #{id, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+                   #{email}, #{password}, #{name}, #{socialType},
+                   #{createdId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+                   #{updatedId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+               )
+    </insert>
+
+    <update id="updateUserBasic" parameterType="com.example.backend.domain.user.entity.UserEntity">
+        UPDATE `user`
+        SET `name` = #{name},
+            updated_id = #{updatedId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+            updated_dt = CURRENT_TIMESTAMP
+        WHERE id = #{id, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+    </update>
+
+</mapper>
