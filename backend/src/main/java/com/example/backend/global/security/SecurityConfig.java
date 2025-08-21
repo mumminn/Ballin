@@ -28,6 +28,7 @@ public class SecurityConfig {
                         // 카카오 시작/콜백/디버그 전부 허용
                         .requestMatchers("/kakao/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/auth/refresh", "auth/logout").permitAll()
                         .requestMatchers("/", "/index.html", "/favicon.ico", "/health").permitAll()
                         .anyRequest().authenticated()
                 )

@@ -40,7 +40,6 @@ public class UserService {
         if (existing.isPresent()) {
             UserEntity u = existing.get();
             u.setName(nickname);
-            u.setUpdatedId(null); // 필요 시 설정
             userMapper.updateUserBasic(u);
             return userMapper.findById(u.getId()).orElse(u);
         }
@@ -52,8 +51,6 @@ public class UserService {
                 .password(null)
                 .name(nickname)
                 .socialType(SocialType.KAKAO)
-                .createdId(null)
-                .updatedId(null)
                 .build();
         userMapper.insertUser(u);
         return u;
