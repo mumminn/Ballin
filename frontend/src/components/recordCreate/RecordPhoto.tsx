@@ -1,4 +1,4 @@
-// components/record/recordCreate/RecordPhoto.tsx
+// @/components/record/recordCreate/RecordPhoto.tsx
 import * as React from "react";
 
 

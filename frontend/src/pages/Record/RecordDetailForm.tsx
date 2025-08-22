@@ -1,14 +1,14 @@
-import { SubLayout } from "components/layout/SubLayout";
-import { BackButton } from "components/common/BackButton";
-import { NavigationBar } from "components/navigationBar/NavigationBar";
-import { RecordEditButton } from "components/record/RecordEditButton";
-import { RecordDeleteButton } from "components/record/RecordDeleteButton";
-import { FieldShell } from "components/record/FieldShell";
-import { ScoreHeader } from "components/record/ScoreHeader";
-import { Divider } from "components/common/Divider";
-import { ReviewLined } from "components/record/ReviewLined";
-import { Stamp, stampPath } from "types/stamp";
-import type { ScoreHeaderProps } from "components/record/ScoreHeader";
+import { SubLayout } from "@/components/layout/SubLayout";
+import { BackButton } from "@/components/common/BackButton";
+import { NavigationBar } from "@/components/navigationBar/NavigationBar";
+import { RecordEditButton } from "@/components/record/RecordEditButton";
+import { RecordDeleteButton } from "@/components/record/RecordDeleteButton";
+import { FieldShell } from "@/components/record/FieldShell";
+import { ScoreHeader } from "@/components/record/ScoreHeader";
+import { Divider } from "@/components/common/Divider";
+import { ReviewLined } from "@/components/record/ReviewLined";
+import { Stamp, stampPath } from "@/types/stamp";
+import type { ScoreHeaderProps } from "@/components/record/ScoreHeader";
 
 
 interface RecordDetailFormProps{

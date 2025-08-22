@@ -1,4 +1,4 @@
-// components/layout/SubLayout.tsx
+// @/components/layout/SubLayout.tsx
 import * as React from "react";
 
 type SubLayoutProps = {

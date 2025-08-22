@@ -3,8 +3,8 @@ import { DayPicker, type DayProps } from "react-day-picker";
 import { ko } from "date-fns/locale";
 import { addMonths, format } from "date-fns";
 import "react-day-picker/style.css";
-import { Stamp } from "types/calendar";
-import { Tab } from "types/calendar";
+import { Stamp } from "@/types/calendar";
+import { Tab } from "@/types/calendar";
 
 
 type Props = {

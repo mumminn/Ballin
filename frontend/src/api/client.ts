@@ -1,0 +1,20 @@
+import axios from 'axios';
+
+export const api = axios.create({
+    baseURL: '/',
+    withCredentials: true,
+});
+
+let accessToken: string | null = sessionStorage.getItem('access') || null;
+
+export const setAccessToken = (t: string | null) => {
+  accessToken = t;
+  if (t) sessionStorage.setItem('access', t);
+  else sessionStorage.removeItem('access');
+};
+
+api.interceptors.request.use((cfg) => {
+  cfg.headers = cfg.headers ?? {};
+  if (accessToken) (cfg.headers as any).Authorization = `Bearer ${accessToken}`;
+  return cfg;
+});
