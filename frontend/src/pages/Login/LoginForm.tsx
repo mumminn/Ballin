@@ -1,5 +1,5 @@
-import { InputField } from "components/common/InputField";
-import { PrimaryButton } from "components/common/PrimaryButton";
+import { InputField } from "@/components/common/InputField";
+import { PrimaryButton } from "@/components/common/PrimaryButton";
 import { useState } from 'react';
 
 interface LoginFormProps {

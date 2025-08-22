@@ -1,8 +1,8 @@
-import { SegmentToggle } from "components/common/SegmentToggle"
-import { Tab, Stamp } from "types/calendar"
-import { NavigationBar } from "components/navigationBar/NavigationBar";
-import Calendar from "components/calendar/Calendar";
-import { PrimaryButton } from "components/common/PrimaryButton";
+import { SegmentToggle } from "@/components/common/SegmentToggle"
+import { Tab, Stamp } from "@/types/calendar"
+import { NavigationBar } from "@/components/navigationBar/NavigationBar";
+import Calendar from "@/components/calendar/Calendar";
+import { PrimaryButton } from "@/components/common/PrimaryButton";
 
 interface CalendarProps {
     tab: Tab;

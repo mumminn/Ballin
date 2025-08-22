@@ -32,6 +32,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (jwt.isValid(accessToken)) {
                 String userId = jwt.getSubject(accessToken);
 
+                // principal
                 var auth = new UsernamePasswordAuthenticationToken(
                         userId, null, Collections.emptyList()
                 );

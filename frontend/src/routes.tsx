@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import SignUpPage from 'pages/Signup/SignUpPage';
-import LoginPage from 'pages/Login/LoginPage';
-import CalendarPage from 'pages/Calendar/CalendarPage';
-import RecordCreatePage from 'pages/RecordCreate/RecordCreatePage';
-import RecordCreateDetailPage from 'pages/RecordCreate/RecordCreateDetailPage';
-import RecordPage from 'pages/Record/RecordPage';
-import RecordDetailPage from 'pages/Record/RecordDetailPage';
+import SignUpPage from '@/pages/Signup/SignUpPage';
+import LoginPage from '@/pages/Login/LoginPage';
+import CalendarPage from '@/pages/Calendar/CalendarPage';
+import RecordCreatePage from '@/pages/RecordCreate/RecordCreatePage';
+import RecordCreateDetailPage from '@/pages/RecordCreate/RecordCreateDetailPage';
+import RecordPage from '@/pages/Record/RecordPage';
+import RecordDetailPage from '@/pages/Record/RecordDetailPage';
 
 
 export const PATH = {

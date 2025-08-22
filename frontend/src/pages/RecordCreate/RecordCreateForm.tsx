@@ -1,9 +1,9 @@
-import { BackButton } from "components/common/BackButton";
-import RecordCreateCate from "components/record/RecordCreateCate";
-import { Sport } from "types/calendar";
-import { NavigationBar } from "components/navigationBar/NavigationBar";
-import { PrimaryButton } from "components/common/PrimaryButton";
-import { SubLayout } from "components/layout/SubLayout";
+import { BackButton } from "@/components/common/BackButton";
+import RecordCreateCate from "@/components/record/RecordCreateCate";
+import { Sport } from "@/types/calendar";
+import { NavigationBar } from "@/components/navigationBar/NavigationBar";
+import { PrimaryButton } from "@/components/common/PrimaryButton";
+import { SubLayout } from "@/components/layout/SubLayout";
 
 interface RecordCreateProps {
   value?: Sport;

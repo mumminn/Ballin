@@ -1,4 +1,4 @@
-package com.example.backend.global;
+package com.example.backend.global.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;

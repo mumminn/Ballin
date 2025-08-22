@@ -1,15 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "./styles/tokens.css";
 
-/* === 전역 공통 스타일 === */
+@import "tailwindcss";
+
+/* 전역 공통 */
 html, body, #root { height: 100%; }
-body { 
-    @apply font-noonnu bg-neutral-100 text-gray-900; 
-}
 
-@font-face {
-    font-family: NoonnuBasicGothicRegular;
-    src: url('../public/fonts/NoonnuBasicGothicRegular.ttf');
+body {
+  /* tailwind 유틸 + 커스텀 폰트 유틸 */
+  @apply bg-neutral-100 text-gray-900 font-noonnu;
 }
-

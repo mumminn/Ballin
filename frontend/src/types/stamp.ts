@@ -1,4 +1,4 @@
-import { Sport, Result } from "types/calendar";
+import { Sport, Result } from "@/types/calendar";
 
 export type Stamp =
   | { result: Result }
