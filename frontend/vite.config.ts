@@ -13,11 +13,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       // 백엔드 기본 REST
-      '/api':   { target: 'http://localhost:8080', changeOrigin: true },
-      // 인증 관련
-      '/auth':  { target: 'http://localhost:8080', changeOrigin: true },
-      // 카카오 콜백/로그인
-      '/kakao': { target: 'http://localhost:8080', changeOrigin: true },
+      '/api': { target: 'http://localhost:8080', changeOrigin: true },
     },
   },
 });

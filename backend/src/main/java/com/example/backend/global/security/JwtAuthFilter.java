@@ -47,7 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String p = request.getServletPath();
-        return p.startsWith("/kakao/")
+        return p.startsWith("/api/kakao/")
                 || p.startsWith("/auth/refresh")
                 || p.startsWith("/login/")
                 || p.equals("/")
