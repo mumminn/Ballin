@@ -2,7 +2,6 @@ import { LoginForm } from "./LoginForm";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,8 +14,12 @@ export default function LoginPage() {
         navigator('/calendar');
     }
     
+    
     const onKakaoLogin = () => {
-        navigator('/kakao');
+        // 카카오로그인 동의 페이지로 이동
+        const KakaoLoginAPI = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_REST_API_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URL}`;
+        // console.log(KakaoLoginAPI);
+        window.location.href = KakaoLoginAPI;
     }
 
     const onSignUp = () => {
