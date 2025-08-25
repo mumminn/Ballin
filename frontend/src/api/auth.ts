@@ -1,5 +1,6 @@
 import axios, { AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { api, setAccessToken } from './client';
+import { ENDPOINTS } from './endpoints';
 
 let refreshing = false;
 let waiters: Array<(t: string | null) => void> = [];
@@ -31,7 +32,7 @@ export function attach401Handler() {
 
         refreshing = true;
         try {
-          const res = await axios.post('/auth/refresh', null, { withCredentials: true });
+          const res = await axios.post(ENDPOINTS.REFRESH_TOKEN, null, { withCredentials: true });
 
           const auth = res.headers?.['authorization'] as string | undefined;
           const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;

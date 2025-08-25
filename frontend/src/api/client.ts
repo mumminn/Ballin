@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-    baseURL: '/',
+    baseURL: import.meta.env.VITE_API_BASE,
     withCredentials: true,
 });
 
@@ -12,6 +12,9 @@ export const setAccessToken = (t: string | null) => {
   if (t) sessionStorage.setItem('access', t);
   else sessionStorage.removeItem('access');
 };
+
+export const getAccessToken = () => accessToken;
+
 
 api.interceptors.request.use((cfg) => {
   cfg.headers = cfg.headers ?? {};

@@ -20,7 +20,7 @@ public class WebConfig {
                 "http://127.0.0.1:5173"
         ));
 
-        cfg.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
+        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "X-Refresh-Token"));
 
         cfg.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
