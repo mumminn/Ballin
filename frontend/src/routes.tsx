@@ -8,6 +8,7 @@ import RecordCreateDetailPage from '@/pages/RecordCreate/RecordCreateDetailPage'
 import RecordPage from '@/pages/Record/RecordPage';
 import RecordDetailPage from '@/pages/Record/RecordDetailPage';
 import KakaoCallbackPage from '@/pages/Login/KakaoCallbackPage';
+import RequireAuth from '@/routes/RequireAuth';
 
 
 export const PATH = {
@@ -28,12 +29,16 @@ export default function AppRoutes() {
       <Route path={PATH.root} element={<Navigate to={PATH.login} replace />} />
       <Route path={PATH.signup} element={<SignUpPage />} />
       <Route path={PATH.login} element={<LoginPage />} />
-      <Route path={PATH.calendar} element={<CalendarPage />} />
-      <Route path={PATH.recordCreate} element={<RecordCreatePage />} />
-      <Route path={PATH.recordCreateSport} element={<RecordCreateDetailPage />} />
-      <Route path={PATH.record} element={<RecordPage />} />
-      <Route path={PATH.recordDetail} element={<RecordDetailPage />} />
       <Route path={PATH.kakao} element={<KakaoCallbackPage />} />
+
+      <Route element={<RequireAuth />}>
+        <Route path={PATH.calendar} element={<CalendarPage />} />
+        <Route path={PATH.recordCreate} element={<RecordCreatePage />} />
+        <Route path={PATH.recordCreateSport} element={<RecordCreateDetailPage />} />
+        <Route path={PATH.record} element={<RecordPage />} />
+        <Route path={PATH.recordDetail} element={<RecordDetailPage />} />
+      </Route>
+
 
       {/* 404 */}
       <Route path="*" element={<div className="p-6">404 페이지를 찾을 수 없습니다</div>} />

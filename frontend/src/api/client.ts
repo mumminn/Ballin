@@ -13,6 +13,9 @@ export const setAccessToken = (t: string | null) => {
   else sessionStorage.removeItem('access');
 };
 
+export const getAccessToken = () => accessToken;
+
+
 api.interceptors.request.use((cfg) => {
   cfg.headers = cfg.headers ?? {};
   if (accessToken) (cfg.headers as any).Authorization = `Bearer ${accessToken}`;
