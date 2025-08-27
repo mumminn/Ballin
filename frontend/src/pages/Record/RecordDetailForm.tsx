@@ -7,7 +7,7 @@ import { FieldShell } from "@/components/record/FieldShell";
 import { ScoreHeader } from "@/components/record/ScoreHeader";
 import { Divider } from "@/components/common/Divider";
 import { ReviewLined } from "@/components/record/ReviewLined";
-import { Stamp, stampPath } from "@/types/stamp";
+import { RecordStamp, stampPath } from "@/types/recordStamp";
 import type { ScoreHeaderProps } from "@/components/record/ScoreHeader";
 
 
@@ -16,7 +16,7 @@ interface RecordDetailFormProps{
     seat?: string;
     imgUrl?: string | File;
     review?: string;
-    stamp?: Stamp;
+    stamp?: RecordStamp;
     score?: Omit<ScoreHeaderProps, "className" | "logoSize">;
 
 }
@@ -25,7 +25,7 @@ export function RecordDetailForm ({
     seat="317구역 11열 126",
     imgUrl='/images/baseball_character.svg',
     review='재밌고 멋진 경기였다. 내일 또 와야지~~~ 내일도 이겼으면 좋겠다',
-    stamp={ result: 'win', sport: 'baseball', team: 'kia' },
+    stamp={ result: 'WIN', sport: 'baseball', team: 'kia' },
     score={
         myTeam: { name: "기아 타이거즈", logo: "/images/logos/kia.svg" },
         opponentTeam: { name: "한화 이글스", logo: "/images/logos/hanwha.svg" },
