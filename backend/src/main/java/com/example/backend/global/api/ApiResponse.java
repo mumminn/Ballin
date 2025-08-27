@@ -25,18 +25,23 @@ public class ApiResponse<T> {
     private final T result;
 
     // 데이터 없는 200
-    public static ApiResponse<EmptyJson> ok() {
-        return ok(EmptyJson.INSTANCE);
+    public static ApiResponse<Void> ok() {
+        return new ApiResponse<>(
+                ApiCode.COMMON200.isSuccess(),
+                ApiCode.COMMON200.getCode(),
+                ApiCode.COMMON200.getMessage(),
+                null
+        );
     }
 
     // 데이터 있는 200
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unChecked")
     public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(
                 ApiCode.COMMON200.isSuccess(),
                 ApiCode.COMMON200.getCode(),
                 ApiCode.COMMON200.getMessage(),
-                (data == null) ? (T) EmptyJson.INSTANCE : data
+               data
         );
     }
 
@@ -44,15 +49,17 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> of(ApiCode code, String message, T data) {
         return new ApiResponse<>(code.isSuccess(), code.getCode(),
                 (message != null ? message : code.getMessage()),
-                (data == null) ? (T) EmptyJson.INSTANCE : data
+                data
         );
     }
 
-    public static <T> ApiResponse<EmptyJson> error(ApiCode code) {
-        return of(code, null, EmptyJson.INSTANCE);
+    public static <T> ApiResponse<Void> error(ApiCode code) {
+        return of(code, null, null);
     }
 
-    public static <T> ApiResponse<EmptyJson> error(ApiCode code, String message) {
-        return of(code, message, EmptyJson.INSTANCE);
+    public static <T> ApiResponse<Void> error(ApiCode code, String message) {
+        return of(code, message, null);
     }
+
+
 }
