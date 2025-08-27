@@ -1,0 +1,30 @@
+package com.example.backend.domain.matchRecord.entity;
+
+import com.example.backend.global.entity.BaseEntity;
+import lombok.*;
+
+import java.time.Instant;
+import java.util.UUID;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Setter
+@EqualsAndHashCode(callSuper = true)
+public class MatchRecordEntity extends BaseEntity {
+    private UUID recordId;
+    private UUID userId;
+    private UUID supportingTeamId;
+    private UUID opposingTeamId;
+    private UUID stadiumId;
+    private UUID categoryId;
+    private Instant matchDate;
+    private int winningScore;
+    private int losingScore;
+    private TeamResult teamResult;
+    private String review;
+    private byte[] image;
+    private String seat;
+
+}
