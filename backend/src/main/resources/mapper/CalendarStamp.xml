@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.domain.matchRecord.mapper.MatchRecordMapper">
+
+    <resultMap id="StampRowMap" type="com.example.backend.domain.matchRecord.mapper.projection.MatchRecordStampRow">
+        <result column="match_date" property="matchDate" jdbcType="TIMESTAMP"/>
+        <result column="category_name" property="cateName"/>
+        <result column="team_result" property="teamResult" javaType="com.example.backend.domain.matchRecord.entity.TeamResult"/>
+        <result column="team_code" property="teamCode"/>
+    </resultMap>
+
+    <select id="findStamps" parameterType="map" resultMap="StampRowMap">
+        SELECT mr.match_date, c.category_name, mr.team_result, t.team_code
+        FROM match_record mr
+            JOIN category c ON mr.category_id = c.id
+            JOIN team t ON mr.supporting_team_id = t.id
+        WHERE mr.user_id = #{userId, jdbcType = BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        <if test="categoryId != null">
+            AND mr.category_id = #{categoryId, jdbcType = BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        </if>
+    </select>
+</mapper>
