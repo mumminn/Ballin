@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.example.backend.domain.category.mapper.CategoryMapper">
+
     <resultMap id="CategoryResult" type="com.example.backend.domain.category.entity.CategoryEntity">
         <id column="id" property="categoryId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
         <result column="category_name" property="categoryName"/>
@@ -14,6 +16,11 @@
         SELECT category_name
         FROM  category
         WHERE id = #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+    </select>
+
+    <select id="findAllCategory" resultMap="CategoryResult">
+        SELECT id, category_name
+        FROM category
     </select>
 
 </mapper>

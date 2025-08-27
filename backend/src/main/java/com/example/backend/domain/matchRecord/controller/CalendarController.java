@@ -28,4 +28,5 @@ public class CalendarController {
         StampResponseDto result = stampService.getStamps(categoryId);
         return ResponseEntity.ok(ApiResponse.ok(result));
     }
+
 }
