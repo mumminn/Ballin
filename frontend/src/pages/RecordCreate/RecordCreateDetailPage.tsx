@@ -1,10 +1,23 @@
 import { useState, useEffect } from 'react';
 import * as React from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RecordCreateDetailForm } from '@/pages/RecordCreate/RecordCreateDetailForm';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
+import { fetchGames } from '@/api/record/scraper';
+import { Game } from '@/types/record';
+import { Sport } from '@/types/calendar';
 
+function buildScraperUrl(sport:Sport, date: string) {
+    return sport === 'baseball'
+        ? `https://m.sports.naver.com/kbaseball/schedule/index?date=${date}`
+        : `https://m.sports.naver.com/basketball/schedule/index?category=kbl&date=${date}`;
+}
+
+
+function normTeam(s: string) {
+    return s.replace(/[\s-]/g, '').toLowerCase();
+}
 
 export default function RecordCreateDetailPage() {
     const [score, setScore] = useState({ myScore: "", opponentScore: ""});
@@ -14,7 +27,6 @@ export default function RecordCreateDetailPage() {
     const [opponentTeam, setOpponentTeam] = useState<string>('');
     const [seat, setSeat] = useState<string>('');
     const [review, setReview] = useState<string>('');
-    const [stadium, setStadium] = useState<string>('');
 
     const [loadingMatch, setLoadingMatch] = useState(false);
     const [matchError, setMatchError] = useState<string | null>(null);
@@ -22,28 +34,74 @@ export default function RecordCreateDetailPage() {
 
     const navigate = useNavigate();
 
-    const debouncedDate = useDebouncedValue(date, 700);
-    const debouncedMyTeam = useDebouncedValue(myTeam, 700);
+    const { sport: sportParam } = useParams<{ sport?: string }>();
+    const sport:Sport = (sportParam === 'basketball' || sportParam === 'baseball')
+        ? sportParam
+        : 'baseball';
 
-    useEffect(() => {
-        if(!debouncedDate || !debouncedMyTeam) return;
-
-        setLoadingMatch(true);
-        setMatchError(null);
-
-        setOpponentTeam('한화이글스');
-        setStadium('광주기아챔피언스필드');
-        setScore({ myScore: '3', opponentScore: '2' })
-
-        setLoadingMatch(false);
-
-    }, [debouncedDate, debouncedMyTeam]);
- 
-    const submit = () => {
-        if(!date || !myTeam || !opponentTeam || !stadium || !score || !photo || !seat || !review) {
-            alert('입력을 확인하세요.')
+    const onMatchData = async () => {
+        if (!date) {
+            setMatchError('날짜를 입력하세요.');
             return;
         }
+        if (!myTeam.trim()) {
+            setMatchError('응원 팀을 입력하세요.');
+            return;
+        }
+
+    setLoadingMatch(true);
+    setMatchError(null);
+
+
+    try {
+        const url = buildScraperUrl(sport, date);
+
+        const list: Game[] = await fetchGames(
+            sport === 'baseball'
+                ? { sport, url, team: myTeam, date: "" }
+                : { sport, url, team: myTeam, date} 
+        );
+  
+        const me = normTeam(myTeam);
+        const found = list.find(
+          (g) => normTeam(g.team1) === me || normTeam(g.team2) === me
+        );
+  
+        if (!found) {
+          setOpponentTeam('');
+          setScore({ myScore: '', opponentScore: '' });
+          setMatchError('해당 날짜에 입력한 팀의 경기를 찾지 못했습니다.');
+          return;
+        }
+  
+        if (normTeam(found.team1) === me) {
+          setOpponentTeam(found.team2);
+          setScore({
+            myScore: String(found.score1 ?? ''),
+            opponentScore: String(found.score2 ?? ''),
+          });
+        } else {
+          setOpponentTeam(found.team1);
+          setScore({
+            myScore: String(found.score2 ?? ''),
+            opponentScore: String(found.score1 ?? ''),
+          });
+        }
+      } catch (e: any) {
+        setOpponentTeam('');
+        setScore({ myScore: '', opponentScore: '' });
+        setMatchError(e?.message ?? '경기 정보를 불러오지 못했습니다.');
+      } finally {
+        setLoadingMatch(false);
+      }
+      
+    };
+ 
+    const submit = () => {
+        if(!date || !myTeam || !opponentTeam || !score || !photo || !seat || !review) {
+            alert('입력을 확인하세요.')
+            return;
+    }
         const my = Number(score.myScore || 0);
         const opp = Number(score.opponentScore || 0);
 
@@ -51,7 +109,6 @@ export default function RecordCreateDetailPage() {
         console.log('date', date);
         console.log('응원팀', myTeam);
         console.log('상대팀', opponentTeam);
-        console.log('경기장', stadium);
         console.log('경기결과:', my +' : '+ opp);
         console.log('사진', photo);
         console.log('자리', seat);
@@ -67,7 +124,6 @@ export default function RecordCreateDetailPage() {
         <RecordCreateDetailForm 
             myScore={score.myScore}
             opponentScore={score.opponentScore}
-            stadium={stadium}
             opponentTeam={opponentTeam}
             photo={photo} 
             myTeam={myTeam}
@@ -76,9 +132,9 @@ export default function RecordCreateDetailPage() {
             review={review}
             loadingMatch={loadingMatch}
             matchError={matchError}
+            onMatchData={onMatchData}
             onChangeScore={setScore}
             onChangeOpponentTeam={setOpponentTeam}
-            onChangeStadium={setStadium}
             onChangeSeat={setSeat}
             onChangeReview={setReview}
             onChangePhoto={setPhoto}
