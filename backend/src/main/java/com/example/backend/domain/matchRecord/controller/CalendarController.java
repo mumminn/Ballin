@@ -2,7 +2,6 @@ package com.example.backend.domain.matchRecord.controller;
 
 import com.example.backend.domain.matchRecord.dto.response.StampResponseDto;
 import com.example.backend.domain.matchRecord.service.StampService;
-import com.example.backend.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -28,4 +27,5 @@ public class CalendarController {
         StampResponseDto result = stampService.getStamps(categoryId);
         return ResponseEntity.ok(ApiResponse.ok(result));
     }
+
 }
