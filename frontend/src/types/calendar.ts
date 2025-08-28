@@ -8,4 +8,22 @@ export type Stamp =
 
 export type StampsResult = { stamps: Stamp[] };
 
+
+
 export type Tab = "baseball" | "basketball" | "all";
+
+
+export type CategoryApi = {
+  categoryId: string;
+  categoryName: string;
+};
+
+export type CategoriesResult = {
+  categories: CategoryApi[];
+};
+
+export type Category = {
+  id: string;
+  code: string;  
+  label: string;   
+};
