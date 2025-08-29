@@ -15,12 +15,11 @@ app.include_router(scrape_router, prefix="/api")
 async def health():
     return {"ok": True}
 
-origins = os.getenv("FRONT_SERVER")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origins],
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["OPTIONS", "POST"],
     allow_headers=["*"],
 )
