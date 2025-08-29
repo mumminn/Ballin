@@ -1,5 +1,6 @@
 package com.example.backend.global.api;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -38,6 +40,7 @@ public class GlobalExceptionHandler {
     // 500 - 그 외 모든 예외
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleEtc(Exception ex) {
+        log.error("Unhandled exception", ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponse.error(ApiCode.COMMON500));
