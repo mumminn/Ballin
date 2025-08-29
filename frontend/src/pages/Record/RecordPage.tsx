@@ -16,7 +16,7 @@ export default function RecordPage() {
               myTeam: "기아타이거즈",
               opponentTeam: "한화이글스",
               stadium: "광주기아챔피언스필드",
-              stamp: { date: new Date("2025-09-12T00:00:00"), result: "win", sport: "baseball", team: "kia" },
+              stamp: { result: "WIN", sport: "baseball", team: "kia" },
             },
             {
               id: "2",
@@ -24,7 +24,7 @@ export default function RecordPage() {
               myTeam: "기아타이거즈",
               opponentTeam: "두산베어스",
               stadium: "잠실야구장",
-              stamp: { date: new Date("2025-08-30T00:00:00"), result: "lose", sport: "baseball", team: "kia" },
+              stamp: { result: "LOSE", sport: "baseball", team: "kia" },
             },
           ]);
     }, []);

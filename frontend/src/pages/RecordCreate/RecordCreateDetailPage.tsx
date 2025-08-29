@@ -3,9 +3,9 @@ import * as React from "react";
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { RecordCreateDetailForm } from '@/pages/RecordCreate/RecordCreateDetailForm';
-import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { fetchGames } from '@/api/record/scraper';
-import { Game } from '@/types/record';
+import { fetchTeams } from '@/api/record/teamList';
+import { Game, TeamOption } from '@/types/record';
 import { Sport } from '@/types/calendar';
 
 function buildScraperUrl(sport:Sport, date: string) {
@@ -15,11 +15,13 @@ function buildScraperUrl(sport:Sport, date: string) {
 }
 
 
+
 function normTeam(s: string) {
     return s.replace(/[\s-]/g, '').toLowerCase();
 }
 
 export default function RecordCreateDetailPage() {
+    const [teamOptions, setTeamOptions] = useState<TeamOption[]>([]);
     const [score, setScore] = useState({ myScore: "", opponentScore: ""});
     const [photo, setPhoto] = React.useState<File | string | null>(null);
     const [date, setDate] = useState<string>('');
@@ -38,6 +40,22 @@ export default function RecordCreateDetailPage() {
     const sport:Sport = (sportParam === 'basketball' || sportParam === 'baseball')
         ? sportParam
         : 'baseball';
+
+    useEffect(() => {
+      let alive = true;
+      (async () => {
+        try{
+          const list = await fetchTeams(sport);
+          if(!alive) return;
+          setTeamOptions(list);
+        } catch(e) {
+          console.error(e);
+          setTeamOptions([]);
+          setMyTeam("");
+        }
+      })();
+      return () => { alive = false };
+    }, [sport]);
 
     const onMatchData = async () => {
         if (!date) {
@@ -130,6 +148,7 @@ export default function RecordCreateDetailPage() {
             date={date}
             seat={seat}
             review={review}
+            teamOptions={teamOptions}
             loadingMatch={loadingMatch}
             matchError={matchError}
             onMatchData={onMatchData}

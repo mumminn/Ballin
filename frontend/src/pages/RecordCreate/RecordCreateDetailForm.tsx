@@ -6,6 +6,9 @@ import { RecordScore } from "@/components/recordCreate/RecordScore";
 import { RecordPhoto } from "@/components/recordCreate/RecordPhoto";
 import { PrimaryButton } from "@/components/common/PrimaryButton";
 import { RecordReview } from "@/components/recordCreate/RecordReview";
+import { TeamSelect } from "@/components/recordCreate/TeamSelect";
+import { TeamOption } from "@/types/record";
+
 
 interface RecordCreateDetailProps {
     myScore: string | number;
@@ -17,6 +20,7 @@ interface RecordCreateDetailProps {
     opponentTeam: string;
     loadingMatch: boolean;
     matchError: string | null;
+    teamOptions: TeamOption[];
 
     onChangeScore: (next: { myScore: string; opponentScore: string }) => void;
     photo?: File | string | null;
@@ -38,6 +42,7 @@ export function RecordCreateDetailForm({
     photo,
     seat,
     review,
+    teamOptions,
     loadingMatch,
     matchError,
     opponentTeam,
@@ -69,13 +74,15 @@ export function RecordCreateDetailForm({
                         value={date}
                         onChange={(e) => onChangeDate(e.target.value)}
                         />
-                    <InputField
+
+                    <TeamSelect
                         label="응원 팀"
                         containerClassName="col-span-full"
                         value={myTeam}
-                        onChange={(e) => onChangeMyTeam(e.target.value)}
-                        type="text"                        
+                        onChange={onChangeMyTeam}
+                        options={teamOptions}
                     />
+
                     <PrimaryButton
                         children="경기 정보 불러오기"
                         className="col-span-full"
