@@ -15,7 +15,6 @@ interface RecordCreateDetailProps {
     seat: string;
     review: string;
     opponentTeam: string;
-    stadium: string;
     loadingMatch: boolean;
     matchError: string | null;
 
@@ -23,10 +22,10 @@ interface RecordCreateDetailProps {
     photo?: File | string | null;
     onChangePhoto?: (file: File | null) => void;
     onRecord: () => void;
+    onMatchData: () => void;
     onChangeDate: (date: string) => void;
     onChangeMyTeam: (myTeam: string) => void;
     onChangeOpponentTeam: (opponentTeam: string) => void;
-    onChangeStadium: (stadium: string) => void;
     onChangeSeat: (seat: string) => void;
     onChangeReview: (review: string) => void;
 }
@@ -39,7 +38,6 @@ export function RecordCreateDetailForm({
     photo,
     seat,
     review,
-    stadium,
     loadingMatch,
     matchError,
     opponentTeam,
@@ -49,7 +47,7 @@ export function RecordCreateDetailForm({
     onChangeDate,
     onChangeMyTeam,
     onChangeOpponentTeam,
-    onChangeStadium,
+    onMatchData,
     onChangeSeat,
     onChangeReview,
 }: RecordCreateDetailProps) {
@@ -78,6 +76,13 @@ export function RecordCreateDetailForm({
                         onChange={(e) => onChangeMyTeam(e.target.value)}
                         type="text"                        
                     />
+                    <PrimaryButton
+                        children="경기 정보 불러오기"
+                        className="col-span-full"
+                        onClick={onMatchData}
+
+                       />
+
                     <InputField
                         label="상대 팀"
                         onChange={(e) => onChangeOpponentTeam(e.target.value)} 
@@ -86,14 +91,6 @@ export function RecordCreateDetailForm({
                         type="text"
                         readOnly
                     />
-                    <InputField
-                        label="경기장"
-                        onChange={(e) => onChangeStadium(e.target.value)}
-                        containerClassName="col-span-full"
-                        value={stadium}
-                        type="text"
-                        readOnly
-                        />
                     {loadingMatch && <p className="col-span-full text-sm text-gray-500">경기 정보를 불러오는 중…</p>}
                     {matchError && <p className="col-span-full text-sm text-red-500">불러오기 실패: {matchError}</p>}
 
