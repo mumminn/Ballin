@@ -6,6 +6,7 @@
         <result column="category_id"  property="categoryId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
         <result column="team_code" property="teamCode"/>
         <result column="team_name" property="teamName"/>
+        <result column="crawling_name" property="crawlingName"/>
         <result column="created_dt"  property="createdDt"   javaType="java.time.Instant"/>
         <result column="updated_dt"  property="updatedDt"   javaType="java.time.Instant"/>
         <result column="created_id"  property="createdId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
@@ -16,6 +17,13 @@
         SELECT *
         FROM  team
         WHERE id = #{teamId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+    </select>
+
+    <select id="findCrawlingNameByCategory" resultMap="CategoryResult">
+        SELECT t.id, t.crawling_name
+        FROM team t
+        JOIN category c ON c.id = t.category_id
+        WHERE c.category_name = #{categoryName};
     </select>
 
 </mapper>
