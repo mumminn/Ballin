@@ -3,7 +3,7 @@ import { SubLayout } from "@/components/layout/SubLayout";
 import { NavigationBar } from "@/components/navigationBar/NavigationBar";
 import { RecordSearch } from "@/components/record/RecordSearch";
 import { RecordCard } from "@/components/record/RecordCard";
-import { Stamp } from "@/types/calendar";
+import { RecordStamp } from "@/types/recordStamp";
 
 export type RecordItem = {
     id: string;
@@ -11,7 +11,7 @@ export type RecordItem = {
     myTeam: string;
     opponentTeam: string;
     stadium: string;
-    stamp?: Stamp;
+    stamp?: RecordStamp;
 };
   
 interface RecordFormProps {

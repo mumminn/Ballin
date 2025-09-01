@@ -12,4 +12,5 @@ public class TeamEntity extends BaseEntity {
     private UUID categoryId;
     private String teamCode;
     private String teamName;
+    private String crawlingName;
 }
