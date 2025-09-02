@@ -1,5 +1,6 @@
 package com.example.backend.global.api;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,10 @@ public class GlobalExceptionHandler {
 
     // 400 - 검증 에러
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest req) {
+
+        log.warn("[400] {} {} - validation failed: {}",
+                req.getMethod(), req.getRequestURI(), ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.error(ApiCode.COMMON400));
@@ -23,7 +27,10 @@ public class GlobalExceptionHandler {
 
     // 404 - 리소스 없음
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ApiResponse<Void>> handleNotFound(NoSuchElementException ex) {
+    public ResponseEntity<ApiResponse<Void>> handleNotFound(NoSuchElementException ex, HttpServletRequest req) {
+
+        log.warn("[404] {} {} - {}", req.getMethod(), req.getRequestURI(), ex.getMessage(), ex);
+
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.error(ApiCode.COMMON404));
