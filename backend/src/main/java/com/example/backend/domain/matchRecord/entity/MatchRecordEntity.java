@@ -20,11 +20,10 @@ public class MatchRecordEntity extends BaseEntity {
     private UUID stadiumId;
     private UUID categoryId;
     private Instant matchDate;
-    private int winningScore;
-    private int losingScore;
+    private int supportingTeamScore;
+    private int opposingTeamScore;
     private TeamResult teamResult;
     private String review;
     private byte[] image;
     private String seat;
-
 }

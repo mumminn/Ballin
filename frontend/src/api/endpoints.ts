@@ -9,5 +9,6 @@ export const ENDPOINTS = {
     CALENDAR_STAMP_CATE: (categoryId: string) => `${BASE_API}/calendar/stamps/${categoryId}`,
 
     RECORD_TEAM:  (categoryName: string) => `${BASE_API}/record/${categoryName}/teams`,
+    RECORD: `${BASE_API}/record`,
     
 }

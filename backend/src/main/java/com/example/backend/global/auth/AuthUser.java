@@ -59,7 +59,7 @@ public final class AuthUser {
         return idOrNull() != null;
     }
 
-    /** 401 전용 예외 (컨트롤러 어드바이스에서 잡아 응답 포맷으로 내려도 됨) */
+    /** 401 전용 예외 */
     public static class UnauthorizedException extends RuntimeException {
         public UnauthorizedException(String message) { super(message); }
     }

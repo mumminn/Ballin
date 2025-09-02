@@ -3,6 +3,7 @@ package com.example.backend.domain.matchRecord.service;
 import com.example.backend.domain.matchRecord.converter.CalendarConverter;
 import com.example.backend.domain.matchRecord.dto.response.StampResponseDto;
 import com.example.backend.domain.matchRecord.mapper.MatchRecordMapper;
+import com.example.backend.domain.matchRecord.mapper.MatchRecordStampMapper;
 import com.example.backend.domain.matchRecord.mapper.projection.MatchRecordStampRow;
 import com.example.backend.global.auth.AuthUser;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class StampServiceImpl implements StampService {
 
-    private final MatchRecordMapper matchRecordMapper;
+    private final MatchRecordStampMapper matchRecordStampMapper;
     private final CalendarConverter calendarConverter;
 
     @Override
@@ -26,8 +27,8 @@ public class StampServiceImpl implements StampService {
         UUID userId = AuthUser.idOrNull();
 
         List<MatchRecordStampRow> rows = (categoryId == null)
-                ? matchRecordMapper.findStamps(null, userId)
-                : matchRecordMapper.findStamps(categoryId, userId);
+                ? matchRecordStampMapper.findStamps(null, userId)
+                : matchRecordStampMapper.findStamps(categoryId, userId);
 
         return calendarConverter.toResponse(rows);
     }
