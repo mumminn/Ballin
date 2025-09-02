@@ -18,9 +18,15 @@
         WHERE id = #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
     </select>
 
-    <select id="findAllCategory" resultMap="CategoryResult">
+    <select id="findAllCategory" resultType="com.example.backend.domain.category.entity.CategoryEntity">
         SELECT id, category_name
         FROM category
+    </select>
+
+    <select id="findIdByCategoryName" parameterType="map" resultType="java.util.UUID">
+        SELECT id
+        FROM category
+        WHERE category_name = #{categoryName}
     </select>
 
 </mapper>
