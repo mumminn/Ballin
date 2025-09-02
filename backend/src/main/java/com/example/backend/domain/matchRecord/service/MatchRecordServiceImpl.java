@@ -2,7 +2,9 @@ package com.example.backend.domain.matchRecord.service;
 
 import com.example.backend.domain.category.mapper.CategoryMapper;
 import com.example.backend.domain.matchRecord.converter.MatchRecordConverter;
+import com.example.backend.domain.matchRecord.converter.MatchRecordResponseConverter;
 import com.example.backend.domain.matchRecord.dto.request.MatchRecordRequestDto;
+import com.example.backend.domain.matchRecord.dto.response.MatchRecordResponseDto;
 import com.example.backend.domain.matchRecord.entity.MatchRecordEntity;
 import com.example.backend.domain.matchRecord.entity.TeamResult;
 import com.example.backend.domain.matchRecord.mapper.MatchRecordMapper;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -27,6 +30,7 @@ public class MatchRecordServiceImpl implements MatchRecordService {
     private final TeamMapper teamMapper;
     private final StadiumMapper stadiumMapper;
     private final CategoryMapper categoryMapper;
+    private final MatchRecordResponseConverter matchRecordResponseConverter;
 
     @Transactional
     @Override
@@ -94,5 +98,27 @@ public class MatchRecordServiceImpl implements MatchRecordService {
 
         return entity.getRecordId();
 
+    }
+
+
+    @Override
+    public List<MatchRecordResponseDto> getRecord() {
+
+        UUID userId = AuthUser.idOrNull();
+        if (userId == null) {
+            throw new NoSuchElementException("User not authenticated");
+        }
+
+        return matchRecordMapper.findAllByUserId(userId).stream()
+                .map(row -> matchRecordResponseConverter.fromJoinedRow(
+                        row.getRecordId(),
+                        row.getSupportingTeam(),
+                        row.getOpposingTeam(),
+                        row.getStadium(),
+                        row.getTeamResult(),
+                        row.getStadiumTeam(),
+                        row.getMatchDate()
+                ))
+                .toList();
     }
 }

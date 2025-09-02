@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.domain.matchRecord.mapper.MatchRecordMapper">
+
+    <resultMap id="MatchRecordResponseMap"
+               type="com.example.backend.domain.matchRecord.dto.response.MatchRecordResponseDto">
+        <id     column="record_id"       property="recordId"
+                javaType="java.util.UUID"
+                typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <result column="supporting_team" property="supportingTeam"/>
+        <result column="opposing_team"   property="opposingTeam"/>
+        <result column="stadium"         property="stadium"/>
+        <result column="team_result"     property="teamResult"/>
+        <result column="stadium_team"    property="stadiumTeam"/>
+        <result column="match_date"  property="matchDate"/>
+    </resultMap>
+
+    <select id="findAllByUserId" resultMap="MatchRecordResponseMap">
+        SELECT
+        mr.id  AS record_id,
+        st1.team_name AS supporting_team,
+        st2.team_name AS opposing_team,
+        sd.stadium_name  AS stadium,
+        mr.team_result AS team_result,
+        ht.team_name AS stadium_team,
+        DATE_FORMAT(CONVERT_TZ(mr.match_date,'+00:00','+09:00'), '%Y-%m-%d') AS match_date
+        FROM match_record mr
+        JOIN team    st1 ON st1.id = mr.supporting_team_id
+        JOIN team    st2 ON st2.id = mr.opposing_team_id
+        JOIN stadium sd  ON sd.id  = mr.stadium_id
+        LEFT JOIN team ht ON ht.id = sd.team_id
+        WHERE mr.user_id = #{userId, jdbcType=BINARY,
+                        typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        ORDER BY mr.match_date DESC
+    </select>
+</mapper>
