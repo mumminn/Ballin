@@ -18,4 +18,5 @@ public class MatchRecordResponseDto {
     private TeamResult teamResult;
     private String stadiumTeam;
     private String matchDate;
+    private String supportingTeamCode;
 }

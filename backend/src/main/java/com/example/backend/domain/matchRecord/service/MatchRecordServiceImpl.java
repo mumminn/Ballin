@@ -117,7 +117,8 @@ public class MatchRecordServiceImpl implements MatchRecordService {
                         row.getStadium(),
                         row.getTeamResult(),
                         row.getStadiumTeam(),
-                        row.getMatchDate()
+                        row.getMatchDate(),
+                        row.getSupportingTeamCode()
                 ))
                 .toList();
     }
