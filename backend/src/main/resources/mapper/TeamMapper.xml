@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.backend.domain.team.mapper.TeamMapper">
-    <resultMap id="CategoryResult" type="com.example.backend.domain.team.entity.TeamEntity">
+    <resultMap id="TeamResult" type="com.example.backend.domain.team.entity.TeamEntity">
         <id column="id" property="teamId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
         <result column="category_id"  property="categoryId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
         <result column="team_code" property="teamCode"/>
@@ -19,11 +19,19 @@
         WHERE id = #{teamId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
     </select>
 
-    <select id="findCrawlingNameByCategory" resultMap="CategoryResult">
+    <select id="findCrawlingNameByCategory" resultType="com.example.backend.domain.team.entity.TeamEntity">
         SELECT t.id, t.crawling_name
         FROM team t
         JOIN category c ON c.id = t.category_id
         WHERE c.category_name = #{categoryName};
+    </select>
+
+    <select id="findIdByCrawlingName" parameterType="map" resultType="java.util.UUID">
+        SELECT t.id
+        FROM team t
+        JOIN category c ON c.id = t.category_id
+        WHERE c.category_name = #{categoryName}
+        AND t.crawling_name = #{crawlingName}
     </select>
 
 </mapper>
