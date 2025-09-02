@@ -7,6 +7,7 @@ import { fetchGames } from '@/api/record/scraper';
 import { fetchTeams } from '@/api/record/teamList';
 import { Game, TeamOption } from '@/types/record';
 import { Sport } from '@/types/calendar';
+import { createRecord } from "@/api/record/createRecord";
 
 function buildScraperUrl(sport:Sport, date: string) {
     return sport === 'baseball'
@@ -23,12 +24,13 @@ function normTeam(s: string) {
 export default function RecordCreateDetailPage() {
     const [teamOptions, setTeamOptions] = useState<TeamOption[]>([]);
     const [score, setScore] = useState({ myScore: "", opponentScore: ""});
-    const [photo, setPhoto] = React.useState<File | string | null>(null);
+    const [photo, setPhoto] = React.useState<File | null>(null);
     const [date, setDate] = useState<string>('');
     const [myTeam, setMyTeam] = useState<string>('');
     const [opponentTeam, setOpponentTeam] = useState<string>('');
     const [seat, setSeat] = useState<string>('');
     const [review, setReview] = useState<string>('');
+    const [homeTeam, setHomeTeam] = useState<string>('');
 
     const [loadingMatch, setLoadingMatch] = useState(false);
     const [matchError, setMatchError] = useState<string | null>(null);
@@ -105,6 +107,14 @@ export default function RecordCreateDetailPage() {
             opponentScore: String(found.score1 ?? ''),
           });
         }
+
+      
+        if(found.home1 == "홈") {
+          setHomeTeam(found.team1);
+        } else {
+          setHomeTeam(found.team2);
+        }
+
       } catch (e: any) {
         setOpponentTeam('');
         setScore({ myScore: '', opponentScore: '' });
@@ -115,25 +125,38 @@ export default function RecordCreateDetailPage() {
       
     };
  
-    const submit = () => {
-        if(!date || !myTeam || !opponentTeam || !score || !photo || !seat || !review) {
-            alert('입력을 확인하세요.')
-            return;
-    }
-        const my = Number(score.myScore || 0);
-        const opp = Number(score.opponentScore || 0);
+    const submit = async () => {
+      if(!date || !myTeam || !opponentTeam || !score || !photo || !seat || !review) {
+        alert('입력을 확인하세요.')
+        return;
+      }
+      
+      const myScore = Number(score.myScore || 0);
+      const opponentScore = Number(score.opponentScore || 0);
 
+      const req = {
+        date: date,
+        category: sport,
+        stadium: homeTeam,
+        seat,
+        myTeam,
+        opponentTeam,
+        myScore,
+        opponentScore,
+        review,
+      };
+
+
+      try {
         
-        console.log('date', date);
-        console.log('응원팀', myTeam);
-        console.log('상대팀', opponentTeam);
-        console.log('경기결과:', my +' : '+ opp);
-        console.log('사진', photo);
-        console.log('자리', seat);
-        console.log('review', review);
+        await createRecord(req, photo ?? undefined);
         
         alert("저장되었습니다.");
         navigate("/record");
+      } catch (e: any) {
+        console.error(e);
+        alert(`저장 실패: ${e.message ?? e}`);
+      } 
     };
 
     
