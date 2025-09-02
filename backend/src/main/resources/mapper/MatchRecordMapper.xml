@@ -38,7 +38,7 @@
     <insert id="insert" parameterType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
         INSERT INTO match_record(
             id, user_id, supporting_team_id, opposing_team_id, stadium_id, category_id, match_date, supporting_team_score, opposing_team_score,
-            team_result, review, seat, match_image
+            team_result, review, seat, match_image, created_id, updated_id
         ) VALUES (
             #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
             #{userId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
@@ -47,7 +47,9 @@
             #{stadiumId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
             #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
             #{matchDate}, #{supportingTeamScore}, #{opposingTeamScore}, #{teamResult}, #{review}, #{seat},
-            #{image, jdbcType=BLOB}
+            #{image, jdbcType=BLOB},
+            #{createdId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+            #{updatedId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
         )
     </insert>
 </mapper>
