@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.backend.domain.matchRecord.mapper.MatchRecordMapper">
+<mapper namespace="com.example.backend.domain.matchRecord.mapper.MatchRecordStampMapper">
 
     <resultMap id="StampRowMap" type="com.example.backend.domain.matchRecord.mapper.projection.MatchRecordStampRow">
         <result column="match_date" property="matchDate" jdbcType="TIMESTAMP"/>
@@ -9,7 +9,7 @@
         <result column="team_code" property="teamCode"/>
     </resultMap>
 
-    <select id="findStamps" parameterType="map" resultMap="StampRowMap">
+    <select id="findStamps" resultType="com.example.backend.domain.matchRecord.mapper.projection.MatchRecordStampRow">
         SELECT mr.match_date, c.category_name, mr.team_result, t.team_code
         FROM match_record mr
             JOIN category c ON mr.category_id = c.id
