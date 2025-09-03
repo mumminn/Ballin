@@ -1,32 +1,36 @@
+import { getRecords } from "@/api/record/getRecord";
 import { RecordForm, RecordItem } from "@/pages/Record/RecordForm";
+import { MatchRecordItem } from "@/types/record";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function RecordPage() {
+    const [list, setList] = useState<MatchRecordItem[]>([]);
     const [search, setSearch] = useState<string>('');
     const [records, setRecords] = useState<RecordItem[]>([]);
 
     const navigate = useNavigate();
 
+    const toRecordItem = (m: MatchRecordItem): RecordItem => ({
+      id: m.recordId,
+      date: m.matchDate,
+      myTeam: m.supportingTeam,
+      opponentTeam: m.opposingTeam,
+      stadium: m.stadium,
+      stamp: { result: m.teamResult, team: m.supportingTeamCode},
+      homeTeam: m.stadiumTeam,
+    })
+
     useEffect(() => {
-        setRecords([
-            {
-              id: "1",
-              date: "2025-09-12",
-              myTeam: "기아타이거즈",
-              opponentTeam: "한화이글스",
-              stadium: "광주기아챔피언스필드",
-              stamp: { result: "WIN", sport: "baseball", team: "kia" },
-            },
-            {
-              id: "2",
-              date: "2025-08-30",
-              myTeam: "기아타이거즈",
-              opponentTeam: "두산베어스",
-              stadium: "잠실야구장",
-              stamp: { result: "LOSE", sport: "baseball", team: "kia" },
-            },
-          ]);
+      (async () => {
+        try {
+          const data = await getRecords();
+          setList(data);
+          setRecords(data.map(toRecordItem));
+        } catch(e) {
+          console.error(e);
+        }
+      })();
     }, []);
 
     const handleSelect = (rec: RecordItem) => {

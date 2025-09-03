@@ -29,7 +29,7 @@ public class MatchRecordController {
         return ResponseEntity.ok(ApiResponse.ok());
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<ApiResponse<List<MatchRecordResponseDto>>> getRecord() {
         List<MatchRecordResponseDto> result = matchRecordService.getRecord();
         return ResponseEntity.ok(ApiResponse.ok(result));

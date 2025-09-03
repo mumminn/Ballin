@@ -1,4 +1,5 @@
 export type Sport = "baseball" | "basketball";
+
 export type Result = "WIN" | "LOSE" | "TIE" | "NOGAME";
 
 export type Stamp =

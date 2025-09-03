@@ -12,6 +12,7 @@ export type RecordItem = {
     opponentTeam: string;
     stadium: string;
     stamp?: RecordStamp;
+    homeTeam?: string;
 };
   
 interface RecordFormProps {
@@ -68,6 +69,7 @@ export function RecordForm({
                         opponentTeam={r.opponentTeam}
                         stadium={r.stadium}
                         stamp={r.stamp}
+                        homeTeam={r.homeTeam}
                         onClick={() => onRecord?.(r)}
                     />
                 ))
