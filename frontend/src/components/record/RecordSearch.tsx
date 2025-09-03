@@ -16,12 +16,12 @@ export function RecordSearch({
   return (
     <div className={containerClassName ?? ""}>
       <div
-        className="block w-80 mx-auto rounded-2xl border-2 border-black
+        className="block w-88 mx-auto rounded-2xl border-2 border-black
                    shadow-sm focus-within:ring-1 focus-within:ring-black/70
                    bg-[#FCF5E2] flex items-center"
       >
         <span
-          className="ml-3 mr-2 h-6 w-6 flex items-center justify-center pointer-events-none select-none"
+          className="ml-3 mr-2 h-6 w- flex items-center justify-center pointer-events-none select-none"
           aria-hidden="true"
         >
           {icon}

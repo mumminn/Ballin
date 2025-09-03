@@ -2,6 +2,7 @@ package com.example.backend.domain.matchRecord.controller;
 
 
 import com.example.backend.domain.matchRecord.dto.request.MatchRecordRequestDto;
+import com.example.backend.domain.matchRecord.dto.response.MatchRecordResponseDto;
 import com.example.backend.domain.matchRecord.service.MatchRecordService;
 import com.example.backend.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,4 +28,11 @@ public class MatchRecordController {
         matchRecordService.create(requestDto, image);
         return ResponseEntity.ok(ApiResponse.ok());
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<MatchRecordResponseDto>>> getRecord() {
+        List<MatchRecordResponseDto> result = matchRecordService.getRecord();
+        return ResponseEntity.ok(ApiResponse.ok(result));
+    }
 }
+
