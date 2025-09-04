@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { RecordDetailForm } from "./RecordDetailForm";
 import { getRecordDetail } from "@/api/record/getRecordDetail";
 import { getRecordImageUrl } from "@/api/record/getRecordImageUrl";
 import { RecordDetailItem } from "@/types/record";
+import { deleteRecord } from "@/api/record/deleteRecord";
 
 const logoOf = (teamCode: string) => `/images/logos/${teamCode}.svg`;
 
@@ -12,6 +13,20 @@ export default function RecordDetailPage() {
     const [detail, setDetail] = useState<RecordDetailItem | null>(null);
     const [imgObjectUrl, setImgObjectUrl] = useState<string | undefined>(undefined);
 
+    const navigate = useNavigate();
+
+    const handleDelete = async () => {
+        if (!recordId) return;
+        if (!window.confirm("정말 삭제하시겠어요?")) return;
+        try {
+          await deleteRecord(recordId);
+          alert("삭제되었습니다.");
+          navigate("/record", { replace: true });
+        } catch (e: any) {
+          alert(`삭제 실패: ${e?.message ?? e}`);
+        }
+    };
+    
     useEffect(() => {
         if(!recordId) return;
 
@@ -27,9 +42,9 @@ export default function RecordDetailPage() {
         }
         })();
     }, [recordId]);
-
+    
     if (!detail) return null;
-
+    
     return (
         <RecordDetailForm
         date={detail.matchDate}
@@ -44,6 +59,8 @@ export default function RecordDetailPage() {
             opponentScore: detail.opposingTeamScore,
             stadium: detail.stadium,
         }}
+        onDelete={handleDelete}
         />
     );
+    
 }

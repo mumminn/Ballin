@@ -12,5 +12,6 @@ export const ENDPOINTS = {
     RECORD: `${BASE_API}/record`,
     RECORD_DETAIl:  (recordId: string) => `${BASE_API}/record/${recordId}/detail`,
     RECORD_IMAGE:  (recordId: string) => `${BASE_API}/record/${recordId}/image`,
+    RECORD_DELETE:  (recordId: string) => `${BASE_API}/record/${recordId}`,
     
 }
