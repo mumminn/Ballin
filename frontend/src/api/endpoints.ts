@@ -10,5 +10,7 @@ export const ENDPOINTS = {
 
     RECORD_TEAM:  (categoryName: string) => `${BASE_API}/record/${categoryName}/teams`,
     RECORD: `${BASE_API}/record`,
+    RECORD_DETAIl:  (recordId: string) => `${BASE_API}/record/${recordId}/detail`,
+    RECORD_IMAGE:  (recordId: string) => `${BASE_API}/record/${recordId}/image`,
     
 }

@@ -20,7 +20,7 @@ export const PATH = {
   recordCreate: '/record/create',
   recordCreateSport: '/record/create/:sport?',
   record: '/record',
-  recordDetail: '/record/:id',
+  recordDetail: '/record/:recordId',
 };
 
 export default function AppRoutes() {
