@@ -14,4 +14,5 @@ public interface MatchRecordService {
     List<MatchRecordResponseDto> getRecord();
     RecordDetailResponseDto getRecordDetail(UUID recordId);
     ResponseEntity<byte[]> getRecordImage(UUID recordId);
+    void delete(UUID recordId);
 }

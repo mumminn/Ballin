@@ -47,5 +47,11 @@ public class MatchRecordController {
     public ResponseEntity<byte[]> getRecordImage(@PathVariable UUID recordId) {
         return matchRecordService.getRecordImage(recordId);
     }
+
+    @DeleteMapping("/{recordId}")
+    public ResponseEntity<ApiResponse<Void>> deleteRecord(@PathVariable("recordId") UUID recordId) {
+        matchRecordService.delete(recordId);
+        return ResponseEntity.ok(ApiResponse.ok());
+    }
 }
 

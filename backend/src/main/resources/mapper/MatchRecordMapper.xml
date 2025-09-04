@@ -55,4 +55,9 @@
             #{updatedId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
         )
     </insert>
+
+    <delete id="deleteRecord" parameterType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
+        DELETE FROM match_record
+        WHERE id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+    </delete>
 </mapper>

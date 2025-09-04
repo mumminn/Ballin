@@ -181,4 +181,11 @@ public class MatchRecordServiceImpl implements MatchRecordService {
         return new ResponseEntity<>(data, headers, HttpStatus.OK);
     }
 
+    @Override
+    public void delete(UUID recordId){
+        int affected = matchRecordMapper.deleteRecord(recordId);
+        if (affected == 0) {
+            throw new NoSuchElementException("record not found" + recordId);
+        }
+    }
 }
