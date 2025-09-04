@@ -5,6 +5,7 @@ import com.example.backend.domain.matchRecord.converter.MatchRecordConverter;
 import com.example.backend.domain.matchRecord.converter.MatchRecordResponseConverter;
 import com.example.backend.domain.matchRecord.dto.request.MatchRecordRequestDto;
 import com.example.backend.domain.matchRecord.dto.response.MatchRecordResponseDto;
+import com.example.backend.domain.matchRecord.dto.response.RecordDetailResponseDto;
 import com.example.backend.domain.matchRecord.entity.MatchRecordEntity;
 import com.example.backend.domain.matchRecord.entity.TeamResult;
 import com.example.backend.domain.matchRecord.mapper.MatchRecordMapper;
@@ -121,5 +122,23 @@ public class MatchRecordServiceImpl implements MatchRecordService {
                         row.getSupportingTeamCode()
                 ))
                 .toList();
+    }
+
+    @Override
+    public RecordDetailResponseDto getRecordDetail(UUID recordId) {
+        var row = matchRecordMapper.getRecordDetailById(recordId);
+        return matchRecordResponseConverter.fromJoinedRecordDetailRow(
+                row.getSupportingTeam(),
+                row.getOpposingTeam(),
+                row.getStadium(),
+                row.getTeamResult(),
+                row.getStadiumTeam(),
+                row.getMatchDate(),
+                row.getSupportingTeamCode(),
+                row.getSupportingTeamScore(),
+                row.getOpposingTeamScore(),
+                row.getSeat(),
+                row.getReview()
+        );
     }
 }
