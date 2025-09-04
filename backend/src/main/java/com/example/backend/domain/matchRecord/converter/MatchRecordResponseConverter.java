@@ -41,6 +41,7 @@ public class MatchRecordResponseConverter {
             String stadiumTeam,
             String matchDate,
             String supportingTeamCode,
+            String opposingTeamCode,
             Integer supportingTeamScore,
             Integer opposingTeamScore,
             String seat,
@@ -54,6 +55,7 @@ public class MatchRecordResponseConverter {
                 .stadiumTeam(stadiumTeam)
                 .matchDate(matchDate)
                 .supportingTeamCode(supportingTeamCode)
+                .opposingTeamCode(opposingTeamCode)
                 .supportingTeamScore(supportingTeamScore)
                 .opposingTeamScore(opposingTeamScore)
                 .seat(seat)

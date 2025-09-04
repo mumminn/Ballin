@@ -147,6 +147,7 @@ public class MatchRecordServiceImpl implements MatchRecordService {
                 row.getStadiumTeam(),
                 row.getMatchDate(),
                 row.getSupportingTeamCode(),
+                row.getOpposingTeamCode(),
                 row.getSupportingTeamScore(),
                 row.getOpposingTeamScore(),
                 row.getSeat(),

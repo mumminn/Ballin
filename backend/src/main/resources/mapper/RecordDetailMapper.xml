@@ -10,6 +10,7 @@
         <result column="stadium_team"    property="stadiumTeam"/>
         <result column="match_date"  property="matchDate"/>
         <result column="supporting_team_code"  property="supportingTeamCode"/>
+        <result column="opposing_team_code"  property="opposingTeamCode"/>
         <result column="supporting_team_score"  property="supportingTeamScore"/>
         <result column="opposing_team_score"  property="opposingTeamScore"/>
         <result column="seat"  property="seat"/>
@@ -25,6 +26,7 @@
             ht.team_name AS stadium_team,
             DATE_FORMAT(CONVERT_TZ(mr.match_date,'+00:00','+09:00'), '%Y-%m-%d') AS match_date,
             t1.team_code AS supporting_team_code,
+            t2.team_code AS opposing_team_code,
             mr.supporting_team_score AS supporting_team_score,
             mr.opposing_team_score AS opposing_team_score,
             mr.seat AS seat,

@@ -16,6 +16,7 @@ public class RecordDetailResponseDto {
     private String stadiumTeam;
     private String matchDate;
     private String supportingTeamCode;
+    private String opposingTeamCode;
     private Integer supportingTeamScore;
     private Integer opposingTeamScore;
     private String seat;
