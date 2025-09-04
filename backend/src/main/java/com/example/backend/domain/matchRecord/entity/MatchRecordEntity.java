@@ -26,4 +26,7 @@ public class MatchRecordEntity extends BaseEntity {
     private String review;
     private byte[] image;
     private String seat;
+    private String imageContentType;
+    private String imageFileName;
+    private Long imageSize;
 }

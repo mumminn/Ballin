@@ -16,7 +16,8 @@ public class MatchRecordConverter {
     public static MatchRecordEntity toEntity(
             UUID recordId, UUID userId, UUID supportingTeamId,
             UUID opposingTeamId, UUID stadiumId, UUID categoryId,
-            TeamResult teamResult, byte[] imageBytes, MatchRecordRequestDto req
+            TeamResult teamResult, byte[] imageBytes,
+            String imageContentType, String imageFileName, Long imageSize, MatchRecordRequestDto req
     ) {
 
         LocalDate localDate = req.getDate();
@@ -31,6 +32,9 @@ public class MatchRecordConverter {
                 .categoryId(categoryId)
                 .teamResult(teamResult)
                 .image(imageBytes)
+                .imageContentType(imageContentType)
+                .imageFileName(imageFileName)
+                .imageSize(imageSize)
                 .matchDate(matchInstant)
                 .supportingTeamScore(req.getMyScore())
                 .opposingTeamScore(req.getOpponentScore())

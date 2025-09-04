@@ -74,9 +74,16 @@ public class MatchRecordServiceImpl implements MatchRecordService {
 
 
         byte[] imageBytes = null;
+        String imageContentType = null;
+        String imageFileName = null;
+        Long imageSize = null;
+
         try {
             if (image != null && !image.isEmpty()) {
                 imageBytes = image.getBytes();
+                imageContentType = image.getContentType();
+                imageFileName = image.getOriginalFilename();
+                imageSize = image.getSize();
             }
         } catch (Exception e) {
             throw new IllegalArgumentException("이미지 처리 실패", e);
@@ -92,6 +99,9 @@ public class MatchRecordServiceImpl implements MatchRecordService {
                 categoryId,
                 teamResult,
                 imageBytes,
+                imageContentType,
+                imageFileName,
+                imageSize,
                 req
         );
 
