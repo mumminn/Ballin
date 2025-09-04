@@ -43,11 +43,9 @@ public class MatchRecordController {
         return ResponseEntity.ok(ApiResponse.ok(result));
     }
 
-//    @GetMapping(value = "/{recordId}/record")
-//    public ResponseEntity<byte[]> getRecordImage(@PathVariable("recordId") UUID recordId) {
-//        byte[] data = matchRecordService.getRecordImage(recordId);
-//        return ResponseEntity.ok()
-//                .contentType()
-//    }
+    @GetMapping("/{recordId}/image")
+    public ResponseEntity<byte[]> getRecordImage(@PathVariable UUID recordId) {
+        return matchRecordService.getRecordImage(recordId);
+    }
 }
 

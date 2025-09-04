@@ -13,11 +13,13 @@ import com.example.backend.domain.stadium.mapper.StadiumMapper;
 import com.example.backend.domain.team.mapper.TeamMapper;
 import com.example.backend.global.auth.AuthUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -64,7 +66,7 @@ public class MatchRecordServiceImpl implements MatchRecordService {
 
         if (req.getMyScore() > req.getOpponentScore()) {
             teamResult = TeamResult.WIN;
-        } else if(req.getOpponentScore() > req.getMyScore()) {
+        } else if (req.getOpponentScore() > req.getMyScore()) {
             teamResult = TeamResult.LOSE;
         } else if (req.getMyScore() == req.getOpponentScore()) {
             teamResult = TeamResult.TIE;
@@ -151,4 +153,31 @@ public class MatchRecordServiceImpl implements MatchRecordService {
                 row.getReview()
         );
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ResponseEntity<byte[]> getRecordImage(UUID recordId) {
+        var row = matchRecordMapper.findImageById(recordId)
+                .orElseThrow(() -> new NoSuchElementException("record not found"));
+
+        byte[] data = row.getImage();
+        if (data == null || data.length == 0) {
+            throw new NoSuchElementException("image not found");
+        }
+
+        String contentType = (row.getImageContentType() != null && !row.getImageContentType().isBlank())
+                ? row.getImageContentType()
+                : MediaType.APPLICATION_OCTET_STREAM_VALUE;
+
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(contentType));
+        headers.setContentLength(data.length);
+        var disposition = ContentDisposition.inline()
+                .filename(row.getImageFileName() != null ? row.getImageFileName() : "image")
+                .build();
+        headers.setContentDisposition(disposition);
+
+        return new ResponseEntity<>(data, headers, HttpStatus.OK);
+    }
+
 }
