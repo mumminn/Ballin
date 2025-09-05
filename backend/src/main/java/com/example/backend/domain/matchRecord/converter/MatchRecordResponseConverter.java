@@ -18,7 +18,8 @@ public class MatchRecordResponseConverter {
             TeamResult teamResult,
             String stadiumTeamName,
             String matchDate,
-            String supportingTeamCode
+            String supportingTeamCode,
+            String category
     ) {
         return MatchRecordResponseDto.builder()
                 .recordId(recordId)
@@ -29,6 +30,7 @@ public class MatchRecordResponseConverter {
                 .stadiumTeam(stadiumTeamName)
                 .matchDate(matchDate)
                 .supportingTeamCode(supportingTeamCode)
+                .category(category)
                 .build();
     }
 

@@ -14,6 +14,7 @@
         <result column="stadium_team"    property="stadiumTeam"/>
         <result column="match_date"  property="matchDate"/>
         <result column="supporting_team_code"  property="supportingTeamCode"/>
+        <result column="category_name"  property="category"/>
     </resultMap>
 
     <select id="findAllByUserId" resultMap="MatchRecordResponseMap">
@@ -25,12 +26,14 @@
         mr.team_result AS team_result,
         ht.team_name AS stadium_team,
         DATE_FORMAT(CONVERT_TZ(mr.match_date,'+00:00','+09:00'), '%Y-%m-%d') AS match_date,
-        st1.team_code AS supporting_team_code
+        st1.team_code AS supporting_team_code,
+        c.category_name AS category_name
         FROM match_record mr
         JOIN team st1 ON st1.id = mr.supporting_team_id
         JOIN team st2 ON st2.id = mr.opposing_team_id
         JOIN stadium sd  ON sd.id  = mr.stadium_id
         LEFT JOIN team ht ON ht.id = sd.team_id
+        LEFT JOIN category c ON c.id = mr.category_id
         WHERE mr.user_id = #{userId, jdbcType=BINARY,
                         typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
         ORDER BY mr.match_date DESC
