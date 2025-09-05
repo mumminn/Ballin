@@ -1,6 +1,7 @@
 package com.example.backend.domain.matchRecord.controller;
 
 
+import com.example.backend.domain.matchRecord.dto.request.MatchRecordUpdateRequestDto;
 import com.example.backend.domain.matchRecord.dto.request.MatchRecordRequestDto;
 import com.example.backend.domain.matchRecord.dto.response.MatchRecordResponseDto;
 import com.example.backend.domain.matchRecord.dto.response.RecordDetailResponseDto;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,6 +53,16 @@ public class MatchRecordController {
     @DeleteMapping("/{recordId}")
     public ResponseEntity<ApiResponse<Void>> deleteRecord(@PathVariable("recordId") UUID recordId) {
         matchRecordService.delete(recordId);
+        return ResponseEntity.ok(ApiResponse.ok());
+    }
+
+    @PutMapping(value = "/{recordId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<Void>> putUpdate(
+            @PathVariable UUID recordId,
+            @RequestPart("data") @Valid MatchRecordUpdateRequestDto req,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        matchRecordService.putUpdate(recordId, req, image);
         return ResponseEntity.ok(ApiResponse.ok());
     }
 }

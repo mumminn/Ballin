@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.domain.matchRecord.mapper.MatchRecordMapper">
+
+    <update id="updateRecord">
+        UPDATE match_record
+        SET
+        match_date = #{p.matchDate},
+        supporting_team_id = #{p.supportingTeamId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+        opposing_team_id   = #{p.opposingTeamId,   jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+        stadium_id         = #{p.stadiumId,       jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+        supporting_team_score = #{p.supportingTeamScore},
+        opposing_team_score   = #{p.opposingTeamScore},
+        team_result        = #{p.teamResult},
+        review             = #{p.review},
+        seat               = #{p.seat}
+
+        <if test="p.image != null">
+            , match_image              = #{p.image, jdbcType=BLOB}
+            , match_image_content_type = #{p.imageContentType}
+            , match_image_filename     = #{p.imageFileName}
+            , match_image_size         = #{p.imageSize}
+        </if>
+        WHERE id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+    </update>
+
+</mapper>

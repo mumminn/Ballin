@@ -3,12 +3,15 @@ package com.example.backend.domain.matchRecord.service;
 import com.example.backend.domain.category.mapper.CategoryMapper;
 import com.example.backend.domain.matchRecord.converter.MatchRecordConverter;
 import com.example.backend.domain.matchRecord.converter.MatchRecordResponseConverter;
+import com.example.backend.domain.matchRecord.converter.MatchRecordUpdateConverter;
 import com.example.backend.domain.matchRecord.dto.request.MatchRecordRequestDto;
+import com.example.backend.domain.matchRecord.dto.request.MatchRecordUpdateRequestDto;
 import com.example.backend.domain.matchRecord.dto.response.MatchRecordResponseDto;
 import com.example.backend.domain.matchRecord.dto.response.RecordDetailResponseDto;
 import com.example.backend.domain.matchRecord.entity.MatchRecordEntity;
 import com.example.backend.domain.matchRecord.entity.TeamResult;
 import com.example.backend.domain.matchRecord.mapper.MatchRecordMapper;
+import com.example.backend.domain.matchRecord.mapper.param.PutParam;
 import com.example.backend.domain.stadium.mapper.StadiumMapper;
 import com.example.backend.domain.team.mapper.TeamMapper;
 import com.example.backend.global.auth.AuthUser;
@@ -19,9 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.time.Duration;
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,6 +38,7 @@ public class MatchRecordServiceImpl implements MatchRecordService {
     private final StadiumMapper stadiumMapper;
     private final CategoryMapper categoryMapper;
     private final MatchRecordResponseConverter matchRecordResponseConverter;
+    private final MatchRecordUpdateConverter matchRecordUpdateConverter;
 
     @Transactional
     @Override
@@ -186,6 +191,75 @@ public class MatchRecordServiceImpl implements MatchRecordService {
         int affected = matchRecordMapper.deleteRecord(recordId);
         if (affected == 0) {
             throw new NoSuchElementException("record not found" + recordId);
+        }
+    }
+
+    @Override
+    public void putUpdate(UUID recordId, MatchRecordUpdateRequestDto req, MultipartFile image) {
+
+        TeamResult teamResult;
+
+        UUID supportingTeamId = teamMapper.findIdByCrawlingName(req.getCategory(), req.getMyTeam())
+                .orElseThrow(() -> new NoSuchElementException(
+                        "응원팀을 찾을 수 없습니다. category=" + req.getCategory() + ", team=" + req.getMyTeam()));
+
+        UUID opposingTeamId = teamMapper.findIdByCrawlingName(req.getCategory(), req.getOpponentTeam())
+                .orElseThrow(() -> new NoSuchElementException(
+                        "상대팀을 찾을 수 없습니다. category=" + req.getCategory() + ", team=" + req.getOpponentTeam()));
+
+        UUID stadiumTeamId = teamMapper.findIdByCrawlingName(req.getCategory(), req.getStadium())
+                .orElseThrow(() -> new NoSuchElementException(
+                        "경기장 매핑용 팀을 찾을 수 없습니다. category=" + req.getCategory() + ", team=" + req.getStadium()));
+
+        UUID stadiumId = stadiumMapper.findIdByTeamId(stadiumTeamId)
+                .orElseThrow(() -> new NoSuchElementException("Stadium not found: " + stadiumTeamId));
+
+
+        if (req.getMyScore() > req.getOpponentScore()) {
+            teamResult = TeamResult.WIN;
+        } else if (req.getOpponentScore() > req.getMyScore()) {
+            teamResult = TeamResult.LOSE;
+        } else if (req.getMyScore() == req.getOpponentScore()) {
+            teamResult = TeamResult.TIE;
+        } else {
+            teamResult = TeamResult.NOGAME;
+        }
+
+        byte[] imageBytes = null;
+        String contentType = null;
+        String filename = null;
+        Long size = null;
+
+        if (image != null && !image.isEmpty()) {
+            try {
+                imageBytes = image.getBytes();
+            } catch (IOException e) {
+                throw new IllegalArgumentException("이미지 처리 실패", e);
+            }
+            contentType = Optional.ofNullable(image.getContentType()).orElse("application/octet-stream");
+            filename = Optional.ofNullable(image.getOriginalFilename()).orElse("image");
+            size = image.getSize();
+        }
+
+        PutParam p = matchRecordUpdateConverter.toPutParam(
+                supportingTeamId,
+                opposingTeamId,
+                stadiumId,
+                req.getDate(),
+                req.getMyScore(),
+                req.getOpponentScore(),
+                req.getReview(),
+                req.getSeat(),
+                imageBytes,
+                contentType,
+                filename,
+                size,
+                teamResult
+        );
+
+        int updated = matchRecordMapper.updateRecord(recordId, p);
+        if (updated != 1) {
+            throw new IllegalStateException("수정 실패: updated=" + updated + ", recordId=" + recordId);
         }
     }
 }
