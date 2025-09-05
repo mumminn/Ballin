@@ -19,6 +19,7 @@ interface RecordDetailFormProps{
     stamp?: RecordStamp;
     score: Omit<ScoreHeaderProps, "className" | "logoSize">;
     onDelete?: () => void;
+    onEdit?:() => void;
 }
 export function RecordDetailForm ({
     date,
@@ -28,6 +29,7 @@ export function RecordDetailForm ({
     stamp,
     score,
     onDelete,
+    onEdit,
 }: RecordDetailFormProps) {
 
     return(
@@ -36,7 +38,8 @@ export function RecordDetailForm ({
                 <div className="flex items-center justify-between w-full">
                     <BackButton />
                     <div className="flex items-center gap-3">
-                        <RecordEditButton />
+                        <RecordEditButton 
+                            onClick={onEdit}/>
                         <RecordDeleteButton 
                             onClick={onDelete}/>
                     </div>

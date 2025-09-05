@@ -10,6 +10,7 @@ const logoOf = (teamCode: string) => `/images/logos/${teamCode}.svg`;
 
 export default function RecordDetailPage() {
     const { recordId } = useParams<{ recordId: string }>();
+    const { category } = useParams<{ category: string }>();
     const [detail, setDetail] = useState<RecordDetailItem | null>(null);
     const [imgObjectUrl, setImgObjectUrl] = useState<string | undefined>(undefined);
 
@@ -60,6 +61,7 @@ export default function RecordDetailPage() {
             stadium: detail.stadium,
         }}
         onDelete={handleDelete}
+        onEdit={() => navigate(`/record/${category}/${recordId}/edit`)}
         />
     );
     

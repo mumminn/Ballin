@@ -3,7 +3,7 @@ import * as React from "react";
 
 
 interface RecordPhotoProps {
-  value?: File | null;         
+  value?: File | string | null;         
   onChange?: (file: File | null) => void;
   accept?: string;
   containerClassName?: string; 

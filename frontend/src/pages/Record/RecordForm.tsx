@@ -13,6 +13,7 @@ export type RecordItem = {
     stadium: string;
     stamp?: RecordStamp;
     homeTeam?: string;
+    category?: string;
 };
   
 interface RecordFormProps {

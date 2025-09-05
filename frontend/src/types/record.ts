@@ -21,6 +21,7 @@ export type MatchRecordItem = {
     stadiumTeam: string;
     matchDate: string;
     supportingTeamCode: string;
+    category: string;
 }
 
 export type RecordDetailItem = {
