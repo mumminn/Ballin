@@ -36,7 +36,7 @@ export function SegmentToggle<T extends string = string>({
         md: {
             padding: 'py-2 px-4',
             font: 'text-base',
-            height: 'h-10',
+            height: 'h-12',
         },
     };
 
