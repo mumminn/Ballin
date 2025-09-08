@@ -21,4 +21,20 @@ export type MatchRecordItem = {
     stadiumTeam: string;
     matchDate: string;
     supportingTeamCode: string;
+    category: string;
+}
+
+export type RecordDetailItem = {
+    supportingTeam: string;
+    opposingTeam: string;
+    stadium: string;
+    teamResult: Result;
+    stadiumTeam: string;
+    matchDate: string;
+    supportingTeamCode: string;
+    opposingTeamCode: string;
+    supportingTeamScore: number;
+    opposingTeamScore: number;
+    seat: string;
+    review: string;
 }

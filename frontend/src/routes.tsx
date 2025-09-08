@@ -9,6 +9,7 @@ import RecordPage from '@/pages/Record/RecordPage';
 import RecordDetailPage from '@/pages/Record/RecordDetailPage';
 import KakaoCallbackPage from '@/pages/Login/KakaoCallbackPage';
 import RequireAuth from '@/routes/RequireAuth';
+import RecordEditDetailPage from './pages/RecordEditDetail/RecordEditDetailPage';
 
 
 export const PATH = {
@@ -20,7 +21,8 @@ export const PATH = {
   recordCreate: '/record/create',
   recordCreateSport: '/record/create/:sport?',
   record: '/record',
-  recordDetail: '/record/:id',
+  recordDetail: '/record/:category/:recordId',
+  recordEdit: '/record/:category/:recordId/edit',
 };
 
 export default function AppRoutes() {
@@ -37,6 +39,7 @@ export default function AppRoutes() {
         <Route path={PATH.recordCreateSport} element={<RecordCreateDetailPage />} />
         <Route path={PATH.record} element={<RecordPage />} />
         <Route path={PATH.recordDetail} element={<RecordDetailPage />} />
+        <Route path={PATH.recordEdit} element={<RecordEditDetailPage />} />
       </Route>
 
 

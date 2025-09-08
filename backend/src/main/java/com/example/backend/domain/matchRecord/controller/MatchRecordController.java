@@ -1,8 +1,10 @@
 package com.example.backend.domain.matchRecord.controller;
 
 
+import com.example.backend.domain.matchRecord.dto.request.MatchRecordUpdateRequestDto;
 import com.example.backend.domain.matchRecord.dto.request.MatchRecordRequestDto;
 import com.example.backend.domain.matchRecord.dto.response.MatchRecordResponseDto;
+import com.example.backend.domain.matchRecord.dto.response.RecordDetailResponseDto;
 import com.example.backend.domain.matchRecord.service.MatchRecordService;
 import com.example.backend.global.api.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +37,33 @@ public class MatchRecordController {
     public ResponseEntity<ApiResponse<List<MatchRecordResponseDto>>> getRecord() {
         List<MatchRecordResponseDto> result = matchRecordService.getRecord();
         return ResponseEntity.ok(ApiResponse.ok(result));
+    }
+
+    @GetMapping("/{recordId}/detail")
+    public ResponseEntity<ApiResponse<RecordDetailResponseDto>> getRecordDetail(@PathVariable("recordId") UUID recordId) {
+        RecordDetailResponseDto result = matchRecordService.getRecordDetail(recordId);
+        return ResponseEntity.ok(ApiResponse.ok(result));
+    }
+
+    @GetMapping("/{recordId}/image")
+    public ResponseEntity<byte[]> getRecordImage(@PathVariable UUID recordId) {
+        return matchRecordService.getRecordImage(recordId);
+    }
+
+    @DeleteMapping("/{recordId}")
+    public ResponseEntity<ApiResponse<Void>> deleteRecord(@PathVariable("recordId") UUID recordId) {
+        matchRecordService.delete(recordId);
+        return ResponseEntity.ok(ApiResponse.ok());
+    }
+
+    @PutMapping(value = "/{recordId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<Void>> putUpdate(
+            @PathVariable UUID recordId,
+            @RequestPart("data") @Valid MatchRecordUpdateRequestDto req,
+            @RequestPart(value = "image", required = false) MultipartFile image
+    ) {
+        matchRecordService.putUpdate(recordId, req, image);
+        return ResponseEntity.ok(ApiResponse.ok());
     }
 }
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.domain.matchRecord.mapper.MatchRecordMapper">
+
+    <resultMap id="MatchImageRowMap" type="com.example.backend.domain.matchRecord.mapper.projection.MatchImageRow">
+        <result column="match_image"                property="image"               javaType="[B" jdbcType="BLOB"/>
+        <result column="match_image_content_type"   property="imageContentType"/>
+        <result column="match_image_filename"       property="imageFileName"/>
+        <result column="match_image_size"           property="imageSize"           jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="findImageById" resultMap="MatchImageRowMap">
+        SELECT
+            match_image                AS match_image,
+            match_image_content_type   AS match_image_content_type,
+            match_image_filename       AS match_image_filename,
+            match_image_size           AS match_image_size
+        FROM match_record
+        WHERE id = #{recordId, jdbcType=BINARY,
+                       typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+    </select>
+
+</mapper>

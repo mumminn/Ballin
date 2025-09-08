@@ -1,31 +1,27 @@
-package com.example.backend.domain.matchRecord.entity;
+package com.example.backend.domain.matchRecord.mapper.param;
 
-import com.example.backend.global.entity.BaseEntity;
+import com.example.backend.domain.matchRecord.entity.TeamResult;
 import lombok.*;
 
-import java.time.Instant;
 import java.util.UUID;
 
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Setter
-@EqualsAndHashCode(callSuper = true)
-public class MatchRecordEntity extends BaseEntity {
-    private UUID recordId;
-    private UUID userId;
+public class PutParam {
+    private String  matchDate;
     private UUID supportingTeamId;
     private UUID opposingTeamId;
     private UUID stadiumId;
-    private UUID categoryId;
-    private Instant matchDate;
     private int supportingTeamScore;
     private int opposingTeamScore;
     private TeamResult teamResult;
     private String review;
-    private byte[] image;
     private String seat;
+
+    private byte[] image;
     private String imageContentType;
     private String imageFileName;
     private Long imageSize;

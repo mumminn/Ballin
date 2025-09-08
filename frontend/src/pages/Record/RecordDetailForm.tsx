@@ -14,36 +14,34 @@ import type { ScoreHeaderProps } from "@/components/record/ScoreHeader";
 interface RecordDetailFormProps{
     date?: string;
     seat?: string;
-    imgUrl?: string | File;
-    review?: string;
+    imgUrl?: string;
+    review: string;
     stamp?: RecordStamp;
-    score?: Omit<ScoreHeaderProps, "className" | "logoSize">;
-
+    score: Omit<ScoreHeaderProps, "className" | "logoSize">;
+    onDelete?: () => void;
+    onEdit?:() => void;
 }
 export function RecordDetailForm ({
-    date='2025.08.01',
-    seat="317구역 11열 126",
-    imgUrl='/images/baseball_character.svg',
-    review='재밌고 멋진 경기였다. 내일 또 와야지~~~ 내일도 이겼으면 좋겠다',
-    stamp={ result: 'WIN', sport: 'baseball', team: 'kia' },
-    score={
-        myTeam: { name: "기아 타이거즈", logo: "/images/logos/kia.svg" },
-        opponentTeam: { name: "한화 이글스", logo: "/images/logos/hanwha.svg" },
-        myScore: 3,
-        opponentScore: 2,
-        stadium: "광주기아챔피언스필드",
-      },
+    date,
+    seat,
+    imgUrl,
+    review,
+    stamp,
+    score,
+    onDelete,
+    onEdit,
 }: RecordDetailFormProps) {
 
-    const imageSrc = typeof imgUrl === "string" ? imgUrl : URL.createObjectURL(imgUrl);
     return(
         <SubLayout
             header={
                 <div className="flex items-center justify-between w-full">
                     <BackButton />
                     <div className="flex items-center gap-3">
-                        <RecordEditButton />
-                        <RecordDeleteButton />
+                        <RecordEditButton 
+                            onClick={onEdit}/>
+                        <RecordDeleteButton 
+                            onClick={onDelete}/>
                     </div>
                 </div>
             }
@@ -64,7 +62,7 @@ export function RecordDetailForm ({
 
                             <p className="text-right">{seat}</p>
 
-                            <img src={imageSrc} alt="경기 사진" className="mx-auto w-full h-46 object-cover" />
+                            <img src={imgUrl} alt="경기 사진" className="mx-auto w-full h-46 object-cover" />
 
                             <ReviewLined value={review} readOnly />
 

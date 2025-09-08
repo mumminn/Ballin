@@ -19,6 +19,7 @@ export default function RecordPage() {
       stadium: m.stadium,
       stamp: { result: m.teamResult, team: m.supportingTeamCode},
       homeTeam: m.stadiumTeam,
+      category: m.category,
     })
 
     useEffect(() => {
@@ -35,7 +36,7 @@ export default function RecordPage() {
 
     const handleSelect = (rec: RecordItem) => {
         console.log('선택된 기록:', rec);
-        navigate(`/record/${rec.id}`)
+        navigate(`/record/${rec.category}/${rec.id}`)
     }
 
     return(

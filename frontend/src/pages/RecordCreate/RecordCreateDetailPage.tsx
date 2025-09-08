@@ -149,7 +149,7 @@ export default function RecordCreateDetailPage() {
 
       try {
         
-        await createRecord(req, photo ?? undefined);
+        await createRecord(req, photo);
         
         alert("저장되었습니다.");
         navigate("/record");

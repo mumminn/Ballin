@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.domain.matchRecord.mapper.MatchRecordMapper">
+    <resultMap id="RecordDetailResponseMap"
+               type="com.example.backend.domain.matchRecord.dto.response.RecordDetailResponseDto">
+        <result column="supporting_team" property="supportingTeam"/>
+        <result column="opposing_team"   property="opposingTeam"/>
+        <result column="stadium"         property="stadium"/>
+        <result column="team_result"     property="teamResult"/>
+        <result column="stadium_team"    property="stadiumTeam"/>
+        <result column="match_date"  property="matchDate"/>
+        <result column="supporting_team_code"  property="supportingTeamCode"/>
+        <result column="opposing_team_code"  property="opposingTeamCode"/>
+        <result column="supporting_team_score"  property="supportingTeamScore"/>
+        <result column="opposing_team_score"  property="opposingTeamScore"/>
+        <result column="seat"  property="seat"/>
+        <result column="review"  property="review"/>
+    </resultMap>
+
+    <select id="getRecordDetailById" resultMap="RecordDetailResponseMap">
+        SELECT
+            t1.team_name AS supporting_team,
+            t2.team_name AS opposing_team,
+            st.stadium_name AS stadium,
+            mr.team_result AS team_result,
+            ht.team_name AS stadium_team,
+            DATE_FORMAT(CONVERT_TZ(mr.match_date,'+00:00','+09:00'), '%Y-%m-%d') AS match_date,
+            t1.team_code AS supporting_team_code,
+            t2.team_code AS opposing_team_code,
+            mr.supporting_team_score AS supporting_team_score,
+            mr.opposing_team_score AS opposing_team_score,
+            mr.seat AS seat,
+            mr.review AS review
+        FROM match_record mr
+        JOIN team t1 ON t1.id = mr.supporting_team_id
+        JOIN team t2 ON t2.id = mr.opposing_team_id
+        JOIN stadium st  ON st.id  = mr.stadium_id
+        LEFT JOIN team ht ON ht.id = st.team_id
+        WHERE mr.id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+
+    </select>
+</mapper>

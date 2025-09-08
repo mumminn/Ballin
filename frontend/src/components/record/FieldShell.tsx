@@ -19,7 +19,7 @@ export function FieldShell({
         {date && (
             <div className="text-lg text-gray-900 text-right">{date}</div>
         )}
-        <div className={`rounded-2xl border-2 border-black bg-[#FCF5E2] px-5 py-5 ${className}`}
+        <div className={`rounded-2xl border-2 border-black bg-[#FCF5E2] px-4 py-4 ${className}`}
             style={{ minHeight }}>
             {children}
         </div>

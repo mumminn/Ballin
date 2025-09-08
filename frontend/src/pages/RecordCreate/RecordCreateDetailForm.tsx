@@ -23,7 +23,7 @@ interface RecordCreateDetailProps {
     teamOptions: TeamOption[];
 
     onChangeScore: (next: { myScore: string; opponentScore: string }) => void;
-    photo?: File | null;
+    photo?: File | string | null;
     onChangePhoto?: (file: File | null) => void;
     onRecord: () => void;
     onMatchData: () => void;

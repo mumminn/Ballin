@@ -3,15 +3,12 @@ package com.example.backend.domain.matchRecord.dto.response;
 import com.example.backend.domain.matchRecord.entity.TeamResult;
 import lombok.*;
 
-import java.util.UUID;
-
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MatchRecordResponseDto {
-    private UUID recordId;
+@Builder
+public class RecordDetailResponseDto {
     private String supportingTeam;
     private String opposingTeam;
     private String stadium;
@@ -19,5 +16,9 @@ public class MatchRecordResponseDto {
     private String stadiumTeam;
     private String matchDate;
     private String supportingTeamCode;
-    private String category;
+    private String opposingTeamCode;
+    private Integer supportingTeamScore;
+    private Integer opposingTeamScore;
+    private String seat;
+    private String review;
 }
