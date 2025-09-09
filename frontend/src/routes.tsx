@@ -9,7 +9,8 @@ import RecordPage from '@/pages/Record/RecordPage';
 import RecordDetailPage from '@/pages/Record/RecordDetailPage';
 import KakaoCallbackPage from '@/pages/Login/KakaoCallbackPage';
 import RequireAuth from '@/routes/RequireAuth';
-import RecordEditDetailPage from './pages/RecordEditDetail/RecordEditDetailPage';
+import RecordEditDetailPage from '@/pages/RecordEditDetail/RecordEditDetailPage';
+import { StatisticPage } from '@/pages/Statistic/StatisticPage';
 
 
 export const PATH = {
@@ -23,6 +24,8 @@ export const PATH = {
   record: '/record',
   recordDetail: '/record/:category/:recordId',
   recordEdit: '/record/:category/:recordId/edit',
+
+  statistic: '/statistic',
 };
 
 export default function AppRoutes() {
@@ -41,6 +44,7 @@ export default function AppRoutes() {
         <Route path={PATH.recordDetail} element={<RecordDetailPage />} />
         <Route path={PATH.recordEdit} element={<RecordEditDetailPage />} />
       </Route>
+        <Route path={PATH.statistic} element={<StatisticPage />} />
 
 
       {/* 404 */}
