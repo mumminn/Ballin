@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Sport } from "@/types/calendar";
 import { InputField } from "@/components/common/InputField";
 import { PrimaryButton } from "@/components/common/PrimaryButton";
+import { SeasonItem } from "@/types/statistic";
+import { getSeason } from "@/api/statistic/getSeason";
 
 export interface FilterValue {
   startDate: string;
@@ -33,6 +35,8 @@ export default function FilterBottomSheet({
     const [seasonOpen, setSeasonOpen] = useState(false);
     const seasonWrapRef = useRef<HTMLDivElement | null>(null);
 
+    const [seasons, setSeasons] = useState<SeasonItem[]>([]);
+
     useEffect(() => {
         if (!open) return;
         setStartDate(value.startDate);
@@ -41,6 +45,15 @@ export default function FilterBottomSheet({
         setSeason(value.season);
         setSeasonOpen(false);
     }, [open, value]);
+
+    useEffect(() => {
+      if(!open) return;
+      if (seasons.length > 0) return;
+      (async () => {
+        const list = await getSeason();
+        setSeasons(list ?? []);
+      })();
+    }, [open, seasons.length]);
 
     useEffect(() => {
         const onDown = (e: MouseEvent) => {
@@ -52,29 +65,26 @@ export default function FilterBottomSheet({
     }, [seasonOpen]);
 
     const basketballSeasons = useMemo(
-        () => ["2024-25 시즌", "2023-24 시즌", "2022-23 시즌"],
-        []
+      () =>
+        seasons
+          .filter((s) => s.category === "basketball")
+          .sort((a, b) => a.seasonName.localeCompare(b.seasonName)).reverse(),
+      [seasons]
     );
-
+    
     const baseballSeasons = useMemo(
-        () => ["2025 시즌", "2024 시즌", "2023 시즌", "2022 시즌"],
-        []
+      () =>
+        seasons
+          .filter((s) => s.category === "baseball")
+          .sort((a, b) => a.seasonName.localeCompare(b.seasonName)).reverse(),
+      [seasons]
     );
-
-
-    const applySeasonRange = (sp: Sport, label: string) => {
-        setSport(sp);
-        setSeason(label);
-        if (sp === "baseball") {
-          const y = parseInt(label.slice(0, 4), 10);
-          setStartDate(`${y}-03-01`);
-          setEndDate(`${y}-11-30`);
-          return;
-        }
-        const y = parseInt(label.slice(0, 4), 10);
-        const next = y + 1;
-        setStartDate(`${y}-10-01`);
-        setEndDate(`${next}-04-30`);
+    
+    const applySeasonItem = (item: SeasonItem) => {
+      setSport(item.category as Sport);
+      setSeason(item.seasonName);
+      setStartDate(item.startDate);
+      setEndDate(item.endDate);
     };
 
     const handleApply = () => onApply({ startDate, endDate, sport, season });
@@ -214,17 +224,17 @@ export default function FilterBottomSheet({
                   <div className="px-4 pt-3 pb-2 border-b border-black/30">
                     <p className="text-base font-semibold mb-2">농구</p>
                     <ul className="space-y-2">
-                      {basketballSeasons.map((s) => (
-                        <li key={s}>
+                      {basketballSeasons.map((item) => (
+                        <li key={`${item.category}-${item.seasonName}`}>
                           <button
                             type="button"
                             className="w-full text-center py-2 rounded-lg hover:bg-black/5"
                             onClick={() => {
-                              applySeasonRange("basketball", s);
+                              applySeasonItem(item);
                               setSeasonOpen(false);
                             }}
                           >
-                            {s}
+                            {item.seasonName}
                           </button>
                         </li>
                       ))}
@@ -234,17 +244,17 @@ export default function FilterBottomSheet({
                   <div className="px-4 pt-3 pb-3">
                     <p className="text-base font-semibold mb-2">야구</p>
                     <ul className="space-y-2">
-                      {baseballSeasons.map((s) => (
-                        <li key={s}>
+                      {baseballSeasons.map((item) => (
+                        <li key={`${item.category}-${item.seasonName}`}>
                           <button
                             type="button"
                             className="w-full text-center py-2 rounded-lg hover:bg-black/5"
                             onClick={() => {
-                              applySeasonRange("baseball", s);
+                              applySeasonItem(item);
                               setSeasonOpen(false);
                             }}
                           >
-                            {s}
+                            {item.seasonName}
                           </button>
                         </li>
                       ))}
