@@ -5,6 +5,7 @@ import { NavigationBar } from "@/components/navigationBar/NavigationBar";
 import { FilterButton } from "@/components/statistic/FilterButton";
 import FilterBottomSheet, { FilterValue } from "@/components/statistic/FilterBottomSheet";
 import { StatLabelValue } from "@/components/statistic/StatLabelValue";
+import StatePie from "@/components/statistic/StatPie";
 
 interface StatisticProps {
     tab: string;
@@ -38,8 +39,12 @@ export default function StatisticForm({
           sport: null,
           season: "",
         };
-      });
+    });
 
+
+    const win = 3, loss = 2, draw = 1;
+    const total = win + loss + draw;
+    const winRate = total ? win / total : 0;
     const stats = {
         totalGames: 3,
         winRate: 0.25,
@@ -78,36 +83,53 @@ export default function StatisticForm({
             value={tab}
             onChange={setTab}
             size="md"
-            className="mt-8"
+            className="mt-6"
         />
     
-        <section className="mt-6 text-center">
+        <section className="mt-12 text-center">
             <p className="text-[28px] font-extrabold tracking-tight">{title}</p>
         </section>
 
-        <section className="mt-6 flex justify-center">
-            <img
-            src={illust.src}
-            alt={illust.alt}
-            className="w-[220px] h-auto select-none pointer-events-none"
-            onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.display = "none";
-            }}
-            />
-        </section>
 
-        <section className="mt-4 grid grid-cols-2 gap-6">
-            <StatLabelValue label="총 직관 경기수" value={`${stats.totalGames} 경기`} />
-            <StatLabelValue label="직관 승리 비율" value={`${Math.round(stats.winRate * 100)}%`} />
-        </section>
+        { tab === "chart" ? (
+          <>
+            <section className="mt-2">
+              <StatePie win={win} loss={loss} draw={draw} />
+            </section>
 
-        <section className="mt-8">
-            <StatLabelValue label="가장 많이 방문한 경기장" value={stats.mostVisitedStadium} />
-        </section>
+            <section className="mt-7 mb-2 text-center">
+              <p className="text-2xl font-extrabold">
+                {total}전 {win}승 {loss}패 {draw}무
+              </p>
+            </section>
+          </>
+        ): (
+          <>
+            <section className="mt-6 flex justify-center">
+                <img
+                src={illust.src}
+                alt={illust.alt}
+                className="w-[220px] h-auto select-none pointer-events-none"
+                onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
+                />
+            </section>
 
-        <section className="mt-8 mb-4">
-            <StatLabelValue label="가장 승률이 높은 경기장" value={stats.bestWinStadium} />
-        </section>
+            <section className="mt-4 grid grid-cols-2 gap-6">
+                <StatLabelValue label="총 직관 경기수" value={`${stats.totalGames} 경기`} />
+                <StatLabelValue label="직관 승리 비율" value={`${Math.round(stats.winRate * 100)}%`} />
+            </section>
+
+            <section className="mt-8">
+                <StatLabelValue label="가장 많이 방문한 경기장" value={stats.mostVisitedStadium} />
+            </section>
+
+            <section className="mt-8 mb-4">
+                <StatLabelValue label="가장 승률이 높은 경기장" value={stats.bestWinStadium} />
+            </section>
+          </>
+        )}
 
           <FilterBottomSheet
             open={sheetOpen}
