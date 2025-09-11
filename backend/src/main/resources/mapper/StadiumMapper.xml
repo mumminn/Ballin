@@ -19,4 +19,15 @@
         WHERE s.team_id = #{teamId}
     </select>
 
+    <select id="findVisitedStadium" resultType="string">
+        SELECT DISTINCT t.team_code
+        FROM match_record mr
+        JOIN stadium s ON mr.stadium_id = s.id
+        JOIN category c ON mr.category_id = c.id
+        JOIN team t
+        WHERE mr.user_id = #{userId, jdbcType = BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        AND c.category_name = #{category}
+        AND s.team_id = t.id
+    </select>
+
 </mapper>
