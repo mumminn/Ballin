@@ -72,7 +72,7 @@ public class MatchRecordServiceImpl implements MatchRecordService {
         if (req.getMyScore() > req.getOpponentScore()) {
             teamResult = TeamResult.WIN;
         } else if (req.getOpponentScore() > req.getMyScore()) {
-            teamResult = TeamResult.LOSE;
+            teamResult = TeamResult.LOSS;
         } else if (req.getMyScore() == req.getOpponentScore()) {
             teamResult = TeamResult.TIE;
         } else {
@@ -219,7 +219,7 @@ public class MatchRecordServiceImpl implements MatchRecordService {
         if (req.getMyScore() > req.getOpponentScore()) {
             teamResult = TeamResult.WIN;
         } else if (req.getOpponentScore() > req.getMyScore()) {
-            teamResult = TeamResult.LOSE;
+            teamResult = TeamResult.LOSS;
         } else if (req.getMyScore() == req.getOpponentScore()) {
             teamResult = TeamResult.TIE;
         } else {

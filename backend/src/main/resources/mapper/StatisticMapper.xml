@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.domain.matchRecord.mapper.StatisticMapper">
+    <select id="selectRowsForStatistic" resultType="com.example.backend.domain.matchRecord.mapper.projection.StatisticRow">
+        SELECT
+            mr.team_result AS teamResult,
+            mr.stadium_id AS stadiumId,
+            s.stadium_name AS stadiumName
+        FROM match_record mr
+        JOIN stadium s ON s.id = mr.stadium_id
+
+        <if test="category != null and category != 'All'">
+            JOIN category c ON c.id = mr.category_id
+        </if>
+
+        WHERE mr.user_id = #{userId, jdbcType = BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        AND mr.match_date <![CDATA[>=]]> #{startDate}
+        AND mr.match_date <![CDATA[< ]]> DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+
+        <if test="category != null and category != 'All'">
+            AND c.category_name = #{category}
+        </if>
+
+    </select>
+
+</mapper>

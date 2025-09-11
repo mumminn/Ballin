@@ -1,5 +1,3 @@
-import StatisticForm from "@/pages/Statistic/StatisticForm"
-
 const BASE_API ='/api'
 
 export const ENDPOINTS = {
@@ -17,5 +15,6 @@ export const ENDPOINTS = {
     RECORD_DELETE:  (recordId: string) => `${BASE_API}/record/${recordId}`,
 
     STATISTIC_SEASON: `${BASE_API}/statistic/season`,
+    STATISTIC: `${BASE_API}/statistic`,
     
 }

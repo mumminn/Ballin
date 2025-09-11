@@ -10,7 +10,7 @@ import RecordDetailPage from '@/pages/Record/RecordDetailPage';
 import KakaoCallbackPage from '@/pages/Login/KakaoCallbackPage';
 import RequireAuth from '@/routes/RequireAuth';
 import RecordEditDetailPage from '@/pages/RecordEditDetail/RecordEditDetailPage';
-import { StatisticPage } from '@/pages/Statistic/StatisticPage';
+import StatisticPage from '@/pages/Statistic/StatisticPage';
 
 
 export const PATH = {
