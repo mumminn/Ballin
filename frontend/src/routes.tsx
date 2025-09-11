@@ -48,8 +48,8 @@ export default function AppRoutes() {
         <Route path={PATH.recordDetail} element={<RecordDetailPage />} />
         <Route path={PATH.recordEdit} element={<RecordEditDetailPage />} />
         <Route path={PATH.statistic} element={<StatisticPage />} />
-      </Route>
         <Route path={PATH.map} element={<MapPage />} />
+      </Route>
 
 
       {/* 404 */}

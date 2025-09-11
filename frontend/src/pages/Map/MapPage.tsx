@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Sport } from "@/types/calendar";
 import { MapForm, UIPin } from "./MapForm";
+import { getStadium } from "@/api/map/getStadium";
 
 type Pin = {
     id: string;
@@ -55,36 +56,27 @@ const makePin = (
 
 
 async function fetchVisitedTeamIds(category: Sport): Promise<string[]> {
-  // const { data } = await api.get<ApiResponse<string[]>>("/api/maps/visited", { params:{ category }});
-  // return data.result ?? [];
-  if (category === "basketball") return ["kbl-seoul-sk", "kbl-busan-kt"];
-  return ["kbo-ssg", "kbo-kia", "kbo-samsung"];
+  const data = await getStadium(category);
+  return data;
 }
 
 export default function MapPage() {
   const [tab, setTab] = useState<Sport>("basketball");
   const [visitedIds, setVisitedIds] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let alive = true;
     (async () => {
-      try {
-        setLoading(true);
         const ids = await fetchVisitedTeamIds(tab);
         if (!alive) return;
         setVisitedIds(new Set(ids));
-      } finally {
-        setLoading(false);
-      }
     })();
     return () => { alive = false; };
   }, [tab]);
 
   const pins: UIPin[] = useMemo(() => {
     const base = tab === "basketball" ? BASKETBALL_PINS : BASEBALL_PINS;
-    return base.map((p) => ({ ...p, visited: true }));
-    // return base.map((p) => ({ ...p, visited: visitedIds.has(p.id) }));
+    return base.map((p) => ({ ...p, visited: visitedIds.has(p.id) }));
   }, [tab, visitedIds]);
 
   return (
@@ -92,7 +84,6 @@ export default function MapPage() {
       tab={tab}
       onChangeTab={setTab}
       pins={pins}
-      loading={loading}
     />
   );
 }

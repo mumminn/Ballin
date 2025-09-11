@@ -16,5 +16,7 @@ export const ENDPOINTS = {
 
     STATISTIC_SEASON: `${BASE_API}/statistic/season`,
     STATISTIC: `${BASE_API}/statistic`,
+
+    MAP: `${BASE_API}/map`,
     
 }

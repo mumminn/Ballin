@@ -17,14 +17,12 @@ interface MapFormProps {
   onChangeTab: (next: Sport) => void;
 
   pins: UIPin[];
-  loading?: boolean;
 }
 
 export function MapForm({
   tab,
   onChangeTab,
   pins,
-  loading = false,
 }: MapFormProps) {
   return (
     <SubLayout
@@ -38,7 +36,6 @@ export function MapForm({
       maxWidth={480}
     >
         <div className="w-full max-w-[480px] mx-auto min-h-dvh overflow-y-auto pb-[88px]">
-            {/* 토글 */}
             <div className="px-5">
             <SegmentToggle
                 options={[
