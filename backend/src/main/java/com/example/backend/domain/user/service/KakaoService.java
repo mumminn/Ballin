@@ -1,7 +1,7 @@
 package com.example.backend.domain.user.service;
 
-import com.example.backend.domain.user.dto.KakaoTokenResponseDto;
-import com.example.backend.domain.user.dto.KakaoUserInfoResponseDto;
+import com.example.backend.domain.user.dto.response.KakaoTokenResponseDto;
+import com.example.backend.domain.user.dto.response.KakaoUserInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

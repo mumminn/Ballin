@@ -1,6 +1,6 @@
 package com.example.backend.domain.user.controller;
 
-import com.example.backend.domain.user.dto.KakaoUserInfoResponseDto;
+import com.example.backend.domain.user.dto.response.KakaoUserInfoResponseDto;
 import com.example.backend.domain.user.entity.UserEntity;
 import com.example.backend.domain.user.service.KakaoService;
 import com.example.backend.domain.user.service.UserService;
