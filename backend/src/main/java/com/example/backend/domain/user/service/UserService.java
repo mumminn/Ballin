@@ -1,10 +1,14 @@
 package com.example.backend.domain.user.service;
 
+import com.example.backend.domain.user.dto.request.SignUpRequestDto;
 import com.example.backend.domain.user.dto.response.KakaoUserInfoResponseDto;
 import com.example.backend.domain.user.mapper.UserMapper;
 import com.example.backend.domain.user.entity.UserEntity;
 import com.example.backend.domain.user.entity.SocialType;
+import com.example.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +20,7 @@ import java.util.UUID;
 public class UserService {
 
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserEntity upsertFromKakao(KakaoUserInfoResponseDto info) {
@@ -56,7 +61,22 @@ public class UserService {
         return u;
     }
 
-    public UserEntity getById(UUID id) {
-        return userMapper.findById(id).orElseThrow();
+    @Transactional
+    public void register(SignUpRequestDto req) {
+
+        final String email = req.getEmail().trim().toLowerCase();
+
+        userMapper.findByEmail(email).ifPresent(u -> {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "이미 사용 중인 이메일입니다.");
+        });
+
+        UserEntity u = new UserEntity();
+        u.setId(UUID.randomUUID());
+        u.setEmail(email);
+        u.setName(req.getName().trim());
+        u.setPassword(passwordEncoder.encode(req.getPassword()));
+        u.setSocialType(SocialType.LOCAL);
+
+        userMapper.insertUser(u);
     }
 }
