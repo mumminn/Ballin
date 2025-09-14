@@ -21,6 +21,8 @@ public class BackendApplication {
 		System.setProperty("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
 		System.setProperty("REDIS_HOST", dotenv.get("REDIS_HOST"));
 		System.setProperty("REDIS_PORT", dotenv.get("REDIS_PORT"));
+		System.setProperty("EMAIL_ID", dotenv.get("EMAIL_ID"));
+		System.setProperty("EMAIL_PASSWORD", dotenv.get("EMAIL_PASSWORD"));
 
 		SpringApplication.run(BackendApplication.class, args);
 	}
