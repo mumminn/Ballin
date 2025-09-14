@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { SignUpForm } from './SingUpForm';
+import { SignUpForm } from './SignUpForm';
 import { useNavigate } from 'react-router-dom';
-// import { signUp } from '@/api/users';
+import { register } from '@/api/singup/register';
+import { verify } from '@/api/singup/verifyMail';
+import { send } from '@/api/singup/sendMail';
 
 export default function SignUpPage() {
     const [email, setEmail] = useState('');
@@ -29,7 +31,7 @@ export default function SignUpPage() {
         if (!email) return;
         try {
         setSending(true);
-        // await api.sendCode(email);
+        await send({email});
         setSecondsLeft(180);
 
         setShowTimer(true);
@@ -42,7 +44,7 @@ export default function SignUpPage() {
 
     // 재전송
     const onResendCode = async () => {
-        // await api.sendCode(email);
+        await send({email});
         setSecondsLeft(180); // 타이머 리셋
     };
 
@@ -57,7 +59,7 @@ export default function SignUpPage() {
     const onVerifyCode = async () => {
         try {
         setVerifying(true);
-        // await api.verify({ email, code });
+        await verify({ email, code });
         setVerified(true);
         setShowTimer(false);   // 타이머/재전송 숨김
         setSecondsLeft(0);
@@ -70,7 +72,7 @@ export default function SignUpPage() {
     if (!verified) return alert('이메일 인증을 먼저 완료해주세요.');
     try {
       // 실제 회원가입 API
-      // await usersApi.signup({ email, name, password }); // POST /api/users
+      await register({ email, name, password });
       console.log('signup payload', { email, name, password });
       alert('회원가입 성공!');
       navigate('/login');

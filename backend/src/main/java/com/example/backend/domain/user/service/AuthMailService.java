@@ -38,7 +38,7 @@ public class AuthMailService {
 
         // 메일 발송
         String title = "[Ballin] 회원 가입 인증번호";
-        String content = "<p>인증 번호는 <b>" + code + "</b> 입니다.</p><p>30분 내에 입력해주세요.</p>";
+        String content = "<p>인증 번호는 <b>" + code + "</b> 입니다.</p><p>3분 내에 입력해주세요.</p>";
         sendMailService.sendMail(from, email, title, content);
 
         return new AuthNumberResponse(code);

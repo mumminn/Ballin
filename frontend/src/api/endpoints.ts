@@ -18,5 +18,8 @@ export const ENDPOINTS = {
     STATISTIC: `${BASE_API}/statistic`,
 
     MAP: `${BASE_API}/map`,
+    SIGNUP: `${BASE_API}/users`,
+    MAIL_SEND: `${BASE_API}/auth/mail/send`,
+    MAIL_VERIFY: `${BASE_API}/auth/mail/verify`,
     
 }
