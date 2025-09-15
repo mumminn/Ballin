@@ -3,6 +3,7 @@ const BASE_API ='/api'
 export const ENDPOINTS = {
     KAKAO_LOGIN: `${BASE_API}/kakao/callback`,
     REFRESH_TOKEN: `${BASE_API}/auth/refresh`,
+    LOGIN: `${BASE_API}/auth/login`,
 
     CALENDAR_CATEGORY: `${BASE_API}/calendar/category`,
     CALENDAR_STAMP: `${BASE_API}/calendar/stamps`,

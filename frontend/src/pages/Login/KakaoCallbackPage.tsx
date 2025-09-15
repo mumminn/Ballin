@@ -1,4 +1,4 @@
-import { finishKakaoLogin } from "@/api/kakao";
+import { finishKakaoLogin } from "@/api/login/kakao";
 import { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
