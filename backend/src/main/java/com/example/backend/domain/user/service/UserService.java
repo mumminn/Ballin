@@ -6,6 +6,7 @@ import com.example.backend.domain.user.dto.response.KakaoUserInfoResponseDto;
 import com.example.backend.domain.user.mapper.UserMapper;
 import com.example.backend.domain.user.entity.UserEntity;
 import com.example.backend.domain.user.entity.SocialType;
+import com.example.backend.global.api.ApiCode;
 import com.example.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -70,7 +71,7 @@ public class UserService {
         final String email = req.getEmail().trim().toLowerCase();
 
         userMapper.findByEmail(email).ifPresent(u -> {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "이미 사용 중인 이메일입니다.");
+            throw new CustomException(HttpStatus.BAD_REQUEST, ApiCode.COMMON404, "이미 사용 중인 이메일입니다.");
         });
 
         UserEntity u = new UserEntity();
@@ -81,17 +82,5 @@ public class UserService {
         u.setSocialType(SocialType.LOCAL);
 
         userMapper.insertUser(u);
-    }
-
-    // 로컬 로그인
-    @Transactional
-    public void login(LoginRequestDto req) {
-
-        final String email = req.getEmail().trim().toLowerCase();
-
-        userMapper.findByEmail(email).ifPresent(u -> {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "이미 사용 중인 이메일입니다.");
-        });
-
     }
 }

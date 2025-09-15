@@ -1,8 +1,8 @@
 package com.example.backend.domain.user.service;
 
-import com.example.backend.domain.user.dto.request.LoginRequestDto;
 import com.example.backend.domain.user.mapper.UserMapper;
 import com.example.backend.global.JwtTokenProvider;
+import com.example.backend.global.api.ApiCode;
 import com.example.backend.global.api.ApiResponse;
 import com.example.backend.global.auth.RefreshTokenService;
 import com.example.backend.global.exception.CustomException;
@@ -79,10 +79,10 @@ public class AuthService {
     // 로그인: 이메일, 비밀번호 조회 -> 토큰 발급 및 저장
     public LoginResult login(String email, String rawPassword) {
         var user = userMapper.findByEmail(email.trim().toLowerCase())
-                .orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, "존재하지 않는 이메일입니다."));
+                .orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, ApiCode.COMMON401, "존재하지 않는 이메일입니다."));
 
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
-            throw new CustomException(HttpStatus.UNAUTHORIZED, "이메일 또는 비밀번호가 올바르지 않습니다.");
+            throw new CustomException(HttpStatus.UNAUTHORIZED, ApiCode.COMMON401, "이메일 또는 비밀번호가 올바르지 않습니다.");
         }
 
         String userId = user.getId().toString();
