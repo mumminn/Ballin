@@ -43,7 +43,7 @@ export function LoginForm({
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangePassword(e.target.value)}
-          className="pr-12" // 아이콘 자리 확보
+          className="pr-12"
         />
 
         <button
