@@ -29,8 +29,7 @@ public class AuthController {
             @CookieValue(name = "refresh_token", required = false) String refreshCookie,
             @RequestHeader(name = "X-Refresh-Token", required = false) String refreshHeader
     ) {
-        authService.logout(refreshCookie, refreshHeader);
-        return ResponseEntity.ok(ApiResponse.ok(null));
+        return authService.logout(refreshCookie, refreshHeader);
     }
 
     @PostMapping("/login")
