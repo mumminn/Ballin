@@ -64,7 +64,7 @@ export function LoginForm({
       {/* 로그인 버튼 */}
       <PrimaryButton
         type="submit"
-        className="mt-10 sm:mt-16 w-full"
+        className="mt-10 sm:mt-16"
         disabled={!(email && password)}
       >
         로그인
