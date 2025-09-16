@@ -1,6 +1,6 @@
 import axios from "axios";
-import { api, setAccessToken } from './client';
-import { ENDPOINTS } from "./endpoints";
+import { api, setAccessToken } from '../client';
+import { ENDPOINTS } from "../endpoints";
 
 export async function finishKakaoLogin(code: string): Promise<string | null> {
   const res = await api.get(ENDPOINTS.KAKAO_LOGIN, { params: {code}});

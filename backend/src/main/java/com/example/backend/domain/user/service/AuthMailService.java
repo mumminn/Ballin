@@ -1,6 +1,7 @@
 package com.example.backend.domain.user.service;
 
 import com.example.backend.domain.user.dto.response.AuthNumberResponse;
+import com.example.backend.global.api.ApiCode;
 import com.example.backend.global.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +29,7 @@ public class AuthMailService {
     // 인증 코드 전송
     public AuthNumberResponse sendCodeEmail(String email) {
         if (!rateLimitService.allow(email)) {
-            throw new CustomException(HttpStatus.TOO_MANY_REQUESTS, "Too many request.");
+            throw new CustomException(HttpStatus.TOO_MANY_REQUESTS, ApiCode.COMMON429, "Too many request.");
         }
 
         String code = generate6DigitCode();
@@ -48,10 +49,10 @@ public class AuthMailService {
     public void verifyCode(String email, String inputCode) {
         String saved = redisUtil.getAuthCode(email);
         if (saved == null) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "인증번호가 만료되었거나, 존재하지 않습니다.");
+            throw new CustomException(HttpStatus.BAD_REQUEST, ApiCode.COMMON404, "인증번호가 만료되었거나, 존재하지 않습니다.");
         }
         if (!saved.equals(inputCode)) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "인증번호가 일치하지 않습니다.");
+            throw new CustomException(HttpStatus.BAD_REQUEST, ApiCode.COMMON404, "인증번호가 일치하지 않습니다.");
         }
 
         // 사용 후 제거

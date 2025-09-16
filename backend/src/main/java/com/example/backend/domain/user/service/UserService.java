@@ -1,10 +1,12 @@
 package com.example.backend.domain.user.service;
 
+import com.example.backend.domain.user.dto.request.LoginRequestDto;
 import com.example.backend.domain.user.dto.request.SignUpRequestDto;
 import com.example.backend.domain.user.dto.response.KakaoUserInfoResponseDto;
 import com.example.backend.domain.user.mapper.UserMapper;
 import com.example.backend.domain.user.entity.UserEntity;
 import com.example.backend.domain.user.entity.SocialType;
+import com.example.backend.global.api.ApiCode;
 import com.example.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
+    // 카카오 회원가입
     @Transactional
     public UserEntity upsertFromKakao(KakaoUserInfoResponseDto info) {
         String nickname = Optional.ofNullable(info.getKakaoAccount())
@@ -61,13 +64,14 @@ public class UserService {
         return u;
     }
 
+    // 로컬 회원가입
     @Transactional
     public void register(SignUpRequestDto req) {
 
         final String email = req.getEmail().trim().toLowerCase();
 
         userMapper.findByEmail(email).ifPresent(u -> {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "이미 사용 중인 이메일입니다.");
+            throw new CustomException(HttpStatus.BAD_REQUEST, ApiCode.COMMON404, "이미 사용 중인 이메일입니다.");
         });
 
         UserEntity u = new UserEntity();

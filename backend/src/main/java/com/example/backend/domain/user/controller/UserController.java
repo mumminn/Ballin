@@ -1,5 +1,6 @@
 package com.example.backend.domain.user.controller;
 
+import com.example.backend.domain.user.dto.request.LoginRequestDto;
 import com.example.backend.domain.user.dto.request.SignUpRequestDto;
 import com.example.backend.domain.user.service.UserService;
 import com.example.backend.global.api.ApiResponse;
@@ -23,6 +24,5 @@ public class UserController {
         userService.register(req);
         return ResponseEntity.ok(ApiResponse.ok(null));
     }
-
 
 }
