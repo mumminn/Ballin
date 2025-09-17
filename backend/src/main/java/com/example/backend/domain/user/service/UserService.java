@@ -3,10 +3,12 @@ package com.example.backend.domain.user.service;
 import com.example.backend.domain.user.dto.request.LoginRequestDto;
 import com.example.backend.domain.user.dto.request.SignUpRequestDto;
 import com.example.backend.domain.user.dto.response.KakaoUserInfoResponseDto;
+import com.example.backend.domain.user.dto.response.UserResponseDto;
 import com.example.backend.domain.user.mapper.UserMapper;
 import com.example.backend.domain.user.entity.UserEntity;
 import com.example.backend.domain.user.entity.SocialType;
 import com.example.backend.global.api.ApiCode;
+import com.example.backend.global.auth.AuthUser;
 import com.example.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -82,5 +85,23 @@ public class UserService {
         u.setSocialType(SocialType.LOCAL);
 
         userMapper.insertUser(u);
+    }
+
+    @Transactional
+    public UserResponseDto getUser() {
+
+        UUID userId = AuthUser.idOrNull();
+        if (userId == null) {
+            throw new NoSuchElementException("User not authenticated");
+        }
+
+        UserEntity u = userMapper.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found: " + userId));
+
+        return UserResponseDto.builder()
+                .email(u.getEmail())
+                .name(u.getName())
+                .socialType(u.getSocialType())
+                .build();
     }
 }
