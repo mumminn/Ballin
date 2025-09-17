@@ -17,4 +17,5 @@ public interface UserMapper {
     int insertUser(UserEntity user);
     int updateUserBasic(UserEntity user);
     boolean existsByEmailExcludingId(@Param("email") String email, @Param("id") UUID id);
+    int updatePassword(@Param("id") UUID id, @Param("password") String password);
 }

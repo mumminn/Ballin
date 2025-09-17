@@ -1,6 +1,7 @@
 package com.example.backend.domain.user.controller;
 
 import com.example.backend.domain.user.dto.request.LoginRequestDto;
+import com.example.backend.domain.user.dto.request.PasswordRequestDto;
 import com.example.backend.domain.user.dto.request.SignUpRequestDto;
 import com.example.backend.domain.user.dto.request.UserRequestDto;
 import com.example.backend.domain.user.dto.response.UserResponseDto;
@@ -37,7 +38,14 @@ public class UserController {
     public ResponseEntity<ApiResponse<Void>> patchAccount(@Valid @RequestBody UserRequestDto  req) {
         userService.patchAccount(req);
         return ResponseEntity.ok(ApiResponse.ok(null));
-
     }
+
+    // 비밀번호 변경
+    @PostMapping("/edit/password")
+    public ResponseEntity<ApiResponse<Void>> changePassword(@RequestBody PasswordRequestDto req) {
+        userService.changePassword(req);
+        return ResponseEntity.ok(ApiResponse.ok(null));
+    }
+
 
 }

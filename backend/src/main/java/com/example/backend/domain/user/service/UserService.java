@@ -1,6 +1,6 @@
 package com.example.backend.domain.user.service;
 
-import com.example.backend.domain.user.dto.request.LoginRequestDto;
+import com.example.backend.domain.user.dto.request.PasswordRequestDto;
 import com.example.backend.domain.user.dto.request.SignUpRequestDto;
 import com.example.backend.domain.user.dto.request.UserRequestDto;
 import com.example.backend.domain.user.dto.response.KakaoUserInfoResponseDto;
@@ -11,13 +11,11 @@ import com.example.backend.domain.user.entity.SocialType;
 import com.example.backend.global.api.ApiCode;
 import com.example.backend.global.auth.AuthUser;
 import com.example.backend.global.exception.CustomException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -143,5 +141,31 @@ public class UserService {
         if (!changed) return;
 
         userMapper.updateUser(u);
+    }
+
+    // 비밀번호 변경
+    @Transactional
+    public void changePassword(PasswordRequestDto req) {
+        UUID userId = AuthUser.idOrNull();
+        if (userId == null) {
+            throw new NoSuchElementException("User not authenticated");
+        }
+
+        UserEntity u = userMapper.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found: " + userId));
+
+        if (!passwordEncoder.matches(req.getCurrentPassword(), u.getPassword())) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ApiCode.COMMON404, ApiCode.COMMON404.getMessage());
+        }
+
+        if (passwordEncoder.matches(req.getNewPassword(), u.getPassword())) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ApiCode.COMMON409, "새 비밀번호가 기존 비밀번호와 같습니다.");
+        }
+
+        String newPassword = passwordEncoder.encode(req.getNewPassword());
+        int updated = userMapper.updatePassword(userId, newPassword);
+        if (updated != 1) {
+            throw new IllegalArgumentException("Password change failed");
+        }
     }
 }
