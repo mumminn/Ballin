@@ -11,6 +11,7 @@ public enum ApiCode {
     COMMON401(false, "COMMON401", "인증이 필요합니다."),
     COMMON403(false, "COMMON403", "권한이 없습니다."),
     COMMON404(false, "COMMON404", "대상을 찾을 수 없습니다."),
+    COMMON409(false, "COMMON409", "이미 사용 중인 이메일입니다."),
     COMMON429(false, "COMMON429", "요청이 너무 많습니다."),
     COMMON500(false, "COMMON500", "서버 오류입니다.");
 
