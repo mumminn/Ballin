@@ -25,7 +25,7 @@ export function SettingFrom({
         maxWidth={480}
       >
         
-        <div className="mt-6 grid grid-cols-1 sm:grid-raws-3 gap-5">
+        <div className="mt-6 grid grid-cols-1 sm:grid-raws-3 gap-6">
           <LabeledButton
             type="button"
             onClick={editAccount}
