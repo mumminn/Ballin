@@ -2,6 +2,7 @@ package com.example.backend.domain.user.service;
 
 import com.example.backend.domain.user.dto.request.LoginRequestDto;
 import com.example.backend.domain.user.dto.request.SignUpRequestDto;
+import com.example.backend.domain.user.dto.request.UserRequestDto;
 import com.example.backend.domain.user.dto.response.KakaoUserInfoResponseDto;
 import com.example.backend.domain.user.dto.response.UserResponseDto;
 import com.example.backend.domain.user.mapper.UserMapper;
@@ -10,11 +11,13 @@ import com.example.backend.domain.user.entity.SocialType;
 import com.example.backend.global.api.ApiCode;
 import com.example.backend.global.auth.AuthUser;
 import com.example.backend.global.exception.CustomException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -87,6 +90,7 @@ public class UserService {
         userMapper.insertUser(u);
     }
 
+    // 회원 정보 조회
     @Transactional
     public UserResponseDto getUser() {
 
@@ -103,5 +107,41 @@ public class UserService {
                 .name(u.getName())
                 .socialType(u.getSocialType())
                 .build();
+    }
+
+    // 이메일, 이름 수정
+    @Transactional
+    public void patchAccount(UserRequestDto req) {
+
+        UUID userId = AuthUser.idOrNull();
+        if (userId == null) {
+            throw new NoSuchElementException("User not authenticated");
+        }
+
+        UserEntity u = userMapper.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found: " + userId));
+
+        boolean changed = false;
+
+
+        if (req.getName() != null) {
+            u.setName(req.getName());
+            changed = true;
+        }
+
+        if (req.getEmail() != null) {
+            String email = req.getEmail().trim().toLowerCase();
+            if(!email.equalsIgnoreCase(u.getEmail())) {
+                if (userMapper.existsByEmailExcludingId(email, userId)) {
+                    throw new CustomException(HttpStatus.CONFLICT, ApiCode.COMMON409, ApiCode.COMMON409.getMessage());
+                }
+                u.setEmail(email);
+                changed = true;
+            }
+        }
+
+        if (!changed) return;
+
+        userMapper.updateUser(u);
     }
 }

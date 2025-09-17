@@ -12,6 +12,9 @@ public interface UserMapper {
     Optional<UserEntity> findById(@Param("id") UUID id);
     Optional<UserEntity> findByEmail(@Param("email") String email);
 
+    int updateUser(UserEntity userEntity);
+
     int insertUser(UserEntity user);
     int updateUserBasic(UserEntity user);
+    boolean existsByEmailExcludingId(@Param("email") String email, @Param("id") UUID id);
 }
