@@ -19,7 +19,10 @@ export const ENDPOINTS = {
     STATISTIC: `${BASE_API}/statistic`,
 
     MAP: `${BASE_API}/map`,
-    SIGNUP: `${BASE_API}/users`,
+    USERS: `${BASE_API}/users`,
+    EDIT: `${BASE_API}/users/edit`,
+    EDIT_PASSWORD: `${BASE_API}/users/edit/password`,
+    
     MAIL_SEND: `${BASE_API}/auth/mail/send`,
     MAIL_VERIFY: `${BASE_API}/auth/mail/verify`,
     

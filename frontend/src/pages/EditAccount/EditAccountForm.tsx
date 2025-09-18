@@ -136,29 +136,28 @@ export function EditAccountForm({
                 )}
         
                 {/* 인증 코드 입력 */}
-                {!verified ? (
-                <div className="flex w-80 mx-auto mt-5 gap-3">
-                  <InputField
-                    sizeVariant="half"
-                    type="text"
-                    value={code}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeCode(e.target.value)}
-                  />
-                  <PrimaryButton
-                    type="button"
-                    sizeVariant="half"
-                    onClick={onVerifyCode}
-                    disabled={!code.trim() || verifying}
-                  >
-                    확인
-                  </PrimaryButton>
-                </div>
+                {!disabledAll && (!verified ? (
+                  <div className="flex w-80 mx-auto mt-5 gap-3">
+                    <InputField
+                      sizeVariant="half"
+                      type="text"
+                      value={code}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangeCode(e.target.value)}
+                    />
+                    <PrimaryButton
+                      type="button"
+                      sizeVariant="half"
+                      onClick={onVerifyCode}
+                      disabled={!code.trim() || verifying}
+                    >
+                      확인
+                    </PrimaryButton>
+                  </div>
                 ) : (
-                    <div className="w-80 mx-auto mt-5 text-green-700 font-semibold">
-                        인증되었습니다.
-                    </div>
-                )}
-
+                  <div className="w-80 mx-auto mt-5 text-green-700 font-semibold">
+                    인증되었습니다.
+                  </div>
+                ))}
             
             <InputField
                 containerClassName="mt-6"

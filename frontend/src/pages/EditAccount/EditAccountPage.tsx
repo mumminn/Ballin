@@ -1,33 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EditAccountForm } from "./EditAccountForm";
 import { send } from "@/api/singup/sendMail";
 import { verify } from "@/api/singup/verifyMail";
+import { getUser } from "@/api/setting/getUser";
+import { edit } from "@/api/setting/edit";
+import { editPassword } from "@/api/setting/editPassword";
 
-type Profile = {
-  email: string;
-  name: string;
-  social_type: string;
-};
-
-async function getProfileMock(): Promise<Profile> {
-  return Promise.resolve({
-    email: "user@example.com",
-    name: "홍길동",
-    social_type: "local",
-  });
-}
+type Profile = { email: string; name: string; socialType?: string };
 
 export default function AccountEditPage() {
   const navigate = useNavigate();
-
+  
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [code, setCode] = useState('');
-
-
+  const [code, setCode] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+ 
+  const [initial, setInitial] = useState<{ email: string; name: string }>({ email: "", name: "" });
 
   const [saving, setSaving] = useState(false);
   const [isKakao, setIsKakao] = useState(false);
@@ -36,26 +27,31 @@ export default function AccountEditPage() {
   const [verifying, setVerifying] = useState(false);
   const [verified, setVerified] = useState(false);
 
-  
-  // 타이머 상태
   const [showTimer, setShowTimer] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(0);
-
-  const mmss = (sec: number) => {
-      const m = Math.floor(sec / 60).toString();
-      const s = (sec % 60).toString().padStart(2, '0');
-      return `${m}:${s}`;
-    };
+  const mmss = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
 
   useEffect(() => {
     (async () => {
       try {
-        // const profile = await getProfile();
-        const profile = await getProfileMock();
+        const profile: Profile = await getUser();
+  
+        const kakao =
+          (profile.socialType ?? "")
+            .toString()
+            .toLowerCase() === "kakao";
+  
+        setIsKakao(kakao);
+  
+        setInitial({ email: profile.email ?? "", name: profile.name ?? "" });
 
-        setEmail(profile.email ?? "");
-        setName(profile.name ?? "");
-        setIsKakao((profile.social_type ?? "").toLowerCase() === "kakao");
+        if (kakao) {
+          setEmail("");
+          setName("");
+        } else {
+          setEmail(profile.email ?? "");
+          setName(profile.name ?? "");
+        }
       } catch (e) {
         console.error(e);
         alert("프로필 정보를 불러오지 못했습니다.");
@@ -63,57 +59,97 @@ export default function AccountEditPage() {
     })();
   }, []);
 
+  // 변경 여부 계산
+  const emailChanged = useMemo(
+    () => email.trim().toLowerCase() !== initial.email.trim().toLowerCase(),
+    [email, initial.email]
+  );
+  const nameChanged = useMemo(
+    () => name.trim() !== initial.name.trim(),
+    [name, initial.name]
+  );
+  const passwordChanged = useMemo(
+    () => !!currentPassword.trim() && !!newPassword.trim() && currentPassword !== newPassword,
+    [currentPassword, newPassword]
+  );
+
+  useEffect(() => {
+    setVerified(!emailChanged);
+    setCode("");
+  }, [emailChanged]);
+
+
   const onSendCode = async () => {
     if (!email) return;
     try {
       setSending(true);
-      await send({email});
+      await send({ email });
       setSecondsLeft(180);
-
       setShowTimer(true);
-
-      alert('인증번호 전송 완료');
+      alert("인증번호 전송 완료");
     } finally {
       setSending(false);
     }
-  }
-
-  const onResendCode = async () => {
-    await send({email});
-    setSecondsLeft(180); // 타이머 리셋
   };
 
-      // 1초 간격 감소
-      useEffect(() => {
-        if (!showTimer || verified || secondsLeft <= 0) return;
-        const id = setInterval(() => setSecondsLeft(s => s - 1), 1000);
-        return () => clearInterval(id);
-    }, [showTimer, secondsLeft, verified]);
+  const onResendCode = async () => {
+    await send({ email });
+    setSecondsLeft(180);
+  };
 
-    // 확인
-    const onVerifyCode = async () => {
-        try {
-        setVerifying(true);
-        await verify({ email, code });
-        setVerified(true);
-        setShowTimer(false);
-        setSecondsLeft(0);
-        } finally {
-        setVerifying(false);
-        }
-    };
+  useEffect(() => {
+    if (!showTimer || verified || secondsLeft <= 0) return;
+    const id = setInterval(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => clearInterval(id);
+  }, [showTimer, secondsLeft, verified]);
+
+
+  const onVerifyCode = async () => {
+    try {
+      setVerifying(true);
+      await verify({ email, code });
+      setVerified(true);
+      setShowTimer(false);
+      setSecondsLeft(0);
+    } finally {
+      setVerifying(false);
+    }
+  };
+
 
   const onSubmit = async () => {
     if (isKakao) return;
-    if (!email.trim() || !name.trim() || !currentPassword.trim() || !newPassword.trim()) {
-      return alert("모든 항목을 입력해주세요.");
+
+    if (emailChanged && !verified) {
+      alert("이메일 변경 시 인증이 필요합니다. 인증을 완료해주세요.");
+      return;
+    }
+
+    const patch: Partial<Pick<Profile, "email" | "name">> = {};
+    if (emailChanged) patch.email = email.trim();
+    if (nameChanged) patch.name = name.trim();
+
+    if (!emailChanged && !nameChanged && !passwordChanged) {
+      alert("변경된 내용이 없습니다.");
+      return;
     }
 
     try {
       setSaving(true);
-      // await updateAccount({ email, name, currentPassword, newPassword });
 
-      console.log("account edit payload", { email, name, currentPassword, newPassword });
+      
+      if (emailChanged || nameChanged) {
+        await edit(patch);
+
+        setInitial((p) => ({ email: patch.email ?? p.email, name: patch.name ?? p.name }));
+      }
+
+      if (passwordChanged) {
+        await editPassword({ currentPassword, newPassword });
+        setCurrentPassword("");
+        setNewPassword("");
+      }
+
       alert("변경사항이 저장되었습니다.");
       navigate(-1);
     } finally {
