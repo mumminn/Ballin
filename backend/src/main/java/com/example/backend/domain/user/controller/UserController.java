@@ -47,5 +47,12 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.ok(null));
     }
 
+    // 회원탈퇴(삭제)
+    @DeleteMapping
+    public ResponseEntity<ApiResponse<Void>> delete() {
+        userService.delete();
+        return ResponseEntity.ok(ApiResponse.ok(null));
+    }
+
 
 }

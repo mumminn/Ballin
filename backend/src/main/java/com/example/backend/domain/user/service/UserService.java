@@ -168,4 +168,15 @@ public class UserService {
             throw new IllegalArgumentException("Password change failed");
         }
     }
+
+    // 회원 탈퇴(삭제)
+    @Transactional
+    public void delete() {
+        UUID userId = AuthUser.idOrNull();
+        if (userId == null) {
+            throw new NoSuchElementException("User not authenticated");
+        }
+
+        userMapper.delete(userId);
+    }
 }
