@@ -31,6 +31,8 @@ interface EditAccountFormProps {
   saving?: boolean;
 
   disabledAll?: boolean;
+  canSubmit?: boolean;
+  needsEmailVerify?: boolean;
 
   noticeText?: string;
 
@@ -60,17 +62,13 @@ export function EditAccountForm({
   formatTime,
   saving,
   disabledAll = false,
+  canSubmit,
+  needsEmailVerify = false,
   noticeText,
   sending,
   verifying,
   verified,
 }: EditAccountFormProps) {
-  const canSubmit =
-    !disabledAll &&
-    email.trim() !== "" &&
-    name.trim() !== "" &&
-    currentPassword.trim() !== "" &&
-    newPassword.trim() !== "";
 
   const Notice = () =>
     noticeText ? (
@@ -78,6 +76,13 @@ export function EditAccountForm({
         {noticeText}
       </div>
     ) : null;
+
+    const canSendCode =
+      needsEmailVerify &&
+      !disabledAll &&
+      !verified &&
+      !sending &&
+      !!email.trim();
 
   return (
 
@@ -112,11 +117,13 @@ export function EditAccountForm({
             disabled={disabledAll}
             />
 
+              {needsEmailVerify && (
+                <>
                 {(!showTimer || verified)? (
                     <PrimaryButton
                     type="button"
                     onClick={onSendCode}
-                    disabled={!email || sending || verified}
+                    disabled={!canSendCode}
                     className="mt-5"
                     >
                     인증번호 전송
@@ -158,7 +165,9 @@ export function EditAccountForm({
                     인증되었습니다.
                   </div>
                 ))}
-            
+                </>
+              )}
+              
             <InputField
                 containerClassName="mt-6"
                 type="password"

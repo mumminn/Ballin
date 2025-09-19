@@ -6,6 +6,7 @@ import { verify } from "@/api/singup/verifyMail";
 import { getUser } from "@/api/setting/getUser";
 import { edit } from "@/api/setting/edit";
 import { editPassword } from "@/api/setting/editPassword";
+import axios from "axios";
 
 type Profile = { email: string; name: string; socialType?: string };
 
@@ -30,6 +31,15 @@ export default function AccountEditPage() {
   const [showTimer, setShowTimer] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const mmss = (sec: number) => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
+
+  const getErrMsg = (err: unknown) => {
+    if (axios.isAxiosError(err)) {
+      const data = err.response?.data as { message?: string } | string | undefined;
+      if (typeof data === "string") return data;
+      return data?.message ?? err.message;
+    }
+    return (err as Error)?.message ?? "정보 변경 실패";
+  }
 
   useEffect(() => {
     (async () => {
@@ -73,11 +83,23 @@ export default function AccountEditPage() {
     [currentPassword, newPassword]
   );
 
-  useEffect(() => {
-    setVerified(!emailChanged);
-    setCode("");
-  }, [emailChanged]);
 
+  const profileCanSubmit =
+  (emailChanged || nameChanged) &&
+  (!emailChanged || verified) && 
+  (!emailChanged || !!email.trim()) &&
+  (!nameChanged || !!name.trim());    
+
+  const canSubmit = !isKakao && (profileCanSubmit || passwordChanged);
+
+  useEffect(() => {
+    if (emailChanged) {
+      setVerified(false);
+      setCode("");
+      setShowTimer(false);
+      setSecondsLeft(0);
+    }
+  }, [emailChanged]);
 
   const onSendCode = async () => {
     if (!email) return;
@@ -139,15 +161,24 @@ export default function AccountEditPage() {
 
       
       if (emailChanged || nameChanged) {
-        await edit(patch);
-
-        setInitial((p) => ({ email: patch.email ?? p.email, name: patch.name ?? p.name }));
+        try {
+          await edit(patch);
+          setInitial((p) => ({ email: patch.email ?? p.email, name: patch.name ?? p.name }));
+        } catch (e) {
+          alert(getErrMsg(e));
+          return;
+        }
       }
 
       if (passwordChanged) {
-        await editPassword({ currentPassword, newPassword });
-        setCurrentPassword("");
-        setNewPassword("");
+        try {
+          await editPassword({ currentPassword, newPassword });
+          setCurrentPassword("");
+          setNewPassword("");
+        } catch (e) {
+          alert(getErrMsg(e));
+          return;
+        }
       }
 
       alert("변경사항이 저장되었습니다.");
@@ -179,6 +210,8 @@ export default function AccountEditPage() {
       showTimer={showTimer}
       secondsLeft={secondsLeft}
       formatTime={mmss}
+      canSubmit={canSubmit}
+      needsEmailVerify={emailChanged}
       disabledAll={isKakao}
       noticeText={isKakao ? "카카오로 회원가입 된 계정입니다." : undefined}
     />
