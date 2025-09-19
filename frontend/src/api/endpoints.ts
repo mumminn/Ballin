@@ -4,6 +4,9 @@ export const ENDPOINTS = {
     KAKAO_LOGIN: `${BASE_API}/kakao/callback`,
     REFRESH_TOKEN: `${BASE_API}/auth/refresh`,
     LOGIN: `${BASE_API}/auth/login`,
+    LOGOUT: `${BASE_API}/auth/logout`,
+
+    SIGNUP: `${BASE_API}/users/signup`,
 
     CALENDAR_CATEGORY: `${BASE_API}/calendar/category`,
     CALENDAR_STAMP: `${BASE_API}/calendar/stamps`,
