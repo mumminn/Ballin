@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -22,6 +23,11 @@ public class AuthService {
     private final RefreshTokenService refreshTokens;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+
+    private String stripBearer(String header) {
+        if (header == null) return null;
+        return header.startsWith("Bearer ") ? header.substring(7) : header;
+    }
 
     // 리프레시: 검증 -> 새 토큰 발급 -> 저장소/쿠키 갱신 -> 헤더/쿠키 반환
     public ResponseEntity<Void> refresh(String refreshCookie, String refreshHeader) {
@@ -58,9 +64,10 @@ public class AuthService {
 
     // 로그아웃: 서버 저장소 토큰 제거 -> 쿠키 무효화
     public ResponseEntity<ApiResponse<Void>> logout(String refreshCookie, String refreshHeader) {
-        String refresh = (refreshCookie != null) ? refreshCookie : refreshHeader;
+        String refresh = (refreshCookie != null) ? refreshCookie : stripBearer(refreshHeader);
         if (refresh != null && jwt.isValid(refresh)) {
             String userId = jwt.getSubject(refresh);
+
             refreshTokens.delete(userId);
         }
 

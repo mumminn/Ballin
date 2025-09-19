@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     // 회원가입
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Void>> register(@Valid @RequestBody SignUpRequestDto req) {
         userService.register(req);
         return ResponseEntity.ok(ApiResponse.ok(null));
