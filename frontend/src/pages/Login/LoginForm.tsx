@@ -43,7 +43,7 @@ export function LoginForm({
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChangePassword(e.target.value)}
-          className="pr-12" // 아이콘 자리 확보
+          className="pr-12"
         />
 
         <button
@@ -64,7 +64,7 @@ export function LoginForm({
       {/* 로그인 버튼 */}
       <PrimaryButton
         type="submit"
-        className="mt-10 sm:mt-16 w-full"
+        className="mt-10 sm:mt-16"
         disabled={!(email && password)}
       >
         로그인

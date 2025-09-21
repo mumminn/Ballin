@@ -53,4 +53,32 @@
         WHERE id = #{id, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
     </update>
 
+    <update id="updateUser" parameterType="com.example.backend.domain.user.entity.UserEntity">
+        UPDATE `user`
+        <set>
+            <if test="email != null"> email = #{email}, </if>
+            <if test="name != null"> name = #{name}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    
+    <select id="existsByEmailExcludingId" resultType="boolean">
+        SELECT EXISTS(
+            SELECT 1 FROM `user`
+            WHERE LOWER(email) = LOWER(#{email})
+            AND id != #{id}
+        )
+    </select>
+
+    <update id="updatePassword">
+        UPDATE `user`
+        SET password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.util.UUID">
+        DELETE FROM `user`
+        WHERE id = #{id}
+    </delete>
+
 </mapper>

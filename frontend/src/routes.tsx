@@ -12,6 +12,8 @@ import RequireAuth from '@/routes/RequireAuth';
 import RecordEditDetailPage from '@/pages/RecordEditDetail/RecordEditDetailPage';
 import StatisticPage from '@/pages/Statistic/StatisticPage';
 import MapPage from '@/pages/Map/MapPage';
+import SettingPage from '@/pages/Setting/SettingPage';
+import EditAccountPage from '@/pages/EditAccount/EditAccountPage';
 
 export const PATH = {
   root: '/',
@@ -30,6 +32,10 @@ export const PATH = {
   statistic: '/statistic',
 
   map: '/map',
+
+  setting: '/settings',
+  editAccount: '/settings/edit',
+
 };
 
 export default function AppRoutes() {
@@ -50,6 +56,9 @@ export default function AppRoutes() {
         <Route path={PATH.statistic} element={<StatisticPage />} />
         <Route path={PATH.map} element={<MapPage />} />
       </Route>
+
+      <Route path={PATH.setting} element={<SettingPage />} />
+      <Route path={PATH.editAccount} element={<EditAccountPage />} />
 
 
       {/* 404 */}
