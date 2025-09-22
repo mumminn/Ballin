@@ -32,6 +32,8 @@ interface RecordCreateDetailProps {
     onChangeOpponentTeam: (opponentTeam: string) => void;
     onChangeSeat: (seat: string) => void;
     onChangeReview: (review: string) => void;
+
+    gameSelectModal?: React.ReactNode;
 }
 
 export function RecordCreateDetailForm({
@@ -55,6 +57,7 @@ export function RecordCreateDetailForm({
     onMatchData,
     onChangeSeat,
     onChangeReview,
+    gameSelectModal,
 }: RecordCreateDetailProps) {
     return (
         <SubLayout
@@ -65,6 +68,8 @@ export function RecordCreateDetailForm({
             className="!pt-4 md:!pt-6"
         >
             <div className="w-full max-w-[480px] mx-auto min-h-dvh overflow-y-auto pb-[72px]">
+
+                {gameSelectModal}
 
                 <div className="grid grid-cols-9 justify-items-center gap-[clamp(15px,6vw,30px)]">
                     <InputField
@@ -100,6 +105,7 @@ export function RecordCreateDetailForm({
                     />
                     {loadingMatch && <p className="col-span-full text-sm text-gray-500">경기 정보를 불러오는 중…</p>}
                     {matchError && <p className="col-span-full text-sm text-red-500">불러오기 실패: {matchError}</p>}
+                    
 
                     <RecordScore
                         containerClassName="col-span-full"
@@ -134,6 +140,7 @@ export function RecordCreateDetailForm({
 
                 </div>
             </div>
+            
 
         </SubLayout>
 
