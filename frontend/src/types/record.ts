@@ -37,4 +37,5 @@ export type RecordDetailItem = {
     opposingTeamScore: number;
     seat: string;
     review: string;
+    dh: string;
 }

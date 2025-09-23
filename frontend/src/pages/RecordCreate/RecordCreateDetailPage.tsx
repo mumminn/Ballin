@@ -11,6 +11,8 @@ import { GameSelectModal } from '@/components/record/GameSelectModal';
 import { Game, TeamOption } from '@/types/record';
 import { Sport } from '@/types/calendar';
 
+type DhType = "DH1" | "DH2" | null;
+
 function buildScraperUrl(sport: Sport, date: string) {
   return sport === 'baseball'
     ? `https://m.sports.naver.com/kbaseball/schedule/index?date=${date}`
@@ -71,10 +73,18 @@ export default function RecordCreateDetailPage() {
   const [gameOptions, setGameOptions] = useState<Game[]>([]);
   const [showGameSelectModal, setShowGameSelectModal] = useState(false);
 
+  const [dh, setDh] = useState<DhType>(null);
+
   const navigate = useNavigate();
 
   const { sport: sportParam } = useParams<{ sport?: string }>();
   const sport: Sport = sportParam === 'basketball' || sportParam === 'baseball' ? sportParam : 'baseball';
+
+  useEffect(() => {
+    setDh(null);
+    setGameOptions([]);
+    setShowGameSelectModal(false);
+  }, [myTeam, date]);
 
   useEffect(() => {
     let alive = true;
@@ -126,11 +136,13 @@ export default function RecordCreateDetailPage() {
       }
 
       if (filtered.length > 1) {
-        setGameOptions(filtered);
+        setGameOptions(filtered.slice(0, 2));
+        setDh(null);
         setShowGameSelectModal(true);
         return;
       }
 
+      setDh(null);
       applyGameData(filtered[0], myTeam, setOpponentTeam, setScore, setHomeTeam, setShowGameSelectModal);
 
     } catch (e: any) {
@@ -161,6 +173,7 @@ export default function RecordCreateDetailPage() {
       myScore,
       opponentScore,
       review,
+      dh,
     };
 
     try {
@@ -200,7 +213,11 @@ export default function RecordCreateDetailPage() {
           <GameSelectModal
             gameOptions={gameOptions}
             myTeam={myTeam}
-            onSelect={(game) => 
+            onSelect={(game) => {
+
+              const idx = gameOptions.findIndex(g => g === game);
+              setDh(idx === 0 ? "DH1" : idx === 1 ? "DH2" : null)
+
               applyGameData(
                 game,
                 myTeam,
@@ -209,7 +226,7 @@ export default function RecordCreateDetailPage() {
                 setHomeTeam,
                 setShowGameSelectModal
               )
-            }
+            }}
             onClose={() => setShowGameSelectModal(false)}
           />
         )}
