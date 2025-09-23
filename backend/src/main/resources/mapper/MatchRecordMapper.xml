@@ -19,6 +19,7 @@
         <result column="match_image_filename"      property="imageFileName"/>
         <result column="match_image_size"          property="imageSize"        jdbcType="BIGINT"/>
         <result column="seat" property="seat"/>
+        <result column="dh" property="dh"/>
         <result column="created_dt"  property="createdDt"   javaType="java.time.Instant"/>
         <result column="updated_dt"  property="updatedDt"   javaType="java.time.Instant"/>
         <result column="created_id"  property="createdId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
@@ -41,7 +42,7 @@
     <insert id="insert" parameterType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
         INSERT INTO match_record(
             id, user_id, supporting_team_id, opposing_team_id, stadium_id, category_id, match_date, supporting_team_score, opposing_team_score,
-            team_result, review, seat, match_image, match_image_content_type, match_image_filename, match_image_size, created_id, updated_id
+            team_result, review, seat, match_image, match_image_content_type, match_image_filename, match_image_size, dh, created_id, updated_id
         ) VALUES (
             #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
             #{userId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
@@ -50,7 +51,7 @@
             #{stadiumId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
             #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
             #{matchDate}, #{supportingTeamScore}, #{opposingTeamScore}, #{teamResult}, #{review}, #{seat},
-            #{image, jdbcType=BLOB}, #{imageContentType}, #{imageFileName}, #{imageSize},
+            #{image, jdbcType=BLOB}, #{imageContentType}, #{imageFileName}, #{imageSize}, #{dh},
             #{createdId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
             #{updatedId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
         )

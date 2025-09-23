@@ -40,6 +40,7 @@ public class MatchRecordConverter {
                 .opposingTeamScore(req.getOpponentScore())
                 .review(req.getReview())
                 .seat(req.getSeat())
+                .dh(req.getDh())
                 .build();
     }
 }
