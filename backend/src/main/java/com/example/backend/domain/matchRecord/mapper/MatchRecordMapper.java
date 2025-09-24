@@ -21,4 +21,5 @@ public interface MatchRecordMapper {
      Optional<MatchImageRow> findImageById(@Param("recordId") UUID recordId);
      int deleteRecord(@Param("recordId") UUID recordId);
      int updateRecord(@Param("recordId") UUID recordId, @Param("p") PutParam p);
+     MatchRecordEntity getMatchRecordById(@Param("recordId") UUID recordId);
 }

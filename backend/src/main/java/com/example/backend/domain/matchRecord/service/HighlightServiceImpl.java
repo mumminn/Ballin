@@ -1,6 +1,10 @@
 package com.example.backend.domain.matchRecord.service;
 
-import com.example.backend.domain.matchRecord.dto.request.HighlightsRequestDto;
+import com.example.backend.domain.category.mapper.CategoryMapper;
+import com.example.backend.domain.matchRecord.entity.MatchRecordEntity;
+import com.example.backend.domain.matchRecord.mapper.MatchRecordMapper;
+import com.example.backend.domain.team.entity.TeamEntity;
+import com.example.backend.domain.team.mapper.TeamMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,28 +15,48 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class HighlightServiceImpl implements HighlightService {
+
+    private final MatchRecordMapper matchRecordMapper;
+    private final CategoryMapper categoryMapper;
+    private final TeamMapper teamMapper;
 
     @Value("${YT_API_KEY}")
     private String ytKey;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private static final ZoneId KST = ZoneId.of("Asia/Seoul");
+
+    // Instant -> LocalDate
+    private static LocalDate toKstDate(Instant instant) {
+        return instant.atZone(KST).toLocalDate();
+    }
+
     @Override
-    public String resolveYoutubeUrl(HighlightsRequestDto req) {
-        final String q = buildQuery(req);
+    public String resolveYoutubeUrl(UUID recordId) {
+
+        MatchRecordEntity mr = matchRecordMapper.getMatchRecordById(recordId);
+
+        String category = Optional.ofNullable(categoryMapper.findById(mr.getCategoryId()))
+                .orElse("");
+
+        TeamEntity t1 = teamMapper.findById(mr.getSupportingTeamId());
+        TeamEntity t2 = teamMapper.findById(mr.getOpposingTeamId());
+
+        LocalDate d = toKstDate(mr.getMatchDate());
+
+        final String q = buildQuery(d, category, t1, t2, mr.getDh());
 
         String[][] windows = new String[][] {
-                { toRfc3339StartOfDayUtc(req.getDate()), toRfc3339StartOfNextDayUtc(req.getDate()) },
-                { toRfc3339StartOfDayUtc(req.getDate().minusDays(1)), toRfc3339StartOfNextDayUtc(req.getDate()) },
-                { toRfc3339StartOfDayUtc(req.getDate()), toRfc3339StartOfNextDayUtc(req.getDate().plusDays(1)) }
+                { toRfc3339StartOfDayUtc(d), toRfc3339StartOfNextDayUtc(d) }, // 경기 당일
+                { toRfc3339StartOfDayUtc(d.minusDays(1)), toRfc3339StartOfNextDayUtc(d) }, // 경기 전날 ~ 당일
+                { toRfc3339StartOfDayUtc(d), toRfc3339StartOfNextDayUtc(d.plusDays(1)) }, // 경기 당일 ~ 다음날
         };
-
 
         for (String[] w : windows) {
             String url = searchFirstWatchUrl(q, w[0], w[1], "date");
@@ -42,6 +66,7 @@ public class HighlightServiceImpl implements HighlightService {
             if (url != null) return url;
         }
 
+        // 날짜 필터 없이 검색
         String url = searchFirstWatchUrl(q, null, null, "date");
         if (url != null) return url;
 
@@ -49,6 +74,7 @@ public class HighlightServiceImpl implements HighlightService {
         if (url != null) return url;
 
 
+        // 모든 검색에 실패하면 YouTube 검색 결과 페이지 URL 반환
         return "https://www.youtube.com/results?search_query=" +
                 URLEncoder.encode(q, StandardCharsets.UTF_8);
     }
@@ -70,33 +96,61 @@ public class HighlightServiceImpl implements HighlightService {
             if (beforeUtc != null) ub.queryParam("publishedBefore", beforeUtc);
             if (order != null)     ub.queryParam("order", order);
 
-            Map<?, ?> body = restTemplate.getForObject(ub.toUriString(), Map.class);
+
+            java.net.URI uri = ub.build().toUri();
+            System.out.println("YouTube API 요청 URL: " + uri);
+
+            Map<?, ?> body = restTemplate.getForObject(uri, Map.class);
+
             String videoId = extractFirstVideoId(body);
-            System.out.println(body);
+            System.out.println("YouTube API 응답 본문: " + body);
+
             return (videoId == null || videoId.isBlank())
                     ? null
                     : "https://www.youtube.com/watch?v=" + videoId;
 
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            System.err.println("YouTube API 호출 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
 
-    private String buildQuery(HighlightsRequestDto req) {
-        String sport = req.getSport();
-        String dateKo = String.format("%d년 %d월 %d일",
-                req.getDate().getYear(),
-                req.getDate().getMonthValue(),
-                req.getDate().getDayOfMonth());
+    private String buildQuery(LocalDate d, String category, TeamEntity t1, TeamEntity t2, String dh) {
+        String dateKo = String.format("%d년 %d월 %d일", d.getYear(), d.getMonthValue(), d.getDayOfMonth());
 
-        String base = String.join(" ", dateKo, req.getTeam1(), req.getTeam2(), "하이라이트");
+        List<String> supTokens = uniqTokens(t1 == null ? null : t1.getTeamName());
 
-        if ("baseball".equalsIgnoreCase(sport)) {
-            return base + " KBO 야구";
-        } else if ("basketball".equalsIgnoreCase(sport)) {
-            return base + " KBL 농구";
+        List<String> oppTokens = uniqTokens(t2 == null ? null : t2.getTeamName());
+
+
+        String league = switch (category == null ? "" : category.toLowerCase()) {
+            case "baseball" -> "KBO 야구";
+            case "basketball" -> "KBL 농구";
+            default ->  "";
+        };
+
+        String dhToken = (dh != null && !dh.isBlank()) ? dh.trim() : "";
+
+        return String.join(" ",
+                dateKo,
+                String.join(" ", supTokens),
+                String.join(" ", oppTokens),
+                "하이라이트",
+                league,
+                dhToken
+        ).replaceAll("\\s+", " ").trim();
+    }
+
+    private List<String> uniqTokens(String... arr){
+        if (arr == null || arr.length == 0) return new ArrayList<>();
+        Set<String> set = new LinkedHashSet<>();
+        for (String s : arr) {
+            if (s == null) continue;
+            String t = s.trim();
+            if (!t.isEmpty()) set.add(t);
         }
-        return base;
+        return new ArrayList<>(set);
     }
 
     private String toRfc3339StartOfDayUtc(LocalDate date) {

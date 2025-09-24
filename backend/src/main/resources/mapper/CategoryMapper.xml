@@ -12,7 +12,7 @@
         <result column="updated_id"  property="updatedId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
     </resultMap>
 
-    <select id="findById" resultType="com.example.backend.domain.category.entity.CategoryEntity">
+    <select id="findById" parameterType="string" resultType="string">
         SELECT category_name
         FROM  category
         WHERE id = #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}

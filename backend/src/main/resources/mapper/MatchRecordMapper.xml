@@ -61,4 +61,10 @@
         DELETE FROM match_record
         WHERE id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
     </delete>
+
+    <select id="getMatchRecordById" resultType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
+        SELECT *
+        FROM match_record
+        WHERE id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+    </select>
 </mapper>

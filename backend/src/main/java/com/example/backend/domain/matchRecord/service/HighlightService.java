@@ -1,7 +1,8 @@
 package com.example.backend.domain.matchRecord.service;
 
-import com.example.backend.domain.matchRecord.dto.request.HighlightsRequestDto;
+
+import java.util.UUID;
 
 public interface HighlightService {
-    String resolveYoutubeUrl (HighlightsRequestDto highlightsRequestDto);
+    String resolveYoutubeUrl (UUID recordId);
 }
