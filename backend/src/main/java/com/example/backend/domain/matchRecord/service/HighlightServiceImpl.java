@@ -5,14 +5,15 @@ import com.example.backend.domain.matchRecord.entity.MatchRecordEntity;
 import com.example.backend.domain.matchRecord.mapper.MatchRecordMapper;
 import com.example.backend.domain.team.entity.TeamEntity;
 import com.example.backend.domain.team.mapper.TeamMapper;
+import com.example.backend.global.api.ApiCode;
+import com.example.backend.global.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -37,6 +38,11 @@ public class HighlightServiceImpl implements HighlightService {
         return instant.atZone(KST).toLocalDate();
     }
 
+    private static final List<String> TRUSTED_CHANNEL_IDS = List.of(
+            "UC8JtQf77wqhVpOQ8Cze8JjA", // TVING SPORTS
+            "UCoVz66yWHzVsXAFG8WhJK9g"  // KBO
+    );
+
     @Override
     public String resolveYoutubeUrl(UUID recordId) {
 
@@ -53,34 +59,34 @@ public class HighlightServiceImpl implements HighlightService {
         final String q = buildQuery(d, category, t1, t2, mr.getDh());
 
         String[][] windows = new String[][] {
-                { toRfc3339StartOfDayUtc(d), toRfc3339StartOfNextDayUtc(d) }, // 경기 당일
-                { toRfc3339StartOfDayUtc(d.minusDays(1)), toRfc3339StartOfNextDayUtc(d) }, // 경기 전날 ~ 당일
-                { toRfc3339StartOfDayUtc(d), toRfc3339StartOfNextDayUtc(d.plusDays(1)) }, // 경기 당일 ~ 다음날
+                { toRfc3339StartOfDayUtc(d), toRfc3339StartOfNextDayUtc(d) },
+                { toRfc3339StartOfDayUtc(d.minusDays(1)), toRfc3339StartOfNextDayUtc(d) },
+                { toRfc3339StartOfDayUtc(d), toRfc3339StartOfNextDayUtc(d.plusDays(1)) },
+                { toRfc3339StartOfDayUtc(d), toRfc3339StartOfNextDayUtc(d.plusDays(7)) },
         };
 
-        for (String[] w : windows) {
-            String url = searchFirstWatchUrl(q, w[0], w[1], "date");
-            if (url != null) return url;
 
-            url = searchFirstWatchUrl(q, w[0], w[1], null);
-            if (url != null) return url;
+        for (String channelId : TRUSTED_CHANNEL_IDS) {
+            for (String[] w : windows) {
+                // channelId 파라미터를 추가해서 검색
+                String url = searchFirstWatchUrl(q, w[0], w[1], "date", channelId);
+                if (url != null) return url;
+
+                url = searchFirstWatchUrl(q, w[0], w[1], null, channelId);
+                if (url != null) return url;
+            }
         }
 
-        // 날짜 필터 없이 검색
-        String url = searchFirstWatchUrl(q, null, null, "date");
-        if (url != null) return url;
 
-        url = searchFirstWatchUrl(q, null, null, null);
-        if (url != null) return url;
-
-
-        // 모든 검색에 실패하면 YouTube 검색 결과 페이지 URL 반환
-        return "https://www.youtube.com/results?search_query=" +
-                URLEncoder.encode(q, StandardCharsets.UTF_8);
+        throw new CustomException(
+                HttpStatus.NOT_FOUND,
+                ApiCode.COMMON404,
+                "하이라이트 영상을 찾을 수 없습니다."
+        );
     }
 
     // 실제 API 호출
-    private String searchFirstWatchUrl(String q, String afterUtc, String beforeUtc, String order) {
+    private String searchFirstWatchUrl(String q, String afterUtc, String beforeUtc, String order, String channelId) {
         try {
             var ub = UriComponentsBuilder
                     .fromHttpUrl("https://www.googleapis.com/youtube/v3/search")
@@ -95,6 +101,8 @@ public class HighlightServiceImpl implements HighlightService {
             if (afterUtc != null)  ub.queryParam("publishedAfter", afterUtc);
             if (beforeUtc != null) ub.queryParam("publishedBefore", beforeUtc);
             if (order != null)     ub.queryParam("order", order);
+            if (channelId != null) ub.queryParam("channelId", channelId);
+
 
 
             java.net.URI uri = ub.build().toUri();
@@ -117,16 +125,21 @@ public class HighlightServiceImpl implements HighlightService {
     }
 
     private String buildQuery(LocalDate d, String category, TeamEntity t1, TeamEntity t2, String dh) {
-        String dateKo = String.format("%d년 %d월 %d일", d.getYear(), d.getMonthValue(), d.getDayOfMonth());
+        String dateKo = String.format("%d/%d", d.getMonthValue(), d.getDayOfMonth());
 
-        List<String> supTokens = uniqTokens(t1 == null ? null : t1.getTeamName());
-
-        List<String> oppTokens = uniqTokens(t2 == null ? null : t2.getTeamName());
+        String t1Name, t2Name;
+        if (category == "baseball") {
+            t1Name = (t1 != null && t1.getTeamName() != null) ? t1.getTeamName() : "";
+            t2Name = (t2 != null && t2.getTeamName() != null) ? t2.getTeamName() : "";
+        } else {
+            t1Name = (t1 != null && t1.getCrawlingName() != null) ? t1.getCrawlingName() : "";
+            t2Name = (t2 != null && t2.getCrawlingName() != null) ? t2.getCrawlingName() : "";
+        }
 
 
         String league = switch (category == null ? "" : category.toLowerCase()) {
             case "baseball" -> "KBO 야구";
-            case "basketball" -> "KBL 농구";
+            case "basketball" -> "프로농구";
             default ->  "";
         };
 
@@ -134,23 +147,12 @@ public class HighlightServiceImpl implements HighlightService {
 
         return String.join(" ",
                 dateKo,
-                String.join(" ", supTokens),
-                String.join(" ", oppTokens),
+                t1Name,
+                t2Name,
                 "하이라이트",
                 league,
                 dhToken
         ).replaceAll("\\s+", " ").trim();
-    }
-
-    private List<String> uniqTokens(String... arr){
-        if (arr == null || arr.length == 0) return new ArrayList<>();
-        Set<String> set = new LinkedHashSet<>();
-        for (String s : arr) {
-            if (s == null) continue;
-            String t = s.trim();
-            if (!t.isEmpty()) set.add(t);
-        }
-        return new ArrayList<>(set);
     }
 
     private String toRfc3339StartOfDayUtc(LocalDate date) {
