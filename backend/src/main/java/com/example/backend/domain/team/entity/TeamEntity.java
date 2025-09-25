@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TeamEntity extends BaseEntity {
-    private UUID teamId;
+    private UUID id;
     private UUID categoryId;
     private String teamCode;
     private String teamName;

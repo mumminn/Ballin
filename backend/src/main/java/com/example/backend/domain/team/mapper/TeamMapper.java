@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Mapper
 public interface TeamMapper {
-    Optional<TeamEntity> findById (@Param("teamId") UUID teamId);
+    TeamEntity findById (@Param("teamId") UUID teamId);
     List<TeamEntity> findCrawlingNameByCategory(@Param("categoryName") String categoryName);
     Optional<UUID> findIdByCrawlingName (@Param("categoryName") String categoryName, @Param("crawlingName") String crawlingName);
 }

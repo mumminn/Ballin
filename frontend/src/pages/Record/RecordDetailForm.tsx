@@ -20,6 +20,7 @@ interface RecordDetailFormProps{
     score: Omit<ScoreHeaderProps, "className" | "logoSize">;
     onDelete?: () => void;
     onEdit?:() => void;
+    onHighLights?:() => void;
 }
 export function RecordDetailForm ({
     date,
@@ -30,6 +31,7 @@ export function RecordDetailForm ({
     score,
     onDelete,
     onEdit,
+    onHighLights,
 }: RecordDetailFormProps) {
 
     return(
@@ -77,7 +79,9 @@ export function RecordDetailForm ({
                     </FieldShell>
 
                     <button
-                        className="items-center mx-auto mt-4 text-sm">
+                        className="items-center mx-auto mt-4 text-sm"
+                        onClick={onHighLights}
+                        >
                         그날의 하이라이트 보러가기 {'>'}
                     </button>
             </div>

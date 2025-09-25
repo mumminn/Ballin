@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Mapper
 public interface CategoryMapper {
-    Optional<CategoryEntity> findById (@Param("categoryId") UUID categoryId);
+    String findById (@Param("categoryId") UUID categoryId);
     List<CategoryEntity> findAllCategory();
     Optional<UUID> findIdByCategoryName(@Param("categoryName") String categoryName);
 }

@@ -1,4 +1,4 @@
-import { NavOption } from "./NavOption";
+import { NavOption } from "@/components/navigationBar/NavOption";
 
 export function NavigationBar() {
   return (

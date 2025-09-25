@@ -21,4 +21,5 @@ public class MatchRecordRequestDto {
     public Integer myScore;
     public Integer opponentScore;
     public String review;
+    public String dh;
 }

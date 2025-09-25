@@ -17,6 +17,7 @@ export const ENDPOINTS = {
     RECORD_DETAIl:  (recordId: string) => `${BASE_API}/record/${recordId}/detail`,
     RECORD_IMAGE:  (recordId: string) => `${BASE_API}/record/${recordId}/image`,
     RECORD_DELETE:  (recordId: string) => `${BASE_API}/record/${recordId}`,
+    RECORD_HIGHLIGHTS:  (recordId: string) => `${BASE_API}/highlights/${recordId}`,
 
     STATISTIC_SEASON: `${BASE_API}/statistic/season`,
     STATISTIC: `${BASE_API}/statistic`,

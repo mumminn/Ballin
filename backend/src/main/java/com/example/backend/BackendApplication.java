@@ -23,6 +23,7 @@ public class BackendApplication {
 		System.setProperty("REDIS_PORT", dotenv.get("REDIS_PORT"));
 		System.setProperty("EMAIL_ID", dotenv.get("EMAIL_ID"));
 		System.setProperty("EMAIL_PASSWORD", dotenv.get("EMAIL_PASSWORD"));
+		System.setProperty("YT_API_KEY", dotenv.get("YT_API_KEY"));
 
 		SpringApplication.run(BackendApplication.class, args);
 	}
