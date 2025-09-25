@@ -9,20 +9,26 @@ import java.util.Objects;
 
 @Component
 public class TeamConverter {
-    public TeamResponseDto toDto(TeamEntity e) {
+    public TeamResponseDto toDto(String category, TeamEntity e) {
         if (e == null) return null;
 
+        String teamName;
+
+        if (category == "baseball") {
+            teamName = e.getCrawlingName();
+        } else teamName = e.getTeamName();
+
         return TeamResponseDto.builder()
-                .teamId(e.getTeamId())
-                .teamName(e.getCrawlingName())
+                .teamId(e.getId())
+                .teamName(teamName)
                 .build();
     }
 
-    public List<TeamResponseDto> toDtoList(List<TeamEntity> entities) {
+    public List<TeamResponseDto> toDtoList(String category, List<TeamEntity> entities) {
         if (entities == null || entities.isEmpty()) return List.of();
         return entities.stream()
                 .filter(Objects::nonNull)
-                .map(this::toDto)
+                .map(e -> toDto(category, e))
                 .toList();
     }
 }

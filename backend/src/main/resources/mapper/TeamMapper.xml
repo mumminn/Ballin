@@ -20,7 +20,7 @@
     </select>
 
     <select id="findCrawlingNameByCategory" resultType="com.example.backend.domain.team.entity.TeamEntity">
-        SELECT t.id, t.crawling_name
+        SELECT *
         FROM team t
         JOIN category c ON c.id = t.category_id
         WHERE c.category_name = #{categoryName};

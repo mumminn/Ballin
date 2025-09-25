@@ -21,7 +21,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<TeamResponseDto> findByCategory (String categoryName) {
         var entities = teamMapper.findCrawlingNameByCategory(categoryName);
-        return teamConverter.toDtoList(entities);
+        return teamConverter.toDtoList(categoryName, entities);
     }
 
 }
