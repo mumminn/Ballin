@@ -26,7 +26,7 @@ public class HighlightServiceImpl implements HighlightService {
     private final CategoryMapper categoryMapper;
     private final TeamMapper teamMapper;
 
-    @Value("${YT_API_KEY}")
+    @Value("${youtube.api}")
     private String ytKey;
 
     private final RestTemplate restTemplate = new RestTemplate();
