@@ -24,6 +24,9 @@ public class BackendApplication {
 		System.setProperty("EMAIL_ID", dotenv.get("EMAIL_ID"));
 		System.setProperty("EMAIL_PASSWORD", dotenv.get("EMAIL_PASSWORD"));
 		System.setProperty("YT_API_KEY", dotenv.get("YT_API_KEY"));
+		System.setProperty("POSTGRESQL_URL", dotenv.get("POSTGRESQL_URL"));
+		System.setProperty("POSTGRESQL_USERNAME", dotenv.get("POSTGRESQL_USERNAME"));
+		System.setProperty("POSTGRESQL_PASSWORD", dotenv.get("POSTGRESQL_PASSWORD"));
 
 		SpringApplication.run(BackendApplication.class, args);
 	}
