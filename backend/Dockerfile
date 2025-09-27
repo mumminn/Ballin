@@ -1,11 +1,18 @@
 FROM gradle:8.5-jdk17 AS builder
-COPY --chown=gradle:gradle . /home/gradle/project
-WORKDIR /home/gradle/project
-RUN gradle build --no-daemon
+WORKDIR /home/gradle/backend
 
-# Run stage
-FROM openjdk:17-jdk
+COPY backend/gradlew .
+COPY backend/gradle ./gradle
+COPY backend/settings.gradle* backend/build.gradle* ./
+RUN chmod +x gradlew
+
+COPY backend/src ./src
+RUN ./gradlew --no-daemon clean bootJar
+
+## Run stage
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
-COPY --from=builder /home/gradle/project/build/libs/*.jar app.jar
+COPY --from=builder /home/gradle/backend/build/libs/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENV JAVA_OPTS=""
+ENTRYPOINT ["sh","-c","java $JAVA_OPTS -jar app.jar"]
