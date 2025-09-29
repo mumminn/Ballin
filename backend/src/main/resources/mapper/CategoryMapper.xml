@@ -4,18 +4,18 @@
 <mapper namespace="com.example.backend.domain.category.mapper.CategoryMapper">
 
     <resultMap id="CategoryResult" type="com.example.backend.domain.category.entity.CategoryEntity">
-        <id column="id" property="categoryId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <id column="id" property="categoryId" javaType="java.util.UUID"/>
         <result column="category_name" property="categoryName"/>
         <result column="created_dt"  property="createdDt"   javaType="java.time.Instant"/>
         <result column="updated_dt"  property="updatedDt"   javaType="java.time.Instant"/>
-        <result column="created_id"  property="createdId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="updated_id"  property="updatedId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <result column="created_id"  property="createdId"   javaType="java.util.UUID"/>
+        <result column="updated_id"  property="updatedId"   javaType="java.util.UUID"/>
     </resultMap>
 
-    <select id="findById" parameterType="string" resultType="string">
+    <select id="findById" resultType="string">
         SELECT category_name
         FROM  category
-        WHERE id = #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE id = #{categoryId}
     </select>
 
     <select id="findAllCategory" resultType="com.example.backend.domain.category.entity.CategoryEntity">

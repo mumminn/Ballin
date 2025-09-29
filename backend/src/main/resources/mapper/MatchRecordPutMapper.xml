@@ -6,14 +6,14 @@
         UPDATE match_record
         SET
         match_date = #{p.matchDate},
-        supporting_team_id = #{p.supportingTeamId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-        opposing_team_id   = #{p.opposingTeamId,   jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-        stadium_id         = #{p.stadiumId,       jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+        supporting_team_id = #{p.supportingTeamId},
+        opposing_team_id = #{p.opposingTeamId},
+        stadium_id = #{p.stadiumId},
         supporting_team_score = #{p.supportingTeamScore},
-        opposing_team_score   = #{p.opposingTeamScore},
-        team_result        = #{p.teamResult},
-        review             = #{p.review},
-        seat               = #{p.seat}
+        opposing_team_score = #{p.opposingTeamScore},
+        team_result = #{p.teamResult},
+        review = #{p.review},
+        seat = #{p.seat}
 
         <if test="p.image != null">
             , match_image              = #{p.image, jdbcType=BLOB}
@@ -21,7 +21,7 @@
             , match_image_filename     = #{p.imageFileName}
             , match_image_size         = #{p.imageSize}
         </if>
-        WHERE id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE id = #{recordId}
     </update>
 
 </mapper>

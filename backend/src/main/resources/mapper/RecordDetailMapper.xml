@@ -36,7 +36,7 @@
         JOIN team t2 ON t2.id = mr.opposing_team_id
         JOIN stadium st  ON st.id  = mr.stadium_id
         LEFT JOIN team ht ON ht.id = st.team_id
-        WHERE mr.id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE mr.id = #{recordId}
 
     </select>
 </mapper>

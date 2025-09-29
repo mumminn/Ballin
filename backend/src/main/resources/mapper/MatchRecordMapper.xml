@@ -3,12 +3,12 @@
 <mapper namespace="com.example.backend.domain.matchRecord.mapper.MatchRecordMapper">
 
     <resultMap id="MatchRecordResult" type="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
-        <id column="id" property="recordId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="user_id" property="userId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="supporting_team_id" property="supportingTeamId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="opposing_team_id" property="opposingTeamId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="stadium_id" property="stadiumId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="category_id" property="categoryId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <id column="id" property="recordId" javaType="java.util.UUID"/>
+        <result column="user_id" property="userId" javaType="java.util.UUID"/>
+        <result column="supporting_team_id" property="supportingTeamId" javaType="java.util.UUID"/>
+        <result column="opposing_team_id" property="opposingTeamId" javaType="java.util.UUID"/>
+        <result column="stadium_id" property="stadiumId" javaType="java.util.UUID"/>
+        <result column="category_id" property="categoryId" javaType="java.util.UUID"/>
         <result column="match_date" property="matchDate" javaType="java.time.Instant"/>
         <result column="supporting_team_score" property="supportingTeamScore"/>
         <result column="opposing_team_score" property="opposingTeamScore"/>
@@ -22,21 +22,21 @@
         <result column="dh" property="dh"/>
         <result column="created_dt"  property="createdDt"   javaType="java.time.Instant"/>
         <result column="updated_dt"  property="updatedDt"   javaType="java.time.Instant"/>
-        <result column="created_id"  property="createdId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="updated_id"  property="updatedId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <result column="created_id"  property="createdId"   javaType="java.util.UUID"/>
+        <result column="updated_id"  property="updatedId"   javaType="java.util.UUID"/>
     </resultMap>
 
     <select id="findByCategoryId" resultType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
         SELECT *
         FROM match_record
-        WHERE category_id = #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE category_id = #{categoryId}
     </select>
 
 
     <select id="findAll" resultType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
         SELECT *
         FROM match_record
-        WHERE category_id = #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE category_id = #{categoryId}
     </select>
 
     <insert id="insert" parameterType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
@@ -44,27 +44,27 @@
             id, user_id, supporting_team_id, opposing_team_id, stadium_id, category_id, match_date, supporting_team_score, opposing_team_score,
             team_result, review, seat, match_image, match_image_content_type, match_image_filename, match_image_size, dh, created_id, updated_id
         ) VALUES (
-            #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-            #{userId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-            #{supportingTeamId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-            #{opposingTeamId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-            #{stadiumId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-            #{categoryId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+            #{recordId},
+            #{userId},
+            #{supportingTeamId},
+            #{opposingTeamId},
+            #{stadiumId},
+            #{categoryId},
             #{matchDate}, #{supportingTeamScore}, #{opposingTeamScore}, #{teamResult}, #{review}, #{seat},
             #{image, jdbcType=BLOB}, #{imageContentType}, #{imageFileName}, #{imageSize}, #{dh},
-            #{createdId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-            #{updatedId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+            #{createdId},
+            #{updatedId}
         )
     </insert>
 
     <delete id="deleteRecord" parameterType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
         DELETE FROM match_record
-        WHERE id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE id = #{recordId}
     </delete>
 
     <select id="getMatchRecordById" resultType="com.example.backend.domain.matchRecord.entity.MatchRecordEntity">
         SELECT *
         FROM match_record
-        WHERE id = #{recordId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE id = #{recordId}
     </select>
 </mapper>
