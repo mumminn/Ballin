@@ -54,7 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/kakao/**").permitAll()
                         .requestMatchers("/api/login/**").permitAll()
                         .requestMatchers("/api/users/signup").permitAll()
-                        .requestMatchers("/api/auth/refresh", "/api/auth/login", "/api/auth/logout").permitAll()
+                        .requestMatchers("/api/auth/refresh", "/api/auth/login", "/api/auth/logout", "/api/auth/mail/**").permitAll()
                         .requestMatchers("/", "/index.html", "/favicon.ico", "/health").permitAll()
                         .anyRequest().authenticated()
                 )

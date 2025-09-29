@@ -50,10 +50,10 @@ public class AuthService {
 
         ResponseCookie cookie = ResponseCookie.from("refresh_token", newRefresh)
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(refreshTtl / 1000)
-                .sameSite("Lax")
+                .sameSite("None")
                 .build();
 
         return ResponseEntity.ok()
@@ -75,7 +75,8 @@ public class AuthService {
                 .path("/")
                 .maxAge(0)
                 .httpOnly(true)
-                .sameSite("Lax")
+                .secure(true)
+                .sameSite("None")
                 .build();
 
         return ResponseEntity.noContent()
