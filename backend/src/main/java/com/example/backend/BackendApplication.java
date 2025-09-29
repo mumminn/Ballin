@@ -28,9 +28,11 @@ public class BackendApplication {
 		setIfPresent("EMAIL_ID", dotenv.get("EMAIL_ID"));
 		setIfPresent("EMAIL_PASSWORD", dotenv.get("EMAIL_PASSWORD"));
 		setIfPresent("YT_API_KEY", dotenv.get("YT_API_KEY"));
-		setIfPresent("POSTGRESQL_URL", dotenv.get("POSTGRESQL_URL"));
 		setIfPresent("POSTGRESQL_USERNAME", dotenv.get("POSTGRESQL_USERNAME"));
 		setIfPresent("POSTGRESQL_PASSWORD", dotenv.get("POSTGRESQL_PASSWORD"));
+		setIfPresent("POSTGRESQL_HOST", dotenv.get("POSTGRESQL_HOST"));
+		setIfPresent("POSTGRESQL_PORT", dotenv.get("POSTGRESQL_PORT"));
+		setIfPresent("POSTGRESQL_DBNAME", dotenv.get("POSTGRESQL_DBNAME"));
 
 		SpringApplication.run(BackendApplication.class, args);
 	}
