@@ -13,7 +13,7 @@
             JOIN category c ON c.id = mr.category_id
         </if>
 
-        WHERE mr.user_id = #{userId, jdbcType = BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE mr.user_id = #{userId}
         AND mr.match_date <![CDATA[>=]]> #{startDate}
         AND mr.match_date <![CDATA[< ]]> DATE_ADD(#{endDate}, INTERVAL 1 DAY)
 

@@ -2,15 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.backend.domain.stadium.mapper.StadiumMapper">
     <resultMap id="StadiumResult" type="com.example.backend.domain.stadium.entity.StadiumEntity">
-        <id column="id" property="stadiumId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="team_id"  property="teamId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="category_id"  property="categoryId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <id column="id" property="stadiumId" javaType="java.util.UUID"/>
+        <result column="team_id"  property="teamId"/>
+        <result column="category_id"  property="categoryId"/>
         <result column="stadium_name" property="stadiumName"/>
         <result column="location" property="location"/>
         <result column="created_dt"  property="createdDt"   javaType="java.time.Instant"/>
         <result column="updated_dt"  property="updatedDt"   javaType="java.time.Instant"/>
-        <result column="created_id"  property="createdId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="updated_id"  property="updatedId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <result column="created_id"  property="createdId"/>
+        <result column="updated_id"  property="updatedId"/>
     </resultMap>
 
     <select id="findIdByTeamId" parameterType="map" resultType="java.util.UUID">
@@ -25,7 +25,7 @@
         JOIN stadium s ON mr.stadium_id = s.id
         JOIN category c ON mr.category_id = c.id
         JOIN team t
-        WHERE mr.user_id = #{userId, jdbcType = BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE mr.user_id = #{userId}
         AND c.category_name = #{category}
         AND s.team_id = t.id
     </select>

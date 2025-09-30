@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.backend.domain.team.mapper.TeamMapper">
     <resultMap id="TeamResult" type="com.example.backend.domain.team.entity.TeamEntity">
-        <id column="id" property="teamId" javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="category_id"  property="categoryId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <id column="id" property="teamId"/>
+        <result column="category_id"  property="categoryId"/>
         <result column="team_code" property="teamCode"/>
         <result column="team_name" property="teamName"/>
         <result column="crawling_name" property="crawlingName"/>
         <result column="created_dt"  property="createdDt"   javaType="java.time.Instant"/>
         <result column="updated_dt"  property="updatedDt"   javaType="java.time.Instant"/>
-        <result column="created_id"  property="createdId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="updated_id"  property="updatedId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <result column="created_id"  property="createdId"/>
+        <result column="updated_id"  property="updatedId"/>
     </resultMap>
 
     <select id="findById" resultType="com.example.backend.domain.team.entity.TeamEntity">
         SELECT *
         FROM  team
-        WHERE id = #{teamId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE id = #{teamId}
     </select>
 
     <select id="findCrawlingNameByCategory" resultType="com.example.backend.domain.team.entity.TeamEntity">

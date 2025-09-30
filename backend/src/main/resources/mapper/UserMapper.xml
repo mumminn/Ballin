@@ -5,56 +5,56 @@
 <mapper namespace="com.example.backend.domain.user.mapper.UserMapper">
 
     <resultMap id="UserResult" type="com.example.backend.domain.user.entity.UserEntity">
-        <id     column="id"          property="id"          javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <id     column="id"          property="id"          javaType="java.util.UUID"/>
         <result column="email"       property="email"/>
         <result column="password"    property="password"/>
         <result column="name"        property="name"/>
         <result column="social_type" property="socialType"  javaType="com.example.backend.domain.user.entity.SocialType"/>
         <result column="created_dt"  property="createdDt"   javaType="java.time.Instant"/>
         <result column="updated_dt"  property="updatedDt"   javaType="java.time.Instant"/>
-        <result column="created_id"  property="createdId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
-        <result column="updated_id"  property="updatedId"   javaType="java.util.UUID" typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+        <result column="created_id"  property="createdId"   javaType="java.util.UUID"/>
+        <result column="updated_id"  property="updatedId"   javaType="java.util.UUID"/>
     </resultMap>
 
     <select id="findByEmail" parameterType="string" resultMap="UserResult">
-        SELECT id, email, password, `name`, social_type,
+        SELECT id, email, password, "name", social_type,
         created_dt, updated_dt, created_id, updated_id
-        FROM `user`
+        FROM "user"
         WHERE email = #{email}
         LIMIT 1
     </select>
 
     <select id="findById" parameterType="string" resultMap="UserResult">
-        SELECT id, email, password, `name`, social_type,
+        SELECT id, email, password, "name", social_type,
         created_dt, updated_dt, created_id, updated_id
-        FROM `user`
-        WHERE id = #{id,javaType=java.util.UUID,typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        FROM "user"
+        WHERE id = #{id}
         LIMIT 1
     </select>
 
     <insert id="insertUser" parameterType="com.example.backend.domain.user.entity.UserEntity">
-        INSERT INTO `user` (id, email, password, `name`, social_type, created_dt, updated_dt, created_id, updated_id)
+        INSERT INTO "user" (id, email, password, "name", social_type, created_dt, updated_dt, created_id, updated_id)
         VALUES (
-        #{id, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+        #{id},
         #{email}, #{password}, #{name},
-        #{socialType, typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+        #{socialType},
         #{createdDt, jdbcType=TIMESTAMP},
         #{updatedDt, jdbcType=TIMESTAMP},
-        #{createdId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
-        #{updatedId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        #{createdId},
+        #{updatedId}
         )
     </insert>
 
     <update id="updateUserBasic" parameterType="com.example.backend.domain.user.entity.UserEntity">
-        UPDATE `user`
-        SET `name` = #{name},
-        updated_id = #{updatedId, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler},
+        UPDATE "user"
+        SET "name" = #{name},
+        updated_id = #{updatedId},
         updated_dt = #{updatedDt, jdbcType=TIMESTAMP}
-        WHERE id = #{id, jdbcType=BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE id = #{id}
     </update>
 
     <update id="updateUser" parameterType="com.example.backend.domain.user.entity.UserEntity">
-        UPDATE `user`
+        UPDATE "user"
         <set>
             <if test="email != null"> email = #{email}, </if>
             <if test="name != null"> name = #{name}, </if>
@@ -64,20 +64,20 @@
     
     <select id="existsByEmailExcludingId" resultType="boolean">
         SELECT EXISTS(
-            SELECT 1 FROM `user`
+            SELECT 1 FROM "user"
             WHERE LOWER(email) = LOWER(#{email})
             AND id != #{id}
         )
     </select>
 
     <update id="updatePassword">
-        UPDATE `user`
+        UPDATE "user"
         SET password = #{password}
         WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="java.util.UUID">
-        DELETE FROM `user`
+        DELETE FROM "user"
         WHERE id = #{id}
     </delete>
 

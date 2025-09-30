@@ -5,8 +5,7 @@
     <resultMap id="MatchRecordResponseMap"
                type="com.example.backend.domain.matchRecord.dto.response.MatchRecordResponseDto">
         <id     column="record_id"       property="recordId"
-                javaType="java.util.UUID"
-                typeHandler="com.example.backend.global.mybatis.UUIDTypeHandler"/>
+                javaType="java.util.UUID"/>
         <result column="supporting_team" property="supportingTeam"/>
         <result column="opposing_team"   property="opposingTeam"/>
         <result column="stadium"         property="stadium"/>
@@ -19,10 +18,10 @@
 
     <select id="findAllByUserId" resultMap="MatchRecordResponseMap">
         SELECT
-        mr.id  AS record_id,
+        mr.id AS record_id,
         st1.team_name AS supporting_team,
         st2.team_name AS opposing_team,
-        sd.stadium_name  AS stadium,
+        sd.stadium_name AS stadium,
         mr.team_result AS team_result,
         ht.team_name AS stadium_team,
         DATE_FORMAT(CONVERT_TZ(mr.match_date,'+00:00','+09:00'), '%Y-%m-%d') AS match_date,
@@ -31,11 +30,10 @@
         FROM match_record mr
         JOIN team st1 ON st1.id = mr.supporting_team_id
         JOIN team st2 ON st2.id = mr.opposing_team_id
-        JOIN stadium sd  ON sd.id  = mr.stadium_id
+        JOIN stadium sd ON sd.id = mr.stadium_id
         LEFT JOIN team ht ON ht.id = sd.team_id
         LEFT JOIN category c ON c.id = mr.category_id
-        WHERE mr.user_id = #{userId, jdbcType=BINARY,
-                        typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE mr.user_id = #{userId, jdbcType=java.util.UUID
         ORDER BY mr.match_date DESC
     </select>
 </mapper>

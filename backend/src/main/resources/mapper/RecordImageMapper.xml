@@ -11,13 +11,12 @@
 
     <select id="findImageById" resultMap="MatchImageRowMap">
         SELECT
-            match_image                AS match_image,
-            match_image_content_type   AS match_image_content_type,
-            match_image_filename       AS match_image_filename,
-            match_image_size           AS match_image_size
+        match_image AS match_image,
+        match_image_content_type AS match_image_content_type,
+        match_image_filename AS match_image_filename,
+        match_image_size AS match_image_size
         FROM match_record
-        WHERE id = #{recordId, jdbcType=BINARY,
-                       typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE id = #{recordId}
     </select>
 
 </mapper>

@@ -14,9 +14,9 @@
         FROM match_record mr
             JOIN category c ON mr.category_id = c.id
             JOIN team t ON mr.supporting_team_id = t.id
-        WHERE mr.user_id = #{userId, jdbcType = BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+        WHERE mr.user_id = #{userId}
         <if test="categoryId != null">
-            AND mr.category_id = #{categoryId, jdbcType = BINARY, typeHandler=com.example.backend.global.mybatis.UUIDTypeHandler}
+            AND mr.category_id = #{categoryId}
         </if>
     </select>
 </mapper>
